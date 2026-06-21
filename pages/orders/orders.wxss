@@ -1,0 +1,125 @@
+/* pages/orders/orders.wxss */
+.order, .appl { margin: 24rpx 28rpx 0; }
+.order-head { padding: 20rpx 24rpx; border-bottom: 1rpx solid var(--line); display: flex; align-items: flex-start; justify-content: space-between; }
+.order-title-wrap { flex: 1; }
+.order-title { font-size: 23rpx; font-weight: 700; }
+.order-company { display: flex; align-items: center; gap: 12rpx; margin-top: 8rpx; }
+.company-badge { font-size: 18rpx; color: var(--primary); background: var(--primary-soft); padding: 4rpx 12rpx; border-radius: 8rpx; }
+.traveller-count { font-size: 18rpx; color: var(--grey); }
+.order-contact { color: var(--primary); }
+.order-info { padding: 18rpx 24rpx; font-size: 20rpx; color: var(--grey); line-height: 1.8; white-space: pre-line; }
+.order-actions { padding: 0 24rpx 20rpx; display: flex; gap: 16rpx; justify-content: flex-end; }
+.oa-btn { padding: 12rpx 24rpx; font-size: 22rpx; }
+
+.checklist { margin: 0 28rpx; padding: 8rpx 24rpx; }
+.ck-row { display: flex; align-items: center; padding: 16rpx 0; }
+.ck-border { border-bottom: 1rpx solid var(--line); }
+.ck-mark { margin-right: 16rpx; width: 32rpx; height: 32rpx; display: flex; align-items: center; justify-content: center; }
+.ck-img { width: 24rpx; height: 24rpx; }
+.ck-done .ck-img { opacity: 1; }
+.ck-done { color: var(--green); }
+.ck-label { font-size: 22rpx; flex: 1; }
+.ck-status { font-size: 19rpx; color: var(--terra); }
+.ck-status-done { color: var(--green); }
+
+.group { margin: 20rpx 28rpx; padding: 22rpx 24rpx; display: flex; align-items: center; gap: 20rpx; border: 1rpx solid #C9E8D4; background: #F2FBF5; }
+.group-ico { width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center; }
+.group-img { width: 40rpx; height: 40rpx; }
+.group-t { font-size: 23rpx; font-weight: 700; }
+.group-d { font-size: 19rpx; color: var(--grey); margin-top: 2rpx; }
+.group-btn { padding: 12rpx 24rpx; font-size: 22rpx; }
+
+.appl-row { display: flex; padding: 14rpx 24rpx; }
+.appl-row + .appl-row { border-top: 1rpx solid var(--line); }
+.appl-k { font-size: 21rpx; color: var(--grey); width: 140rpx; flex-shrink: 0; }
+.appl-v { font-size: 21rpx; flex: 1; }
+
+.empty { margin: 24rpx 28rpx; padding: 56rpx 40rpx; text-align: center; }
+.empty-ico { width: 96rpx; height: 96rpx; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.empty-img { width: 80rpx; height: 80rpx; opacity: 0.6; }
+.empty-t { font-size: 28rpx; font-weight: 700; margin-top: 20rpx; }
+.empty-d { font-size: 22rpx; color: var(--grey); line-height: 1.7; margin-top: 12rpx; }
+.empty-btn { padding: 22rpx 0; margin-top: 28rpx; }
+
+/* QR Code Modal */
+.qr-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.qr-modal-content {
+  width: 600rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.qr-modal-header {
+  padding: 32rpx 32rpx 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.qr-modal-title {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.qr-modal-close {
+  font-size: 48rpx;
+  color: var(--grey);
+  line-height: 1;
+  padding: 8rpx;
+}
+
+.qr-modal-body {
+  padding: 32rpx;
+  text-align: center;
+}
+
+.qr-modal-trip {
+  font-size: 24rpx;
+  color: var(--grey);
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.qr-code-wrap {
+  width: 400rpx;
+  height: 400rpx;
+  margin: 0 auto;
+  background: #fff;
+  border: 4rpx solid var(--line);
+  border-radius: 16rpx;
+  padding: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+}
+
+.qr-code-img {
+  width: 100%;
+  height: 100%;
+}
+
+.qr-modal-tip {
+  font-size: 20rpx;
+  color: var(--grey);
+  display: block;
+  margin-top: 20rpx;
+}
+
+.qr-modal-footer {
+  padding: 24rpx 32rpx 32rpx;
+}
+
+.qr-modal-btn {
+  width: 100%;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+}

@@ -1,0 +1,94 @@
+/* pages/trips/trips.wxss */
+.trip { margin: 24rpx 28rpx 0; }
+.trip-banner { height: 148rpx; color: #fff; padding: 20rpx 24rpx; }
+.trip-title { font-size: 28rpx; font-weight: 700; margin-top: 20rpx; }
+.trip-body { padding: 18rpx 24rpx 22rpx; }
+.trip-tags { display: flex; gap: 10rpx; margin-bottom: 14rpx; flex-wrap: wrap; }
+.trip-summary { font-size: 20rpx; color: var(--grey); line-height: 1.6; }
+.trip-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 16rpx; }
+
+/* empty / custom */
+.empty { margin: 24rpx 28rpx; padding: 56rpx 40rpx; text-align: center; }
+.empty-ico { width: 96rpx; height: 96rpx; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+.empty-img { width: 80rpx; height: 80rpx; opacity: 0.6; }
+.empty-t { font-size: 30rpx; font-weight: 700; margin-top: 20rpx; }
+.empty-d { font-size: 23rpx; color: var(--grey); line-height: 1.7; margin-top: 14rpx; }
+.empty-btn { padding: 24rpx 0; margin-top: 30rpx; }
+
+/* past */
+.past { margin: 24rpx 28rpx 0; padding: 22rpx 24rpx; display: flex; gap: 20rpx; align-items: center; }
+.past-thumb {
+  width: 96rpx; height: 96rpx; border-radius: 18rpx; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 40rpx;
+}
+.past-info { flex: 1; }
+.past-t { font-size: 26rpx; font-weight: 700; }
+.past-d { font-size: 20rpx; color: var(--grey); margin-top: 4rpx; }
+.past-tags { margin-top: 10rpx; }
+
+/* Custom Modal */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5); z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40rpx;
+}
+
+.modal-content {
+  width: 100%; max-width: 600rpx;
+  background: #fff; border-radius: 24rpx; overflow: hidden;
+}
+
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 30rpx 32rpx; border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 32rpx; font-weight: 700; color: #333;
+}
+
+.modal-close {
+  width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center;
+  font-size: 40rpx; color: #999; cursor: pointer;
+}
+
+.modal-body {
+  padding: 32rpx;
+}
+
+.contact-info {
+  margin-bottom: 32rpx;
+}
+
+.contact-item {
+  display: flex; align-items: center; margin-bottom: 16rpx;
+}
+
+.contact-label {
+  font-size: 24rpx; color: #999; width: 120rpx; flex-shrink: 0;
+}
+
+.contact-value {
+  font-size: 26rpx; color: #333; flex: 1;
+}
+
+.qr-section {
+  text-align: center;
+}
+
+.qr-title {
+  font-size: 26rpx; font-weight: 600; color: #333; display: block; margin-bottom: 20rpx;
+}
+
+.qr-code {
+  width: 240rpx; height: 240rpx; margin: 0 auto; display: block; border-radius: 16rpx;
+}
+
+.qr-desc {
+  font-size: 22rpx; color: #999; display: block; margin-top: 16rpx;
+}
+
+.modal-footer {
+  padding: 24rpx 32rpx 32rpx;
+}

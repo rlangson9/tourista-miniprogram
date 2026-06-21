@@ -1,0 +1,87 @@
+/* pages/booking/booking.wxss */
+.booking-wrap { padding-bottom: 180rpx; }
+
+.bk-trip { margin: 20rpx 28rpx 0; padding: 22rpx 24rpx; display: flex; align-items: center; gap: 20rpx; }
+.bk-thumb { width: 88rpx; height: 88rpx; border-radius: 18rpx; flex-shrink: 0; }
+.bk-title { font-size: 24rpx; font-weight: 700; }
+.bk-meta { font-size: 20rpx; color: var(--grey); margin-top: 4rpx; }
+.bk-price-wrap { text-align: right; flex-shrink: 0; }
+.price-unit { font-size: 20rpx; color: var(--grey); }
+
+/* Booking Type Selector */
+.booking-type { margin: 0 28rpx; padding: 24rpx; }
+.type-tabs { display: flex; gap: 16rpx; }
+.type-tab {
+  flex: 1; padding: 24rpx 0; text-align: center;
+  border: 2rpx solid var(--line); border-radius: 16rpx;
+  background: #f8f9fa; transition: all 0.2s ease;
+}
+.type-tab-active {
+  border-color: var(--primary); background: var(--primary-soft);
+}
+.type-tab-text { font-size: 26rpx; font-weight: 600; color: var(--grey); }
+.type-tab-active .type-tab-text { color: var(--primary); }
+
+/* Traveller Count */
+.traveller-count {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 24rpx; padding-top: 20rpx; border-top: 1rpx solid var(--line);
+}
+.count-label { font-size: 24rpx; color: #333; }
+.count-control { display: flex; align-items: center; gap: 20rpx; }
+.count-btn {
+  width: 56rpx; height: 56rpx; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32rpx; font-weight: 700;
+}
+.count-btn-disabled { background: #ddd; color: #aaa; }
+.count-value { font-size: 32rpx; font-weight: 700; color: #333; min-width: 60rpx; text-align: center; }
+.count-hint { font-size: 20rpx; color: var(--grey); margin-top: 12rpx; }
+
+/* Form */
+.form { margin: 0 28rpx; padding: 8rpx 24rpx; }
+.form-row { display: flex; align-items: center; padding: 22rpx 0; border-bottom: 1rpx solid var(--line); }
+.form-row-last { border-bottom: none; }
+.form-label { font-size: 24rpx; color: var(--grey); width: 160rpx; flex-shrink: 0; }
+.form-input { flex: 1; font-size: 24rpx; text-align: right; }
+
+/* Traveller Card */
+.traveller-card { margin: 0 28rpx 20rpx; padding: 0; }
+.traveller-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20rpx 24rpx; border-bottom: 1rpx solid var(--line);
+  background: var(--primary-soft); border-radius: 16rpx 16rpx 0 0;
+}
+.traveller-title { font-size: 24rpx; font-weight: 700; color: var(--primary); }
+.traveller-remove { font-size: 22rpx; color: var(--danger); padding: 4rpx 12rpx; }
+.traveller-card .form-row { padding: 20rpx 24rpx; }
+.traveller-card .form-row-last { border-bottom: none; }
+
+/* Add Traveller Button */
+.add-traveller-btn {
+  margin: 0 28rpx 20rpx; padding: 24rpx;
+  border: 2rpx dashed var(--line); border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center; gap: 12rpx;
+  color: var(--primary); font-size: 26rpx; font-weight: 600;
+}
+.add-icon { font-size: 32rpx; }
+
+/* Member */
+.member { margin: 0 28rpx; padding: 22rpx 24rpx; display: flex; align-items: center; gap: 16rpx; border: 1rpx solid var(--gold); background: var(--gold-soft); }
+.member-off { border-color: var(--line); background: #fff; }
+.member-ico { width: 44rpx; height: 44rpx; display: flex; align-items: center; justify-content: center; }
+.member-img { width: 36rpx; height: 36rpx; }
+.member-t { font-size: 23rpx; font-weight: 700; }
+.member-d { font-size: 19rpx; color: #B49043; margin-top: 2rpx; }
+.member-off .member-d { color: var(--grey); }
+.member-btn { padding: 12rpx 28rpx; font-size: 24rpx; }
+
+/* Deposit */
+.deposit-note { margin: 0 28rpx; padding: 20rpx 24rpx; font-size: 20rpx; color: #555; line-height: 1.8; white-space: pre-line; }
+.dep-hi { color: var(--terra); font-weight: 700; }
+
+.detail-pad { height: 30rpx; }
+.pay-label { font-size: 19rpx; color: var(--grey); }
+.pay-btn { padding: 18rpx 52rpx; font-size: 28rpx; }
+.per-person { font-size: 18rpx; color: var(--grey); margin-top: 4rpx; }

@@ -1,0 +1,28 @@
+/* pages/partner-form/partner-form.wxss */
+.pf-wrap { padding-bottom: 40rpx; }
+
+.pf-form { margin: 0 28rpx; padding: 8rpx 24rpx; }
+.pf-field { padding: 18rpx 0; border-bottom: 1rpx solid var(--line); }
+.pf-field-last { border-bottom: none; }
+.pf-label { font-size: 20rpx; color: var(--grey); margin-bottom: 8rpx; }
+.pf-req { color: var(--terra); }
+.pf-input { font-size: 24rpx; }
+
+.pf-tags-card { margin: 0 28rpx; padding: 22rpx 24rpx; }
+.pf-tag-label { font-size: 20rpx; color: var(--grey); margin-bottom: 12rpx; }
+.pf-mt { margin-top: 20rpx; }
+.pf-tags { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.pf-tag {
+  font-size: 22rpx; padding: 10rpx 20rpx; border-radius: 10rpx;
+  background: #F2F4F8; color: var(--grey); font-weight: 600;
+}
+.pf-tag.on { background: #FBE9E2; color: var(--terra-d); }
+.pf-tag-gold.on-gold { background: #FDF3DD; color: var(--gold-ink); }
+.pf-check-img { width: 20rpx; height: 20rpx; vertical-align: middle; margin-left: 4rpx; }
+
+.pf-tip { margin: 20rpx 28rpx; padding: 20rpx 24rpx; background: var(--gold-soft); border: 1rpx solid var(--gold-border); }
+.pf-tip-text { font-size: 20rpx; color: #B49043; line-height: 1.7; display: flex; align-items: flex-start; gap: 8rpx; }
+.pf-tip-ico { width: 24rpx; height: 24rpx; flex-shrink: 0; margin-top: 4rpx; }
+.pf-tip-hi { font-weight: 700; }
+
+.pf-submit { margin: 24rpx 28rpx; }

@@ -1,0 +1,120 @@
+<!-- pages/profile/profile.wxml -->
+<view class="page-wrap">
+
+  <!-- Profile header -->
+  <view class="pr-hero">
+    <view class="pr-avatar"><image class="pr-avatar-ico" src="/images/icon-user.svg" mode="aspectFit"/></view>
+    <view class="flex1">
+      <view class="pr-name">
+        {{userName || (user.loggedIn ? i18n.user : i18n.guest)}}
+        <text wx:if="{{user.isMember}}" class="tag pr-member"><image class="pr-tag-ico" src="/images/icon-crown.svg" mode="aspectFit"/> {{i18n.member}}</text>
+      </view>
+      <view class="pr-company">{{userCompany || (user.loggedIn ? '' : i18n.loginTip)}}</view>
+    </view>
+  </view>
+
+  <!-- Stats -->
+  <view class="card pr-stats">
+    <view class="pr-stat" bindtap="goOrders">
+      <view class="pr-stat-num">{{tripCount}}</view>
+      <view class="pr-stat-lbl">{{i18n.trips}}</view>
+    </view>
+    <view class="pr-stat" bindtap="goOrders">
+      <view class="pr-stat-num">{{applCount}}</view>
+      <view class="pr-stat-lbl">{{i18n.applications}}</view>
+    </view>
+    <view class="pr-stat">
+      <view class="pr-stat-num">¥{{savedText}}</view>
+      <view class="pr-stat-lbl">{{i18n.saved}}</view>
+    </view>
+  </view>
+
+  <!-- Menu group 1 -->
+  <view class="card pr-menu">
+    <view class="pr-row" bindtap="goOrders">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-clipboard.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.myOrders}}</text><text class="pr-row-arr">›</text>
+    </view>
+    <view class="pr-row" bindtap="goApplications">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-handshake.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.cooperationProgress}}</text>
+      <text class="pr-row-note">{{i18n.advisorConnected}} ›</text>
+    </view>
+    <view class="pr-row">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-crown.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.memberBenefits}}</text><text class="pr-row-arr">›</text>
+    </view>
+    <view class="pr-row pr-row-last">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-scroll.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.pastTrips}}</text><text class="pr-row-arr">›</text>
+    </view>
+  </view>
+
+  <!-- Menu group 2 -->
+  <view class="card pr-menu">
+    <view class="pr-row" bindtap="contactAdvisor">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-chat.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.contactAdvisor}}</text>
+      <text class="pr-row-note">{{i18n.wechat1on1}} ›</text>
+    </view>
+    <view class="pr-row" bindtap="downloadApp">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-phone.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.downloadApp}}</text><text class="pr-row-arr">›</text>
+    </view>
+    <view class="pr-row" bindtap="switchLanguage">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-info.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.languageSwitch}}</text>
+      <text class="pr-row-note">{{langDisplay}} ›</text>
+    </view>
+    <view class="pr-row pr-row-last" bindtap="about">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-info.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.aboutUs}}</text><text class="pr-row-arr">›</text>
+    </view>
+  </view>
+
+  <!-- Login/Logout -->
+  <view class="card pr-menu" wx:if="{{!user.loggedIn}}">
+    <view class="pr-row pr-row-primary" bindtap="showLoginModal">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-user.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.login}}</text><text class="pr-row-arr">›</text>
+    </view>
+  </view>
+  <view class="card pr-menu" wx:else>
+    <view class="pr-row pr-row-danger" bindtap="handleLogout">
+      <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-logout.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.logout}}</text><text class="pr-row-arr">›</text>
+    </view>
+  </view>
+
+  <view class="pr-footer">{{footerText}}</view>
+
+</view>
+
+<!-- Login Modal -->
+<view class="modal-mask" wx:if="{{showLoginModal}}" bindtap="closeLoginModal">
+  <view class="modal-content login-modal" catchtap="noop">
+    <view class="modal-header">
+      <text class="modal-title">{{i18n.login}}</text>
+      <view class="modal-close" bindtap="closeLoginModal">×</view>
+    </view>
+    <view class="login-options">
+      <view class="login-option" catchtap="loginWithWeChat">
+        <image class="login-option-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
+        <text class="login-option-text">{{i18n.wechatLogin}}</text>
+      </view>
+      <view class="login-divider">
+        <view class="login-divider-line"></view>
+        <text class="login-divider-text">{{i18n.or}}</text>
+        <view class="login-divider-line"></view>
+      </view>
+      <view class="login-option" catchtap="showPhoneLogin">
+        <image class="login-option-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
+        <text class="login-option-text">{{i18n.phoneLogin}}</text>
+      </view>
+    </view>
+    <view class="login-form" wx:if="{{showPhoneForm}}">
+      <view class="login-input-wrap">
+        <image class="login-input-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
+        <input class="login-input" placeholder="{{i18n.phone}}" value="{{phone}}" bindinput="onPhoneInput" type="number"/>
+      </view>
+      <view class="login-input-wrap">
+        <image class="login-input-ico" src="/images/icon-scroll.svg" mode="aspectFit"/>
+        <input class="login-input" placeholder="{{i18n.verificationCode}}" value="{{code}}" bindinput="onCodeInput" type="number"/>
+        <view class="login-code-btn" bindtap="sendCode">{{codeSent ? i18n.resend : i18n.getCode}}</view>
+      </view>
+      <view class="btn btn-primary login-submit-btn" bindtap="loginWithPhone">
+        {{i18n.login}}
+      </view>
+    </view>
+  </view>
+</view>

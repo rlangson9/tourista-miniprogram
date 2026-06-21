@@ -1,0 +1,135 @@
+/* ============================================================
+   Tourista AR — Global styles & design tokens
+   Brand Colors based on Tourista AR logo
+   ============================================================ */
+page {
+  --primary: #00A896;
+  --primary-light: #4ECDC4;
+  --primary-dark: #007566;
+  --secondary: #FF6B35;
+  --secondary-light: #FF8C5A;
+  --secondary-dark: #E55A2B;
+  --accent: #FFD23F;
+  --accent-dark: #E6BB00;
+  --ink: #1A1A2E;
+  --ink-light: #16213E;
+  --ink-lighter: #0F3460;
+  --white: #FFFFFF;
+  --sand: #FAFAFA;
+  --grey: #8B95A5;
+  --grey-light: #B8C0CC;
+  --grey-dark: #5D6678;
+  --line: #E8ECF0;
+  --bg: #F5F7FA;
+  --success: #07C160;
+  --warning: #FFB800;
+  --error: #FF4D4F;
+  background: var(--bg);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: var(--ink);
+}
+
+view, text, scroll-view, navigator { box-sizing: border-box; }
+
+/* ── Layout helpers ── */
+.page-wrap { min-height: 100vh; padding-bottom: 40rpx; }
+.row { display: flex; align-items: center; }
+.between { display: flex; align-items: center; justify-content: space-between; }
+.flex1 { flex: 1; }
+.muted { color: var(--grey); }
+.center { text-align: center; }
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(20,30,60,.06);
+}
+
+/* ── Section title ── */
+.sec-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 28rpx 20rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.sec-more { font-size: 22rpx; color: var(--grey); font-weight: 400; }
+
+/* ── Buttons ── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+.btn::after { border: none; }
+.btn-primary  { background: var(--primary);  color: #fff; }
+.btn-secondary { background: var(--secondary); color: #fff; }
+.btn-accent { background: var(--accent); color: var(--ink); }
+.btn-success { background: var(--success); color: #fff; }
+.btn-ghost { background: #fff; color: var(--ink); border: 1rpx solid var(--line); }
+.btn-outline { background: transparent; color: var(--primary); border: 2rpx solid var(--primary); }
+.btn-block { width: 100%; padding: 28rpx 0; }
+.btn-small { padding: 16rpx 24rpx; font-size: 24rpx; }
+
+/* ── Tags ── */
+.tag {
+  display: inline-block;
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.tag-primary  { background: rgba(0,168,150,0.1); color: var(--primary); }
+.tag-secondary { background: rgba(255,107,53,0.1); color: var(--secondary); }
+.tag-accent { background: rgba(255,210,63,0.2); color: var(--accent-dark); }
+.tag-success { background: rgba(7,193,96,0.1); color: var(--success); }
+.tag-blue  { background: rgba(59,130,246,0.1); color: #3B82F6; }
+.tag-mute  { background: #F2F4F8; color: var(--grey); }
+
+/* ── Pill switch ── */
+.pill-switch {
+  display: flex;
+  background: var(--sand);
+  border-radius: 44rpx;
+  padding: 6rpx;
+  margin: 16rpx 28rpx 0;
+}
+.pill {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  border-radius: 38rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--grey);
+}
+.pill.on { background: var(--primary); color: #fff; }
+
+/* ── Price text ── */
+.price { font-size: 32rpx; font-weight: 700; color: var(--secondary); }
+.price-lg { font-size: 38rpx; font-weight: 700; color: var(--secondary); }
+.price-unit { font-size: 20rpx; color: var(--grey); font-weight: 400; }
+
+/* ── Sticky bottom bar ── */
+.sticky-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: #fff;
+  border-top: 1rpx solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 16rpx 28rpx;
+  padding-bottom: calc(16rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  gap: 20rpx;
+  z-index: 50;
+}

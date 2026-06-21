@@ -1,0 +1,148 @@
+<!-- pages/booking/booking.wxml -->
+<view class="page-wrap booking-wrap">
+
+  <!-- Trip summary -->
+  <view class="card bk-trip">
+    <view class="bk-thumb" style="background: {{trip.gradient}};"></view>
+    <view class="flex1">
+      <view class="bk-title">{{trip.shortTitle}} · {{trip.days}}天</view>
+      <view class="bk-meta">{{trip.dateRange}} · {{trip.departCity}}出发</view>
+    </view>
+    <view class="bk-price-wrap">
+      <text class="price">¥{{trip.memberPriceText}}</text>
+      <text class="price-unit">/{{i18n.per}}</text>
+    </view>
+  </view>
+
+  <!-- Booking Type Selector -->
+  <view class="sec-title">{{i18n.bookingType}}</view>
+  <view class="card booking-type">
+    <view class="type-tabs">
+      <view class="type-tab {{bookingType === 'individual' ? 'type-tab-active' : ''}}" bindtap="switchBookingType" data-type="individual">
+        <view class="type-tab-text">{{i18n.individualBooking}}</view>
+      </view>
+      <view class="type-tab {{bookingType === 'company' ? 'type-tab-active' : ''}}" bindtap="switchBookingType" data-type="company">
+        <view class="type-tab-text">{{i18n.companyBooking}}</view>
+      </view>
+    </view>
+
+    <!-- Number of travellers (company only) -->
+    <view wx:if="{{bookingType === 'company'}}" class="traveller-count">
+      <view class="count-label">{{i18n.numTravellers}}</view>
+      <view class="count-control">
+        <view class="count-btn {{travellerCount <= 2 ? 'count-btn-disabled' : ''}}" bindtap="changeCount" data-delta="-1">−</view>
+        <text class="count-value">{{travellerCount}}{{i18n.personUnit}}</text>
+        <view class="count-btn" bindtap="changeCount" data-delta="1">+</view>
+      </view>
+    </view>
+    <view wx:if="{{bookingType === 'company'}}" class="count-hint">{{i18n.minTravellersNote}}</view>
+  </view>
+
+  <!-- Company Info (company only) -->
+  <view wx:if="{{bookingType === 'company'}}" class="sec-title">{{i18n.companyInfo}}</view>
+  <view wx:if="{{bookingType === 'company'}}" class="card form">
+    <view class="form-row">
+      <text class="form-label">{{i18n.company}}</text>
+      <input class="form-input" placeholder="{{i18n.companyPlaceholder}}" value="{{companyInfo.name}}" bindinput="onCompanyInput" data-k="name"/>
+    </view>
+    <view class="form-row">
+      <text class="form-label">{{i18n.contactPerson}}</text>
+      <input class="form-input" placeholder="{{i18n.namePlaceholder}}" value="{{companyInfo.contact}}" bindinput="onCompanyInput" data-k="contact"/>
+    </view>
+    <view class="form-row form-row-last">
+      <text class="form-label">{{i18n.contactPhone}}</text>
+      <input class="form-input" type="number" placeholder="{{i18n.contactPlaceholder}}" value="{{companyInfo.contactPhone}}" bindinput="onCompanyInput" data-k="contactPhone"/>
+    </view>
+  </view>
+
+  <!-- Traveller(s) info -->
+  <view class="sec-title">{{i18n.travellerInfo}}</view>
+
+  <!-- Individual booking: single form -->
+  <view wx:if="{{bookingType === 'individual'}}" class="card form">
+    <view class="form-row">
+      <text class="form-label">{{i18n.name}}</text>
+      <input class="form-input" placeholder="{{i18n.namePlaceholder}}" value="{{travellers[0].name}}" bindinput="onTravellerInput" data-index="0" data-k="name"/>
+    </view>
+    <view class="form-row">
+      <text class="form-label">{{i18n.passport}}</text>
+      <input class="form-input" placeholder="{{i18n.passportPlaceholder}}" value="{{travellers[0].passport}}" bindinput="onTravellerInput" data-index="0" data-k="passport"/>
+    </view>
+    <view class="form-row">
+      <text class="form-label">{{i18n.phone}}</text>
+      <input class="form-input" type="number" placeholder="{{i18n.phonePlaceholder}}" value="{{travellers[0].phone}}" bindinput="onTravellerInput" data-index="0" data-k="phone"/>
+    </view>
+    <view class="form-row form-row-last">
+      <text class="form-label">{{i18n.company}}</text>
+      <input class="form-input" placeholder="{{i18n.companyPlaceholder}}" value="{{travellers[0].company}}" bindinput="onTravellerInput" data-index="0" data-k="company"/>
+    </view>
+  </view>
+
+  <!-- Company booking: multiple traveller forms -->
+  <block wx:if="{{bookingType === 'company'}}">
+    <view class="card traveller-card" wx:for="{{travellers}}" wx:key="index">
+      <view class="traveller-header">
+        <view class="traveller-title">{{i18n.traveller}} {{index + 1}}</view>
+        <view wx:if="{{travellers.length > 2}}" class="traveller-remove" bindtap="removeTraveller" data-index="{{index}}">
+          <text>{{i18n.removeTraveller}}</text>
+        </view>
+      </view>
+      <view class="form-row">
+        <text class="form-label">{{i18n.name}}</text>
+        <input class="form-input" placeholder="{{i18n.namePlaceholder}}" value="{{item.name}}" bindinput="onTravellerInput" data-index="{{index}}" data-k="name"/>
+      </view>
+      <view class="form-row">
+        <text class="form-label">{{i18n.passport}}</text>
+        <input class="form-input" placeholder="{{i18n.passportPlaceholder}}" value="{{item.passport}}" bindinput="onTravellerInput" data-index="{{index}}" data-k="passport"/>
+      </view>
+      <view class="form-row form-row-last">
+        <text class="form-label">{{i18n.phone}}</text>
+        <input class="form-input" type="number" placeholder="{{i18n.phonePlaceholder}}" value="{{item.phone}}" bindinput="onTravellerInput" data-index="{{index}}" data-k="phone"/>
+      </view>
+    </view>
+
+    <!-- Add traveller button -->
+    <view class="add-traveller-btn" bindtap="addTraveller">
+      <text class="add-icon">+</text>
+      <text>{{i18n.addTraveller}}</text>
+    </view>
+  </block>
+
+  <!-- Member badge -->
+  <view class="sec-title">{{i18n.memberStatus}}</view>
+  <view class="card member" wx:if="{{isMember}}">
+    <text class="member-ico"><image class="member-img" src="/images/icon-crown.svg" mode="aspectFit"/></text>
+    <view class="flex1">
+      <view class="member-t">{{i18n.memberActive}}</view>
+      <view class="member-d">{{i18n.memberActiveDesc}}</view>
+    </view>
+    <text class="tag tag-accent">-¥{{savedText}}</text>
+  </view>
+  <view class="card member member-off" wx:else>
+    <text class="member-ico"><image class="member-img" src="/images/icon-unlock.svg" mode="aspectFit"/></text>
+    <view class="flex1">
+      <view class="member-t">{{i18n.memberInactive}}</view>
+      <view class="member-d">{{i18n.memberInactiveDesc}}</view>
+    </view>
+    <view class="btn btn-primary member-btn">{{i18n.activate}}</view>
+  </view>
+
+  <!-- Deposit note -->
+  <view class="sec-title">{{i18n.depositInfo}}</view>
+  <view class="card deposit-note">
+    <text>{{i18n.depositNote}}</text>
+  </view>
+
+  <view class="detail-pad"></view>
+
+  <!-- Pay bar -->
+  <view class="sticky-bar">
+    <view class="flex1">
+      <view class="pay-label">{{bookingType === 'company' ? i18n.totalDeposit : i18n.deposit}}</view>
+      <view class="price-lg">¥{{totalDepositText}}</view>
+      <view wx:if="{{bookingType === 'company'}}" class="per-person">{{i18n.perPersonDeposit}} ¥{{trip.depositText}} × {{travellerCount}}</view>
+    </view>
+    <view class="btn btn-green pay-btn" bindtap="payDeposit">{{i18n.wechatPay}}</view>
+  </view>
+
+</view>

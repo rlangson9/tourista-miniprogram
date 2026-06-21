@@ -1,0 +1,339 @@
+<!-- pages/trip-detail/trip-detail.wxml -->
+<view class="page-wrap detail-wrap">
+
+  <!-- Hero -->
+  <view class="detail-hero" style="background: {{trip.gradient}};">
+    <text class="tag hero-flag">{{trip.flag}} {{trip.country}} · {{trip.days}}{{i18n.days}}{{trip.nights}}{{i18n.nights}}</text>
+    <view class="detail-title">{{trip.shortTitle}}</view>
+    <view class="detail-lead">{{trip.dateRange}} · {{trip.lead}}</view>
+  </view>
+
+  <!-- Itinerary timeline -->
+  <view class="sec-title">{{i18n.itinerary}}</view>
+  <view class="timeline">
+    <view class="t-line"></view>
+    <view class="t-item" wx:for="{{trip.itinerary}}" wx:key="day">
+      <view class="t-node {{item.leisure?'t-node-leisure':''}}">{{item.day}}</view>
+      <view class="t-card card {{item.vip?'t-vip':''}} {{item.leisure?'t-leisure':''}} {{expandedDay === item.day ? 't-expanded' : ''}}"
+            bindtap="toggleDay" data-day="{{item.day}}">
+        <view class="t-card-header">
+          <view class="t-card-title-wrap">
+            <view class="t-card-title {{item.leisure?'t-leisure-title':''}}">
+              <block wx:if="{{item.vip}}"><image class="t-vip-img" src="/images/icon-briefcase.svg" mode="aspectFit"/> </block>{{item.title}}
+              <text wx:if="{{item.vip}}" class="tag tag-accent t-vip-tag">{{i18n.vipReception}}</text>
+            </view>
+            <view class="t-card-desc {{item.leisure?'t-leisure-desc':''}}">{{item.desc}}</view>
+          </view>
+          <view class="t-expand-btn">
+            <text class="t-expand-icon {{expandedDay === item.day ? 't-expand-rotated' : ''}}">›</text>
+          </view>
+        </view>
+
+        <!-- Expanded Day Details -->
+        <view wx:if="{{expandedDay === item.day}}" class="t-day-details" catchtap="stopPropagation">
+
+          <!-- Time Schedule -->
+          <view wx:if="{{item.schedule && item.schedule.length > 0}}" class="day-section">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-clock.svg" mode="aspectFit"/>
+              <text>{{i18n.dailySchedule}}</text>
+            </view>
+            <view class="schedule-list">
+              <view class="schedule-item" wx:for="{{item.schedule}}" wx:for-item="sch" wx:key="time">
+                <view class="schedule-time">{{sch.time}}</view>
+                <view class="schedule-content">
+                  <view class="schedule-title">{{sch.title}}</view>
+                  <view wx:if="{{sch.desc}}" class="schedule-desc">{{sch.desc}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- Business Meetings -->
+          <view wx:if="{{item.meetings && item.meetings.length > 0}}" class="day-section">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-handshake.svg" mode="aspectFit"/>
+              <text>{{i18n.businessMeetings}}</text>
+            </view>
+            <view class="meeting-list">
+              <view class="meeting-card" wx:for="{{item.meetings}}" wx:for-item="mtg" wx:key="company">
+                <view class="meeting-header">
+                  <view class="meeting-company">{{mtg.company}}</view>
+                  <view wx:if="{{mtg.type}}" class="meeting-type tag {{mtg.type === 'government' ? 'tag-gov' : mtg.type === 'business' ? 'tag-biz' : 'tag-other'}}">
+                    {{mtg.type === 'government' ? i18n.govMeeting : mtg.type === 'business' ? i18n.bizMeeting : i18n.otherMeeting}}
+                  </view>
+                </view>
+                <view wx:if="{{mtg.attendees}}" class="meeting-detail">
+                  <text class="meeting-label">{{i18n.attendees}}:</text>
+                  <text class="meeting-value">{{mtg.attendees}}</text>
+                </view>
+                <view wx:if="{{mtg.purpose}}" class="meeting-detail">
+                  <text class="meeting-label">{{i18n.purpose}}:</text>
+                  <text class="meeting-value">{{mtg.purpose}}</text>
+                </view>
+                <view wx:if="{{mtg.agenda}}" class="meeting-detail">
+                  <text class="meeting-label">{{i18n.agenda}}:</text>
+                  <text class="meeting-value">{{mtg.agenda}}</text>
+                </view>
+                <view wx:if="{{mtg.outcome}}" class="meeting-detail meeting-outcome">
+                  <text class="meeting-label">{{i18n.expectedOutcome}}:</text>
+                  <text class="meeting-value">{{mtg.outcome}}</text>
+                </view>
+                <view wx:if="{{mtg.preparation}}" class="meeting-prep">
+                  <text class="meeting-prep-title">📋 {{i18n.preparation}}</text>
+                  <text class="meeting-prep-text">{{mtg.preparation}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- Activities -->
+          <view wx:if="{{item.activities && item.activities.length > 0}}" class="day-section">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-activity.svg" mode="aspectFit"/>
+              <text>{{i18n.activities}}</text>
+            </view>
+            <view class="activity-list">
+              <view class="activity-item" wx:for="{{item.activities}}" wx:for-item="act" wx:key="title">
+                <view class="activity-icon-wrap">
+                  <image class="activity-icon" src="{{act.icon || '/images/icon-star.svg'}}" mode="aspectFit"/>
+                </view>
+                <view class="activity-content">
+                  <view class="activity-title">{{act.title}}</view>
+                  <view wx:if="{{act.desc}}" class="activity-desc">{{act.desc}}</view>
+                  <view wx:if="{{act.duration || act.location}}" class="activity-meta">
+                    <text wx:if="{{act.duration}}">⏱ {{act.duration}}</text>
+                    <text wx:if="{{act.location}}">📍 {{act.location}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- Meals -->
+          <view wx:if="{{item.meals && item.meals.length > 0}}" class="day-section">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-meal.svg" mode="aspectFit"/>
+              <text>{{i18n.meals}}</text>
+            </view>
+            <view class="meal-list">
+              <view class="meal-item" wx:for="{{item.meals}}" wx:for-item="meal" wx:key="type">
+                <view class="meal-type">{{meal.type}}</view>
+                <view class="meal-content">
+                  <view class="meal-venue">{{meal.venue}}</view>
+                  <view wx:if="{{meal.cuisine}}" class="meal-cuisine">{{meal.cuisine}}</view>
+                  <view wx:if="{{meal.notes}}" class="meal-notes">{{meal.notes}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- Accommodation -->
+          <view wx:if="{{item.accommodation}}" class="day-section">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-hotel.svg" mode="aspectFit"/>
+              <text>{{i18n.accommodation}}</text>
+            </view>
+            <view class="accommodation-card">
+              <view class="hotel-name">{{item.accommodation.hotel}}</view>
+              <view wx:if="{{item.accommodation.rating}}" class="hotel-rating">
+                <text wx:for="{{item.accommodation.rating}}" wx:key="index">⭐</text>
+              </view>
+              <view wx:if="{{item.accommodation.roomType}}" class="hotel-detail">
+                <text class="hotel-label">{{i18n.roomType}}:</text>
+                <text class="hotel-value">{{item.accommodation.roomType}}</text>
+              </view>
+              <view wx:if="{{item.accommodation.amenities}}" class="hotel-amenities">
+                <text class="hotel-label">{{i18n.amenities}}:</text>
+                <text class="hotel-value">{{item.accommodation.amenities}}</text>
+              </view>
+              <view wx:if="{{item.accommodation.address}}" class="hotel-address">
+                📍 {{item.accommodation.address}}
+              </view>
+            </view>
+          </view>
+
+          <!-- Transport -->
+          <view wx:if="{{item.transport && item.transport.length > 0}}" class="day-section">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-car.svg" mode="aspectFit"/>
+              <text>{{i18n.transport}}</text>
+            </view>
+            <view class="transport-list">
+              <view class="transport-item" wx:for="{{item.transport}}" wx:for-item="tr" wx:key="type">
+                <view class="transport-type">{{tr.type}}</view>
+                <view class="transport-detail">{{tr.detail}}</view>
+              </view>
+            </view>
+          </view>
+
+          <!-- Tips/Notes -->
+          <view wx:if="{{item.tips}}" class="day-section day-tips">
+            <view class="day-section-title">
+              <image class="day-section-icon" src="/images/icon-tip.svg" mode="aspectFit"/>
+              <text>{{i18n.tips}}</text>
+            </view>
+            <view class="tips-content">{{item.tips}}</view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Includes -->
+  <view class="sec-title">{{i18n.includes}}</view>
+  <view class="card includes">
+    <view class="inc-row" wx:for="{{trip.includes}}" wx:key="*this">
+      <text class="inc-check"><image class="inc-check-img" src="/images/icon-check.svg" mode="aspectFit"/></text><text class="inc-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- Reviews Section -->
+  <view class="sec-title">
+    <text>{{i18n.reviews}}</text>
+    <text class="review-count">({{reviewCount}})</text>
+    <view wx:if="{{avgRating}}" class="review-rating">
+      <text wx:for="5" wx:key="index" class="star {{index < avgRatingNum ? 'star-active' : ''}}">★</text>
+      <text class="rating-num">{{avgRating}}</text>
+    </view>
+  </view>
+
+  <!-- Write Review Button -->
+  <view class="card review-write" bindtap="openWriteReview">
+    <image class="review-write-avatar" src="/images/icon-user.svg" mode="aspectFit"/>
+    <view class="review-write-content">
+      <view class="review-write-title">{{i18n.writeReview}}</view>
+      <view class="review-write-hint">{{i18n.shareExperience}}</view>
+    </view>
+    <view class="review-write-arrow">→</view>
+  </view>
+
+  <!-- Reviews List -->
+  <block wx:if="{{reviews.length > 0}}">
+    <view class="review-item card" wx:for="{{reviews}}" wx:key="id">
+      <view class="review-header">
+        <image class="review-avatar" src="/images/icon-user.svg" mode="aspectFit"/>
+        <view class="review-info">
+          <view class="review-name">{{item.userName}}</view>
+          <view class="review-meta">
+            <text wx:for="5" wx:key="index" class="star {{index < item.rating ? 'star-active' : ''}}">★</text>
+            <text class="review-date">{{item.createdAt}}</text>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{item.title}}" class="review-title">{{item.title}}</view>
+      <view class="review-content">{{item.content}}</view>
+
+      <!-- Review Media -->
+      <view wx:if="{{item.media && item.media.length > 0}}" class="review-media">
+        <view class="media-grid">
+          <view wx:for="{{item.media}}" wx:key="index" class="media-item" bindtap="previewImage" data-url="{{item.url}}">
+            <image class="media-img" src="{{item.url}}" mode="aspectFill"/>
+            <text wx:if="{{item.type === 'video'}}" class="media-video-badge">▶</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Review Actions -->
+      <view class="review-actions">
+        <view class="action-item" bindtap="toggleLike" data-id="{{item.id}}">
+          <text class="action-icon">{{item.liked ? '❤️' : '🤍'}}</text>
+          <text class="action-text">{{item.likes}} {{i18n.like}}</text>
+        </view>
+        <view class="action-item" bindtap="openComments" data-id="{{item.id}}">
+          <text class="action-icon">💬</text>
+          <text class="action-text">{{item.comments.length}} {{i18n.comments}}</text>
+        </view>
+        <view class="action-item" bindtap="shareReview" data-id="{{item.id}}">
+          <text class="action-icon">📤</text>
+          <text class="action-text">{{i18n.share}}</text>
+        </view>
+      </view>
+
+      <!-- Comments -->
+      <view wx:if="{{item.showComments && item.comments.length > 0}}" class="review-comments">
+        <view class="comment-item" wx:for="{{item.comments}}" wx:key="id">
+          <image class="comment-avatar" src="/images/icon-user.svg" mode="aspectFit"/>
+          <view class="comment-content">
+            <view class="comment-header">
+              <text class="comment-name">{{item.userName}}</text>
+              <text class="comment-date">{{item.createdAt}}</text>
+            </view>
+            <view class="comment-text">{{item.content}}</view>
+          </view>
+        </view>
+        <view class="comment-input-wrap">
+          <input class="comment-input" placeholder="{{i18n.commentPlaceholder}}" value="{{commentInput}}" bindinput="onCommentInput"/>
+          <view class="btn btn-small btn-primary" bindtap="submitComment" data-reviewid="{{item.id}}">{{i18n.submit}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="card empty-reviews">
+    <view class="empty-icon"><image src="/images/icon-lightbulb.svg" mode="aspectFit"/></view>
+    <view class="empty-text">{{i18n.noReviews}}</view>
+    <view class="empty-hint">{{i18n.beFirstReview}}</view>
+  </view>
+
+  <view class="detail-pad"></view>
+
+  <!-- Sticky booking bar -->
+  <view class="sticky-bar">
+    <view class="flex1">
+      <view><text class="price-lg">¥{{trip.memberPriceText}}</text><text class="price-unit"> {{i18n.per}}</text></view>
+      <view class="bar-sub">{{i18n.normalPrice}} ¥{{trip.normalPriceText}} · {{trip.seatTag}}</view>
+    </view>
+    <view class="btn btn-ghost bar-btn" bindtap="contactAdvisor">{{i18n.consultAdvisor}}</view>
+    <view class="btn btn-primary bar-btn-main" bindtap="goBooking">{{i18n.bookNow}}</view>
+  </view>
+
+  <!-- Write Review Modal -->
+  <view wx:if="{{showWriteReview}}" class="modal-overlay" bindtap="closeWriteReview">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">{{i18n.writeReview}}</text>
+        <view class="modal-close" bindtap="closeWriteReview">×</view>
+      </view>
+      <view class="modal-body">
+        <view class="review-form">
+          <view class="form-item">
+            <text class="form-label">{{i18n.rating}}</text>
+            <view class="rating-stars">
+              <text wx:for="5" wx:key="index"
+                class="star {{index < newReview.rating ? 'star-active' : 'star-inactive'}}"
+                bindtap="setRating" data-rating="{{index + 1}}">★</text>
+            </view>
+          </view>
+          <view class="form-item">
+            <input class="form-input" placeholder="{{i18n.titlePlaceholder}}"
+              value="{{newReview.title}}" bindinput="onReviewInput" data-field="title"/>
+          </view>
+          <view class="form-item">
+            <textarea class="form-textarea" placeholder="{{i18n.contentPlaceholder}}"
+              value="{{newReview.content}}" bindinput="onReviewInput" data-field="content"/>
+          </view>
+          <view class="form-item">
+            <text class="form-label">{{i18n.uploadMedia}}</text>
+            <view class="upload-area" bindtap="uploadMedia">
+              <image class="upload-icon" src="/images/icon-camera.svg" mode="aspectFit"/>
+              <text class="upload-text">{{i18n.uploadMedia}}</text>
+            </view>
+            <view wx:if="{{newReview.media.length > 0}}" class="upload-preview">
+              <view wx:for="{{newReview.media}}" wx:key="index" class="preview-item">
+                <image class="preview-img" src="{{item.url}}" mode="aspectFill"/>
+                <view class="preview-remove" bindtap="removeMedia" data-index="{{index}}">×</view>
+                <text wx:if="{{item.type === 'video'}}" class="preview-video-badge">▶</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn btn-primary btn-block" bindtap="submitReview">{{i18n.submit}}</view>
+      </view>
+    </view>
+  </view>
+
+</view>

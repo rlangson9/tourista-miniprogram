@@ -1,0 +1,30 @@
+/* pages/business/business.wxss */
+.biz-hero {
+  background: linear-gradient(150deg, #1A2233, #27405C);
+  color: #fff;
+  padding: 30rpx 32rpx 36rpx;
+}
+.biz-hero-title { font-size: 38rpx; font-weight: 700; line-height: 1.35; white-space: pre-line; }
+.biz-hero-sub { font-size: 20rpx; opacity: .7; margin-top: 10rpx; }
+
+.biz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; margin: 0 28rpx; }
+.biz-type { padding: 22rpx; }
+.biz-type-ico {
+  width: 60rpx; height: 60rpx; border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center;
+}
+.biz-type-img { width: 36rpx; height: 36rpx; }
+.biz-type-t { font-size: 24rpx; font-weight: 700; margin-top: 12rpx; }
+.biz-type-d { font-size: 19rpx; color: var(--grey); line-height: 1.5; margin-top: 4rpx; }
+
+.flow { margin: 0 28rpx; padding: 22rpx 24rpx; }
+.flow-row { display: flex; align-items: center; gap: 16rpx; }
+.flow-n {
+  width: 36rpx; height: 36rpx; border-radius: 50%; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20rpx; font-weight: 700; flex-shrink: 0;
+}
+.flow-text { font-size: 21rpx; color: #555; }
+.flow-line { width: 4rpx; height: 16rpx; background: var(--line); margin-left: 16rpx; }
+
+.biz-cta { margin: 24rpx 28rpx; }

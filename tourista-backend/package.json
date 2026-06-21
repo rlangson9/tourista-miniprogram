@@ -1,0 +1,26 @@
+{
+  "name": "tourista-backend",
+  "version": "1.0.0",
+  "description": "Tourista AR — backend API + admin dashboard (trips, orders, partner leads, notifications)",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/db/seed.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.2.0",
+    "sanitize-filename": "^1.6.4"
+  }
+}

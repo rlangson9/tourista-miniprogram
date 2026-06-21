@@ -1,0 +1,36 @@
+<!-- pages/business/business.wxml -->
+<view class="page-wrap">
+
+  <!-- Hero -->
+  <view class="biz-hero">
+    <view class="biz-hero-title">{{i18n.heroTitle}}</view>
+    <view class="biz-hero-sub">{{i18n.heroSub}}</view>
+  </view>
+
+  <!-- Partnership types -->
+  <view class="sec-title">{{i18n.cooperationModes}}</view>
+  <view class="biz-grid">
+    <view class="card biz-type" wx:for="{{types}}" wx:key="title">
+      <view class="biz-type-ico" style="background: {{item.bg}};"><image class="biz-type-img" src="{{item.icon}}" mode="aspectFit"/></view>
+      <view class="biz-type-t">{{item.title}}</view>
+      <view class="biz-type-d">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <!-- How it works -->
+  <view class="sec-title">{{i18n.process}}</view>
+  <view class="card flow">
+    <block wx:for="{{steps}}" wx:key="n">
+      <view class="flow-row">
+        <view class="flow-n" style="background: {{item.color}};">{{item.n}}</view>
+        <text class="flow-text">{{item.text}}</text>
+      </view>
+      <view wx:if="{{index < steps.length - 1}}" class="flow-line"></view>
+    </block>
+  </view>
+
+  <view class="biz-cta">
+    <view class="btn btn-primary btn-block" bindtap="goForm">{{i18n.submitIntent}}</view>
+  </view>
+
+</view>

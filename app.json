@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/trips/trips",
+    "pages/trip-detail/trip-detail",
+    "pages/booking/booking",
+    "pages/business/business",
+    "pages/partner-form/partner-form",
+    "pages/orders/orders",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundColor": "#F5F7FA",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1A1A2E",
+    "navigationBarTitleText": "Tourista AR",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#8B95A5",
+    "selectedColor": "#00A896",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/trips/trips",
+        "text": "非洲之旅",
+        "iconPath": "images/trips.png",
+        "selectedIconPath": "images/trips-active.png"
+      },
+      {
+        "pagePath": "pages/business/business",
+        "text": "商务合作",
+        "iconPath": "images/business.png",
+        "selectedIconPath": "images/business-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

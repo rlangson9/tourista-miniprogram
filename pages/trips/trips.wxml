@@ -1,0 +1,87 @@
+<!-- pages/trips/trips.wxml -->
+<view class="page-wrap">
+
+  <view class="pill-switch">
+    <view class="pill {{tab===0?'on':''}}" bindtap="switchTab" data-i="0">{{i18n.scheduled}}</view>
+    <view class="pill {{tab===1?'on':''}}" bindtap="switchTab" data-i="1">{{i18n.custom}}</view>
+    <view class="pill {{tab===2?'on':''}}" bindtap="switchTab" data-i="2">{{i18n.past}}</view>
+  </view>
+
+  <!-- Tab 0: scheduled trips -->
+  <block wx:if="{{tab===0}}">
+    <view class="card trip" wx:for="{{trips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
+      <view class="trip-banner" style="background: {{item.gradient}};">
+        <text class="tag tag-primary">{{item.flag}} {{item.country}}</text>
+        <view class="trip-title">{{item.title}}</view>
+      </view>
+      <view class="trip-body">
+        <view class="trip-tags">
+          <text class="tag tag-secondary" wx:for="{{item.highlights}}" wx:for-item="h" wx:key="*this">{{h}}</text>
+        </view>
+        <view class="trip-summary">{{item.summary}} · {{item.structure}}</view>
+        <view class="trip-foot">
+          <view>
+            <text class="price">¥{{item.memberPriceText}}</text>
+            <text class="price-unit"> {{i18n.memberPrice}} · {{item.departShort}}</text>
+          </view>
+          <text class="tag {{item.statusTag}}">{{item.seatTag}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- Tab 1: custom -->
+  <block wx:if="{{tab===1}}">
+    <view class="empty card">
+      <view class="empty-ico"><image class="empty-img" src="/images/icon-map.svg" mode="aspectFit"/></view>
+      <view class="empty-t">{{i18n.customTitle}}</view>
+      <view class="empty-d">{{i18n.customDesc}}</view>
+      <view class="btn btn-primary empty-btn" bindtap="contactAdvisor">{{i18n.contactAdvisor}}</view>
+    </view>
+  </block>
+
+  <!-- Tab 2: past trips -->
+  <block wx:if="{{tab===2}}">
+    <view class="past card" wx:for="{{past}}" wx:key="title">
+      <view class="past-thumb" style="background: {{item.gradient}};">{{item.flag}}</view>
+      <view class="past-info">
+        <view class="past-t">{{item.title}}</view>
+        <view class="past-d">{{item.date}} · {{item.pax}}{{i18n.participants}}</view>
+        <view class="past-tags">
+          <text class="tag tag-mute">{{item.outcome}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- Custom Contact Modal -->
+  <view wx:if="{{showContactModal}}" class="modal-overlay" bindtap="closeModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">{{i18n.modalTitle}}</text>
+        <view class="modal-close" bindtap="closeModal">×</view>
+      </view>
+      <view class="modal-body">
+        <view class="contact-info">
+          <view class="contact-item">
+            <text class="contact-label">{{i18n.phoneLabel}}</text>
+            <text class="contact-value">13122312118 / 18916762817</text>
+          </view>
+          <view class="contact-item">
+            <text class="contact-label">{{i18n.emailLabel}}</text>
+            <text class="contact-value">rlangson91@touristaar.com</text>
+          </view>
+        </view>
+        <view class="qr-section">
+          <text class="qr-title">{{i18n.qrTitle}}</text>
+          <image class="qr-code" src="/QR%20code.jpg" mode="widthFix" />
+          <text class="qr-desc">{{i18n.qrDesc}}</text>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <view class="btn btn-primary btn-block" bindtap="copyWechat">{{i18n.copyWechat}}</view>
+      </view>
+    </view>
+  </view>
+
+</view>
