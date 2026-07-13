@@ -1,7 +1,7 @@
 // src/routes/public.js
 const express = require("express");
 const router = express.Router();
-const { Trips, Orders, Partners, Reviews, Opportunities, Inquiries } = require("../db/models.js");
+const { Trips, Orders, Partners, Reviews, SuccessStories, Opportunities, Inquiries } = require("../db/models.js");
 const wechat = require("../services/wechat.js");
 const { validatePhone } = require("../middleware/security.js");
 
@@ -100,6 +100,26 @@ router.post("/send-code", (req, res) => {
   } else {
     res.json({ success: true, message: "验证码已发送", debugCode: code });
   }
+});
+
+// ── User profile (called by mini program after login) ──────────────────────
+router.get("/user/profile", (req, res) => {
+  const openid = req.headers["x-openid"] || req.query.openid;
+  if (!openid) return res.status(400).json({ error: "缺少 openid" });
+
+  const user = {
+    openid,
+    name: "User",
+    nameEn: "User",
+    isMember: false,
+    isVerifiedCompany: false,
+    company: "",
+    companyEn: "",
+    memberSaved: 0
+  };
+  const orders = Orders.byOpenid(openid);
+  const applications = Partners.byOpenid(openid);
+  res.json({ user, orders, applications });
 });
 
 // ── Booking: create order ──────────────────────────────────────────────────

@@ -1,6 +1,14 @@
 <!-- pages/trips/trips.wxml -->
 <view class="page-wrap">
 
+  <!-- Chips filter row -->
+  <scroll-view class="chips-row" scroll-x>
+    <view class="pill {{countryFilter === 'all' ? 'pill-active' : ''}}" bindtap="setCountryFilter" data-filter="all">All</view>
+    <view class="pill {{countryFilter === 'zimbabwe' ? 'pill-active' : ''}}" bindtap="setCountryFilter" data-filter="zimbabwe">Zimbabwe</view>
+    <view class="pill {{countryFilter === 'southafrica' ? 'pill-active' : ''}}" bindtap="setCountryFilter" data-filter="southafrica">South Africa</view>
+    <view class="pill {{countryFilter === 'dual' ? 'pill-active' : ''}}" bindtap="setCountryFilter" data-filter="dual">Dual-country</view>
+  </scroll-view>
+
   <view class="pill-switch">
     <view class="pill {{tab===0?'on':''}}" bindtap="switchTab" data-i="0">{{i18n.scheduled}}</view>
     <view class="pill {{tab===1?'on':''}}" bindtap="switchTab" data-i="1">{{i18n.custom}}</view>
@@ -9,22 +17,30 @@
 
   <!-- Tab 0: scheduled trips -->
   <block wx:if="{{tab===0}}">
-    <view class="card trip" wx:for="{{trips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
+    <view class="card trip" wx:for="{{filteredTrips || trips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
       <view class="trip-banner" style="background: {{item.gradient}};">
-        <text class="tag tag-primary">{{item.flag}} {{item.country}}</text>
-        <view class="trip-title">{{item.title}}</view>
+        <view wx:if="{{item.ar}}" class="badge-ar">
+          <image class="badge-ar-ico" src="/images/icon-fire.svg" mode="aspectFit"/>
+          <text>AR inspect</text>
+        </view>
+        <view class="price-tag">
+          <text class="price-unit">from </text>
+          <text class="price">¥{{item.memberPriceText}}</text>
+        </view>
       </view>
       <view class="trip-body">
-        <view class="trip-tags">
-          <text class="tag tag-secondary" wx:for="{{item.highlights}}" wx:for-item="h" wx:key="*this">{{h}}</text>
+        <view class="trip-loc">
+          <image class="trip-loc-ico" src="/images/icon-map.svg" mode="aspectFit"/>
+          <text>{{item.country}} · {{item.days}} days</text>
         </view>
-        <view class="trip-summary">{{item.summary}} · {{item.structure}}</view>
+        <view class="trip-title">{{item.title}}</view>
         <view class="trip-foot">
-          <view>
-            <text class="price">¥{{item.memberPriceText}}</text>
-            <text class="price-unit"> {{i18n.memberPrice}} · {{item.departShort}}</text>
+          <view class="rating">
+            <image class="rating-ico" src="/images/icon-star.svg" mode="aspectFit"/>
+            <text class="rating-num">{{item.rating || '4.9'}}</text>
+            <text class="rating-count">· {{item.participants || 32}} joined</text>
           </view>
-          <text class="tag {{item.statusTag}}">{{item.seatTag}}</text>
+          <view class="book-btn">Details</view>
         </view>
       </view>
     </view>

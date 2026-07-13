@@ -3,6 +3,7 @@
 
   <!-- Profile header -->
   <view class="pr-hero">
+    <view class="grid-lines"></view>
     <view class="pr-avatar"><image class="pr-avatar-ico" src="/images/icon-user.svg" mode="aspectFit"/></view>
     <view class="flex1">
       <view class="pr-name">

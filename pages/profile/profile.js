@@ -142,7 +142,7 @@ Page({
       success: (res) => {
         if (res.code) {
           wx.request({
-            url: `${app.globalData.baseUrl}/api/auth/login`,
+            url: `${app.globalData.baseUrl}/api/login`,
             method: 'POST',
             data: { code: res.code, type: 'wechat' },
             success: (loginRes) => {
@@ -202,19 +202,28 @@ Page({
     this.setData({ code: e.detail.value });
   },
 
+  isValidPhone(phone) {
+    if (!phone) return false;
+    const cleaned = phone.replace(/\D/g, '');
+    return /^1[3-9]\d{9}$/.test(cleaned);
+  },
+
   sendCode() {
     const { phone } = this.data;
     const lang = app.getLang();
     
-    if (!phone || phone.length !== 11) {
-      wx.showToast({ title: lang === 'zh' ? '请输入正确的手机号' : 'Enter valid phone', icon: 'none' });
+    if (!this.isValidPhone(phone)) {
+      wx.showToast({
+        title: lang === 'zh' ? '请输入正确的中国手机号（1开头，11位）' : 'Enter valid CN phone (starts with 1, 11 digits)',
+        icon: 'none'
+      });
       return;
     }
 
     wx.showLoading({ title: lang === 'zh' ? '发送验证码...' : 'Sending code...' });
     
     wx.request({
-      url: `${app.globalData.baseUrl}/api/auth/send-code`,
+      url: `${app.globalData.baseUrl}/api/send-code`,
       method: 'POST',
       data: { phone },
       success: () => {
@@ -234,8 +243,11 @@ Page({
     const { phone, code } = this.data;
     const lang = app.getLang();
     
-    if (!phone || phone.length !== 11) {
-      wx.showToast({ title: lang === 'zh' ? '请输入手机号' : 'Enter phone', icon: 'none' });
+    if (!this.isValidPhone(phone)) {
+      wx.showToast({
+        title: lang === 'zh' ? '请输入正确的中国手机号（1开头，11位）' : 'Enter valid CN phone (starts with 1, 11 digits)',
+        icon: 'none'
+      });
       return;
     }
     if (!code || code.length < 4) {
@@ -246,7 +258,7 @@ Page({
     wx.showLoading({ title: lang === 'zh' ? '登录中...' : 'Logging in...' });
     
     wx.request({
-      url: `${app.globalData.baseUrl}/api/auth/login`,
+      url: `${app.globalData.baseUrl}/api/login`,
       method: 'POST',
       data: { phone, code, type: 'phone' },
       success: (res) => {

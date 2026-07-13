@@ -70,13 +70,20 @@ Page({
   loadData() {
     const f = data.getTrip("zw");
     const lang = app.getLang();
+    const trips = data.getTrips();
+    const featuredTrips = trips.slice(0, 2).map(t => ({
+      ...t,
+      memberPriceText: t.memberPrice.toLocaleString()
+    }));
+    
     this.setData({
       featured: Object.assign({}, f, {
         memberPriceText: f.memberPrice.toLocaleString()
       }),
       featuredTitle: lang === 'en' 
         ? `Zimbabwe Business Tour · ${f.days} Days`
-        : f.title
+        : f.title,
+      featuredTrips
     });
   },
 

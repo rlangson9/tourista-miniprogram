@@ -1,9 +1,9 @@
 <!-- pages/orders/orders.wxml -->
 <view class="page-wrap">
 
-  <view class="pill-switch">
-    <view class="pill {{tab===0?'on':''}}" bindtap="switchTab" data-i="0">考察团</view>
-    <view class="pill {{tab===1?'on':''}}" bindtap="switchTab" data-i="1">合作申请</view>
+  <view class="ordertab">
+    <view class="ot {{tab===0?'active':''}}" bindtap="switchTab" data-i="0">考察团</view>
+    <view class="ot {{tab===1?'active':''}}" bindtap="switchTab" data-i="1">合作申请</view>
   </view>
 
   <!-- Trip orders -->

@@ -5,8 +5,8 @@
   <view class="card bk-trip">
     <view class="bk-thumb" style="background: {{trip.gradient}};"></view>
     <view class="flex1">
-      <view class="bk-title">{{trip.shortTitle}} · {{trip.days}}天</view>
-      <view class="bk-meta">{{trip.dateRange}} · {{trip.departCity}}出发</view>
+      <view class="bk-title">{{trip.shortTitle}} · {{trip.days}} days</view>
+      <view class="bk-meta">{{trip.dateRange}} · {{trip.departCity}}</view>
     </view>
     <view class="bk-price-wrap">
       <text class="price">¥{{trip.memberPriceText}}</text>
@@ -14,17 +14,11 @@
     </view>
   </view>
 
-  <!-- Booking Type Selector -->
-  <view class="sec-title">{{i18n.bookingType}}</view>
-  <view class="card booking-type">
-    <view class="type-tabs">
-      <view class="type-tab {{bookingType === 'individual' ? 'type-tab-active' : ''}}" bindtap="switchBookingType" data-type="individual">
-        <view class="type-tab-text">{{i18n.individualBooking}}</view>
-      </view>
-      <view class="type-tab {{bookingType === 'company' ? 'type-tab-active' : ''}}" bindtap="switchBookingType" data-type="company">
-        <view class="type-tab-text">{{i18n.companyBooking}}</view>
-      </view>
-    </view>
+  <!-- Segment control -->
+  <view class="segment">
+    <view class="sg {{bookingType === 'individual' ? 'active' : ''}}" bindtap="switchBookingType" data-type="individual">{{i18n.individualBooking}}</view>
+    <view class="sg {{bookingType === 'company' ? 'active' : ''}}" bindtap="switchBookingType" data-type="company">{{i18n.companyBooking}}</view>
+  </view>
 
     <!-- Number of travellers (company only) -->
     <view wx:if="{{bookingType === 'company'}}" class="traveller-count">

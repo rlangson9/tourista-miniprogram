@@ -2,6 +2,7 @@ const i18n = require('./utils/i18n.js');
 
 App({
   globalData: {
+    baseUrl: 'http://localhost:3000',
     lang: 'zh',
     // Logged-in user
     user: { loggedIn: false, name: '', nameEn: '', avatar: '', isMember: false, isVerifiedCompany: false, company: '', companyEn: '', memberSaved: 0 },

@@ -79,9 +79,9 @@ async function login() {
   errEl.textContent = "";
   if (!username || !password) { errEl.textContent = "请输入用户名和密码"; return; }
   try {
-    const { token, admin } = await api("POST", "/admin/api/login", { username, password });
-    TOKEN = token;
-    localStorage.setItem("tourista_admin_token", token);
+    const { accessToken, admin } = await api("POST", "/admin/api/login", { username, password });
+    TOKEN = accessToken;
+    localStorage.setItem("tourista_admin_token", accessToken);
     localStorage.setItem("tourista_admin_user", JSON.stringify(admin));
     showApp(admin);
   } catch (e) {

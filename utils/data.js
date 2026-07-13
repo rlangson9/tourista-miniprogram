@@ -22,7 +22,7 @@ const TRIPS = [
     structureEn: "4 Business Days + 1 Leisure Day",
     lead: "全程领导接待 · 津籍合伙人赵蓝狮带队",
     leadEn: "Full leadership reception · Led by Zimbabwe partner Zhao Lanshi",
-    gradient: "#1d0cd8ff",
+    gradient: "#d85a0cff",
     memberPrice: 28000,
     normalPrice: 38000,
     deposit: 8000,

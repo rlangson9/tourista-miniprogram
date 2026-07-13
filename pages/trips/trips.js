@@ -7,9 +7,11 @@ Page({
   data: {
     tab: 0,
     trips: [],
+    filteredTrips: [],
     past: [],
     i18n: {},
-    showContactModal: false
+    showContactModal: false,
+    countryFilter: 'all'
   },
 
   onLoad() {
@@ -50,6 +52,27 @@ Page({
       return localized;
     });
     this.setData({ trips });
+    this.applyCountryFilter();
+  },
+
+  setCountryFilter(e) {
+    const filter = e.currentTarget.dataset.filter;
+    this.setData({ countryFilter: filter });
+    this.applyCountryFilter();
+  },
+
+  applyCountryFilter() {
+    const { trips, countryFilter } = this.data;
+    let filteredTrips = trips;
+    if (countryFilter !== 'all') {
+      filteredTrips = trips.filter(trip => {
+        if (countryFilter === 'zimbabwe') return trip.countryEn === 'Zimbabwe';
+        if (countryFilter === 'southafrica') return trip.countryEn === 'South Africa';
+        if (countryFilter === 'dual') return trip.countryEn.includes('+');
+        return true;
+      });
+    }
+    this.setData({ filteredTrips });
   },
 
   switchTab(e) {

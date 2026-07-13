@@ -1,87 +1,247 @@
 /* pages/booking/booking.wxss */
-.booking-wrap { padding-bottom: 180rpx; }
+.booking-wrap { padding-bottom: 200rpx; }
 
-.bk-trip { margin: 20rpx 28rpx 0; padding: 22rpx 24rpx; display: flex; align-items: center; gap: 20rpx; }
-.bk-thumb { width: 88rpx; height: 88rpx; border-radius: 18rpx; flex-shrink: 0; }
-.bk-title { font-size: 24rpx; font-weight: 700; }
-.bk-meta { font-size: 20rpx; color: var(--grey); margin-top: 4rpx; }
+/* Segment control */
+.segment {
+  display: flex;
+  background: var(--bg-secondary);
+  border-radius: 24rpx;
+  padding: 8rpx;
+  margin: 24rpx 32rpx;
+  box-shadow: inset 0 2rpx 4rpx rgba(0,0,0,.04);
+}
+.segment .sg {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: 700;
+  padding: 22rpx;
+  border-radius: 20rpx;
+  color: var(--gray);
+  transition: all var(--transition-normal);
+}
+.segment .sg.active {
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 4rpx 16rpx rgba(15,23,42,.08);
+}
+
+/* Trip summary */
+.bk-trip { 
+  margin: 0 32rpx 24rpx; 
+  padding: 24rpx; 
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex; 
+  align-items: center; 
+  gap: 24rpx;
+}
+.bk-thumb { width: 100rpx; height: 100rpx; border-radius: 24rpx; flex-shrink: 0; box-shadow: 0 4rpx 16rpx rgba(0,0,0,.1); }
+.bk-title { font-size: 28rpx; font-weight: 700; color: var(--ink); }
+.bk-meta { font-size: 22rpx; color: var(--gray); margin-top: 6rpx; }
 .bk-price-wrap { text-align: right; flex-shrink: 0; }
-.price-unit { font-size: 20rpx; color: var(--grey); }
+.price-unit { font-size: 20rpx; color: var(--gray); }
+
+/* Section title */
+.sec-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 32rpx 18rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--ink);
+}
+.sec-more { font-size: 24rpx; color: var(--blue); font-weight: 600; }
+
+/* Traveller card */
+.traveler {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin: 0 32rpx 24rpx;
+}
+.traveler .th {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx;
+  margin-bottom: 0;
+}
+.traveler .th b { font-size: 26rpx; font-weight: 700; color: var(--ink); }
+.traveler .th .del { font-size: 22rpx; color: #DC2626; font-weight: 600; }
+
+/* Field styling */
+.field { margin-top: 0; padding: 0 24rpx; }
+.field label {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--gray);
+  display: block;
+  margin-bottom: 10rpx;
+}
+.field .input {
+  height: 88rpx;
+  background: #fff;
+  border: 2rpx solid var(--line);
+  border-radius: 22rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  color: var(--ink);
+}
+.field .input.ph { color: var(--gray-400); }
+
+/* Add traveller button */
+.add-traveller-btn {
+  margin: 0 32rpx 24rpx; 
+  padding: 28rpx;
+  border: 2rpx dashed var(--line); 
+  border-radius: var(--radius);
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 14rpx;
+  color: var(--blue); 
+  font-size: 28rpx; 
+  font-weight: 700;
+}
+.add-traveller-btn-ico { width: 32rpx; height: 32rpx; }
+
+/* Company section */
+.company-section { margin: 0 32rpx 24rpx; }
+.company-section-title { font-size: 26rpx; font-weight: 700; color: var(--ink); margin-bottom: 16rpx; }
+.company-fields { display: flex; gap: 16rpx; }
+.company-fields .field { flex: 1; margin-top: 0; }
+
+/* Fee card */
+.fee {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24rpx;
+  margin: 0 32rpx 24rpx;
+}
+.fee .fr {
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  padding: 10rpx 0;
+  color: var(--gray);
+}
+.fee .fr b { color: var(--ink); }
+.fee .fr.total {
+  border-top: 2rpx dashed var(--line);
+  margin-top: 10rpx;
+  padding-top: 18rpx;
+  font-size: 30rpx;
+}
+.fee .fr.total .amt {
+  font-weight: 800;
+  color: var(--orange-600);
+  font-size: 36rpx;
+}
 
 /* Booking Type Selector */
-.booking-type { margin: 0 28rpx; padding: 24rpx; }
-.type-tabs { display: flex; gap: 16rpx; }
+.booking-type { margin: 24rpx 32rpx; padding: 28rpx; }
+.type-tabs { display: flex; gap: 20rpx; }
 .type-tab {
-  flex: 1; padding: 24rpx 0; text-align: center;
-  border: 2rpx solid var(--line); border-radius: 16rpx;
-  background: #f8f9fa; transition: all 0.2s ease;
+  flex: 1; 
+  padding: 28rpx 0; 
+  text-align: center;
+  border: 2rpx solid var(--line); 
+  border-radius: 20rpx;
+  background: var(--bg-secondary); 
+  transition: all var(--transition-normal);
 }
 .type-tab-active {
-  border-color: var(--primary); background: var(--primary-soft);
+  border-color: var(--blue); 
+  background: var(--blue-50);
 }
-.type-tab-text { font-size: 26rpx; font-weight: 600; color: var(--grey); }
-.type-tab-active .type-tab-text { color: var(--primary); }
+.type-tab-text { font-size: 28rpx; font-weight: 700; color: var(--gray); }
+.type-tab-active .type-tab-text { color: var(--blue); }
 
 /* Traveller Count */
 .traveller-count {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-top: 24rpx; padding-top: 20rpx; border-top: 1rpx solid var(--line);
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  margin-top: 28rpx; 
+  padding-top: 24rpx; 
+  border-top: 2rpx solid var(--line);
 }
-.count-label { font-size: 24rpx; color: #333; }
-.count-control { display: flex; align-items: center; gap: 20rpx; }
+.count-label { font-size: 26rpx; color: var(--ink); font-weight: 600; }
+.count-control { display: flex; align-items: center; gap: 24rpx; }
 .count-btn {
-  width: 56rpx; height: 56rpx; border-radius: 50%;
-  background: var(--primary); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 32rpx; font-weight: 700;
+  width: 64rpx; 
+  height: 64rpx; 
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--blue-600)); 
+  color: #fff;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 36rpx; 
+  font-weight: 700;
+  box-shadow: 0 4rpx 16rpx rgba(30,64,175,.3);
 }
-.count-btn-disabled { background: #ddd; color: #aaa; }
-.count-value { font-size: 32rpx; font-weight: 700; color: #333; min-width: 60rpx; text-align: center; }
-.count-hint { font-size: 20rpx; color: var(--grey); margin-top: 12rpx; }
+.count-btn-disabled { 
+  background: #e2e8f0; 
+  color: #94a3b8; 
+  box-shadow: none;
+}
+.count-value { font-size: 36rpx; font-weight: 700; color: var(--ink); min-width: 80rpx; text-align: center; }
+.count-hint { font-size: 22rpx; color: var(--gray); margin-top: 14rpx; }
 
 /* Form */
-.form { margin: 0 28rpx; padding: 8rpx 24rpx; }
-.form-row { display: flex; align-items: center; padding: 22rpx 0; border-bottom: 1rpx solid var(--line); }
+.form { margin: 24rpx 32rpx; padding: 8rpx 28rpx; }
+.form-row { display: flex; align-items: center; padding: 24rpx 0; border-bottom: 2rpx solid var(--line); }
 .form-row-last { border-bottom: none; }
-.form-label { font-size: 24rpx; color: var(--grey); width: 160rpx; flex-shrink: 0; }
-.form-input { flex: 1; font-size: 24rpx; text-align: right; }
+.form-label { font-size: 26rpx; color: var(--gray); width: 160rpx; flex-shrink: 0; }
+.form-input { flex: 1; font-size: 26rpx; text-align: right; color: var(--ink); }
 
 /* Traveller Card */
-.traveller-card { margin: 0 28rpx 20rpx; padding: 0; }
+.traveller-card { margin: 24rpx 32rpx; padding: 0; }
 .traveller-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20rpx 24rpx; border-bottom: 1rpx solid var(--line);
-  background: var(--primary-soft); border-radius: 16rpx 16rpx 0 0;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  padding: 24rpx 28rpx; 
+  border-bottom: 2rpx solid var(--line);
+  background: var(--blue-50); 
+  border-radius: var(--radius) var(--radius) 0 0;
 }
-.traveller-title { font-size: 24rpx; font-weight: 700; color: var(--primary); }
-.traveller-remove { font-size: 22rpx; color: var(--danger); padding: 4rpx 12rpx; }
-.traveller-card .form-row { padding: 20rpx 24rpx; }
+.traveller-title { font-size: 26rpx; font-weight: 700; color: var(--blue); }
+.traveller-remove { font-size: 24rpx; color: #ef4444; padding: 6rpx 16rpx; }
+.traveller-card .form-row { padding: 22rpx 28rpx; }
 .traveller-card .form-row-last { border-bottom: none; }
 
-/* Add Traveller Button */
-.add-traveller-btn {
-  margin: 0 28rpx 20rpx; padding: 24rpx;
-  border: 2rpx dashed var(--line); border-radius: 16rpx;
-  display: flex; align-items: center; justify-content: center; gap: 12rpx;
-  color: var(--primary); font-size: 26rpx; font-weight: 600;
-}
-.add-icon { font-size: 32rpx; }
-
 /* Member */
-.member { margin: 0 28rpx; padding: 22rpx 24rpx; display: flex; align-items: center; gap: 16rpx; border: 1rpx solid var(--gold); background: var(--gold-soft); }
+.member { 
+  margin: 24rpx 32rpx; 
+  padding: 24rpx; 
+  display: flex; 
+  align-items: center; 
+  gap: 20rpx; 
+  border: 2rpx solid rgba(212,175,55,.3); 
+  background: rgba(255,251,228,.3);
+}
 .member-off { border-color: var(--line); background: #fff; }
-.member-ico { width: 44rpx; height: 44rpx; display: flex; align-items: center; justify-content: center; }
-.member-img { width: 36rpx; height: 36rpx; }
-.member-t { font-size: 23rpx; font-weight: 700; }
-.member-d { font-size: 19rpx; color: #B49043; margin-top: 2rpx; }
-.member-off .member-d { color: var(--grey); }
-.member-btn { padding: 12rpx 28rpx; font-size: 24rpx; }
+.member-ico { width: 52rpx; height: 52rpx; display: flex; align-items: center; justify-content: center; }
+.member-img { width: 40rpx; height: 40rpx; }
+.member-t { font-size: 26rpx; font-weight: 700; color: var(--ink); }
+.member-d { font-size: 22rpx; color: #B49043; margin-top: 4rpx; }
+.member-off .member-d { color: var(--gray); }
+.member-btn { padding: 14rpx 32rpx; font-size: 26rpx; }
 
 /* Deposit */
-.deposit-note { margin: 0 28rpx; padding: 20rpx 24rpx; font-size: 20rpx; color: #555; line-height: 1.8; white-space: pre-line; }
-.dep-hi { color: var(--terra); font-weight: 700; }
+.deposit-note { margin: 24rpx 32rpx; padding: 24rpx; font-size: 22rpx; color: var(--ink-lighter); line-height: 1.8; white-space: pre-line; }
+.dep-hi { color: var(--orange-600); font-weight: 700; }
 
 .detail-pad { height: 30rpx; }
-.pay-label { font-size: 19rpx; color: var(--grey); }
-.pay-btn { padding: 18rpx 52rpx; font-size: 28rpx; }
-.per-person { font-size: 18rpx; color: var(--grey); margin-top: 4rpx; }
+.pay-label { font-size: 22rpx; color: var(--gray); }
+.pay-btn { padding: 22rpx 56rpx; font-size: 30rpx; }
+.per-person { font-size: 20rpx; color: var(--gray); margin-top: 6rpx; }

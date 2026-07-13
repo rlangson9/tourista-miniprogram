@@ -3,9 +3,27 @@
 
   <!-- Hero -->
   <view class="detail-hero" style="background: {{trip.gradient}};">
-    <text class="tag hero-flag">{{trip.flag}} {{trip.country}} · {{trip.days}}{{i18n.days}}{{trip.nights}}{{i18n.nights}}</text>
+    <view class="corridor">
+      <image class="corridor-ico" src="/images/icon-info.svg" mode="aspectFit"/>
+      <text>{{trip.country}} · {{trip.days}} days</text>
+    </view>
     <view class="detail-title">{{trip.shortTitle}}</view>
-    <view class="detail-lead">{{trip.dateRange}} · {{trip.lead}}</view>
+    <view class="detail-lead">
+      <image class="rating-star" src="/images/icon-star.svg" mode="aspectFit"/>
+      {{trip.rating || '4.9'}} · {{trip.participants || 32}} joined · {{trip.seatsLeft}} seats left
+    </view>
+  </view>
+
+  <!-- Fee card -->
+  <view class="fee-card">
+    <view class="fee-row">
+      <span>{{i18n.price}}</span>
+      <b>¥{{trip.memberPriceText}} <text class="member-tag">-8% member</text></b>
+    </view>
+    <view class="fee-row">
+      <span>{{i18n.seatsAvailable}}</span>
+      <b style="color: var(--orange-600)">{{trip.seatsLeft}} / {{trip.seatsTotal}}</b>
+    </view>
   </view>
 
   <!-- Itinerary timeline -->
