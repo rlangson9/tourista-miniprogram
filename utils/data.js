@@ -7,6 +7,8 @@ const TRIPS = [
   {
     id: "zw",
     flag: "ZW",
+    flagImage: "/images/flag-zimbabwe.png",
+    bannerImage: "/images/banner-zimbabwe.jpg",
     country: "津巴布韦",
     countryEn: "Zimbabwe",
     title: "津巴布韦商务考察团 · 7天",
@@ -23,6 +25,7 @@ const TRIPS = [
     lead: "全程领导接待 · 津籍合伙人赵蓝狮带队",
     leadEn: "Full leadership reception · Led by Zimbabwe partner Zhao Lanshi",
     gradient: "#d85a0cff",
+    bannerOverlay: "linear-gradient(180deg, rgba(216,90,12,0.25) 0%, rgba(15,23,42,0.75) 100%)",
     memberPrice: 28000,
     normalPrice: 38000,
     deposit: 8000,
@@ -60,6 +63,8 @@ const TRIPS = [
   {
     id: "sa",
     flag: "ZA",
+    flagImage: "/images/flag-southafrica.png",
+    bannerImage: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Table%20Mountain%20Cape%20Town%20South%20Africa%20aerial%20panoramic%20view%20with%20coastline%20beach%20and%20blue%20ocean%20at%20sunset%2C%20vibrant%20warm%20colors%2C%20travel%20photography%2C%20professional%20scenic%20landscape%2C%20no%20people%2C%20no%20watermark&image_size=landscape_16_9",
     country: "南非",
     countryEn: "South Africa",
     title: "南非商务考察团 · 5天",
@@ -76,6 +81,7 @@ const TRIPS = [
     lead: "德班港物流 · 中华总商会 · 展厅选址",
     leadEn: "Durban Port Logistics · Chinese Chamber of Commerce · Showroom Selection",
     gradient: "linear-gradient(120deg, #0E4D3C, #1B6E9C)",
+    bannerOverlay: "linear-gradient(180deg, rgba(14,77,60,0.25) 0%, rgba(15,23,42,0.75) 100%)",
     memberPrice: 12800,
     normalPrice: 16800,
     deposit: 4000,
@@ -111,6 +117,7 @@ const TRIPS = [
   {
     id: "both",
     flag: "ZW+ZA",
+    flagImage: "/images/flag-both.png",
     country: "双国联报",
     countryEn: "Both Countries",
     title: "双国联报 · 津巴布韦 + 南非 12天",

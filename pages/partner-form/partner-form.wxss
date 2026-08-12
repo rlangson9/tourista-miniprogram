@@ -25,4 +25,14 @@
 .pf-tip-ico { width: 24rpx; height: 24rpx; flex-shrink: 0; margin-top: 4rpx; }
 .pf-tip-hi { font-weight: 700; }
 
-.pf-submit { margin: 24rpx 28rpx; }
+.pf-submit { margin: 24rpx 28rpx; position: relative; }
+.pf-mascot {
+  position: absolute;
+  right: 12rpx;
+  top: -54rpx;
+  width: 90rpx;
+  height: 90rpx;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 0;
+}

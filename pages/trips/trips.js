@@ -17,6 +17,9 @@ Page({
   onLoad() {
     this.loadTranslations();
     this.loadData();
+    app.verifyMascots('trips', [
+      { name: 'mira', css: 'none (trips-mascot)' }
+    ]);
   },
 
   onShow() {

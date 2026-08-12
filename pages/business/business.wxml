@@ -3,6 +3,7 @@
 
   <!-- Hero -->
   <view class="biz-hero">
+    <image class="biz-mascot" src="/images/mascot-bao.png" mode="aspectFit"/>
     <view class="biz-hero-title">{{i18n.heroTitle}}</view>
     <view class="biz-hero-sub">{{i18n.heroSub}}</view>
   </view>

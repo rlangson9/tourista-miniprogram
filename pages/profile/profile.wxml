@@ -55,6 +55,7 @@
     </view>
     <view class="pr-row" bindtap="downloadApp">
       <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-phone.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.downloadApp}}</text><text class="pr-row-arr">›</text>
+      <image class="dl-mascot" src="/images/mascot-lens.png" mode="aspectFit"/>
     </view>
     <view class="pr-row" bindtap="switchLanguage">
       <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-info.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.languageSwitch}}</text>
@@ -62,6 +63,7 @@
     </view>
     <view class="pr-row pr-row-last" bindtap="about">
       <text class="pr-row-ico"><image class="pr-row-img" src="/images/icon-info.svg" mode="aspectFit"/></text><text class="pr-row-t">{{i18n.aboutUs}}</text><text class="pr-row-arr">›</text>
+      <image class="about-mascot" src="/images/mascot-zola.png" mode="aspectFit"/>
     </view>
   </view>
 
@@ -84,38 +86,59 @@
 <!-- Login Modal -->
 <view class="modal-mask" wx:if="{{showLoginModal}}" bindtap="closeLoginModal">
   <view class="modal-content login-modal" catchtap="noop">
-    <view class="modal-header">
-      <text class="modal-title">{{i18n.login}}</text>
-      <view class="modal-close" bindtap="closeLoginModal">×</view>
+    <!-- Brand header -->
+    <view class="login-brand">
+      <image class="login-brand-mascot" src="/images/mascot-touri.png" mode="aspectFit"/>
+      <view class="login-brand-title">{{i18n.loginTitle}}</view>
+      <view class="login-brand-sub">{{i18n.loginSubtitle}}</view>
     </view>
-    <view class="login-options">
-      <view class="login-option" catchtap="loginWithWeChat">
-        <image class="login-option-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
-        <text class="login-option-text">{{i18n.wechatLogin}}</text>
+    
+    <view class="login-close" bindtap="closeLoginModal">×</view>
+
+    <!-- WeChat login (primary) -->
+    <view class="login-section">
+      <view class="login-btn-wechat" bindtap="loginWithWeChat">
+        <image class="login-btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
+        <text>{{i18n.wechatLogin}}</text>
       </view>
-      <view class="login-divider">
-        <view class="login-divider-line"></view>
-        <text class="login-divider-text">{{i18n.or}}</text>
-        <view class="login-divider-line"></view>
+      <view class="login-btn-desc">{{i18n.wechatLoginDesc}}</view>
+    </view>
+
+    <!-- Divider -->
+    <view class="login-divider">
+      <view class="login-divider-line"></view>
+      <text class="login-divider-text">{{i18n.or}}</text>
+      <view class="login-divider-line"></view>
+    </view>
+
+    <!-- Phone login -->
+    <view class="login-section">
+      <view class="login-phone-toggle" bindtap="showPhoneLogin">
+        <image class="login-btn-ico-sm" src="/images/icon-phone.svg" mode="aspectFit"/>
+        <text>{{i18n.phoneLogin}}</text>
+        <text class="login-toggle-arrow {{showPhoneForm ? 'arrow-rotated' : ''}}">›</text>
       </view>
-      <view class="login-option" catchtap="showPhoneLogin">
-        <image class="login-option-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
-        <text class="login-option-text">{{i18n.phoneLogin}}</text>
+      
+      <!-- Phone form (expandable) -->
+      <view class="login-form" wx:if="{{showPhoneForm}}">
+        <view class="login-input-wrap">
+          <image class="login-input-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
+          <input class="login-input" placeholder="{{i18n.phone}}" value="{{phone}}" bindinput="onPhoneInput" type="number" maxlength="11"/>
+        </view>
+        <view class="login-input-wrap">
+          <image class="login-input-ico" src="/images/icon-scroll.svg" mode="aspectFit"/>
+          <input class="login-input" placeholder="{{i18n.verificationCode}}" value="{{code}}" bindinput="onCodeInput" type="number" maxlength="6"/>
+          <view class="login-code-btn {{countdown > 0 ? 'code-btn-disabled' : ''}}" bindtap="sendCode">
+            {{countdown > 0 ? countdown + i18n.countdown : (codeSent ? i18n.resend : i18n.getCode)}}
+          </view>
+        </view>
+        <view class="btn btn-primary login-submit-btn" bindtap="loginWithPhone">
+          {{i18n.login}}
+        </view>
       </view>
     </view>
-    <view class="login-form" wx:if="{{showPhoneForm}}">
-      <view class="login-input-wrap">
-        <image class="login-input-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
-        <input class="login-input" placeholder="{{i18n.phone}}" value="{{phone}}" bindinput="onPhoneInput" type="number"/>
-      </view>
-      <view class="login-input-wrap">
-        <image class="login-input-ico" src="/images/icon-scroll.svg" mode="aspectFit"/>
-        <input class="login-input" placeholder="{{i18n.verificationCode}}" value="{{code}}" bindinput="onCodeInput" type="number"/>
-        <view class="login-code-btn" bindtap="sendCode">{{codeSent ? i18n.resend : i18n.getCode}}</view>
-      </view>
-      <view class="btn btn-primary login-submit-btn" bindtap="loginWithPhone">
-        {{i18n.login}}
-      </view>
-    </view>
+
+    <!-- Privacy note -->
+    <view class="login-privacy">{{i18n.privacyNote}}</view>
   </view>
 </view>

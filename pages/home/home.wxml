@@ -6,15 +6,16 @@
     <view class="hero-content">
       <view class="corridor">
         <image class="corridor-ico" src="/images/icon-info.svg" mode="aspectFit"/>
-        <text>China - Africa</text>
+        <text>{{i18n.chinaAfrica}}</text>
       </view>
-      <view class="hero-title">Explore Africa's Opportunities</view>
-      <view class="hero-subtitle">Business inspections · Trade cooperation · Investment tours</view>
+      <view class="hero-title">{{i18n.heroTitle}}</view>
+      <view class="hero-subtitle">{{i18n.heroSub}}</view>
       <view class="searchbar">
         <image class="search-ico" src="/images/icon-info.svg" mode="aspectFit"/>
-        <text class="search-text">Search tours, opportunities, partners…</text>
+        <text class="search-text">{{i18n.searchPlaceholder}}</text>
       </view>
     </view>
+    <image class="hero-mascot" src="/images/mascot-touri.png" mode="aspectFit"/>
   </view>
 
   <view class="pad">
@@ -22,92 +23,81 @@
       <view class="dual">
         <view class="mode mode-a" bindtap="goTrips">
           <view class="mode-ic">
-            <image class="mode-ico" src="/images/icon-airplane.svg" mode="aspectFit"/>
+            <image class="mode-ico-sticker" src="/images/mascot-mira.png" mode="aspectFit"/>
           </view>
           <view class="mode-text">
-            <view class="mode-title">African Tours</view>
-            <view class="mode-sub">Inspection & delegations</view>
+            <view class="mode-title">{{i18n.goToAfrica}}</view>
+            <view class="mode-sub">{{i18n.goToAfricaDesc}}</view>
           </view>
           <view class="mode-go">
-            <image class="mode-go-ico" src="/images/icon-info.svg" mode="aspectFit"/>
+            <image class="mode-go-sticker" src="/images/mascot-mira.png" mode="aspectFit"/>
           </view>
         </view>
         <view class="mode mode-b" bindtap="goBusiness">
           <view class="mode-ic">
-            <image class="mode-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
+            <image class="mode-ico-sticker" src="/images/mascot-bao.png" mode="aspectFit"/>
           </view>
           <view class="mode-text">
-            <view class="mode-title">Business Cooperation</view>
-            <view class="mode-sub">Trade · logistics · expo</view>
+            <view class="mode-title">{{i18n.doBusiness}}</view>
+            <view class="mode-sub">{{i18n.doBusinessDesc}}</view>
           </view>
           <view class="mode-go">
-            <image class="mode-go-ico" src="/images/icon-info.svg" mode="aspectFit"/>
+            <image class="mode-go-sticker" src="/images/mascot-bao.png" mode="aspectFit"/>
           </view>
         </view>
       </view>
 
       <!-- Stats strip -->
       <view class="stats">
-        <view class="stat">
-          <view class="stat-val">320<text class="stat-plus">+</text></view>
-          <view class="stat-lbl">Clients served</view>
-        </view>
-        <view class="stat">
-          <view class="stat-val">6</view>
-          <view class="stat-lbl">Countries covered</view>
-        </view>
-        <view class="stat">
-          <view class="stat-val">24<text class="stat-plus">/yr</text></view>
-          <view class="stat-lbl">Inspection tours</view>
-        </view>
-        <view class="stat">
-          <view class="stat-val">1,200<text class="stat-plus">m²</text></view>
-          <view class="stat-lbl">Expo hall</view>
+        <view class="stat" wx:for="{{stats}}" wx:key="label">
+          <view class="stat-val">{{item.num}}</view>
+          <view class="stat-lbl">{{item.label}}</view>
         </view>
       </view>
 
       <!-- Featured itineraries -->
       <view class="sec-title">
-        <text class="sec-t">Featured itineraries</text>
-        <text class="sec-more" bindtap="goTrips">All ›</text>
+        <text class="sec-t">{{i18n.featuredItineraries}}</text>
+        <text class="sec-more" bindtap="goTrips">{{i18n.allMore}}</text>
       </view>
       <view class="dcard" wx:for="{{featuredTrips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
         <view class="dcard-img" style="background: {{item.gradient}};">
+          <image class="dcard-flag" src="{{item.flagImage}}" mode="aspectFit"/>
           <view class="badge-ar">
-            <image class="badge-ar-ico" src="/images/icon-fire.svg" mode="aspectFit"/>
-            <text>AR inspect</text>
+            <image class="badge-ar-mascot" src="/images/mascot-lens.png" mode="aspectFit"/>
+            <text>{{i18n.arInspect}}</text>
           </view>
           <view class="price-tag">
-            <text class="price-unit">from </text>
+            <text class="price-unit">{{i18n.from}}</text>
             <text class="price">¥{{item.memberPrice}}</text>
           </view>
         </view>
         <view class="dcard-info">
           <view class="dcard-loc">
             <image class="dcard-loc-ico" src="/images/icon-map.svg" mode="aspectFit"/>
-            <text>{{item.country}} · {{item.days}} days</text>
+            <text>{{item.country}} · {{item.days}} {{i18n.dayUnit}}</text>
           </view>
           <view class="dcard-title">{{item.title}}</view>
           <view class="tagline">
             <text class="tg" wx:for="{{item.highlights}}" wx:key="index" wx:for-item="h">{{h}}</text>
           </view>
           <view class="dcard-foot">
-            <view class="seats">Seats: <text class="seats-bold">{{item.seatsLeft}} left</text> / {{item.seatsTotal}}</view>
-            <view class="book-btn">Book now</view>
+            <view class="seats">{{i18n.seats}}: <text class="seats-bold">{{item.seatsLeft}} {{i18n.left}}</text> / {{item.seatsTotal}}</view>
+            <view class="book-btn">{{i18n.bookNow}}</view>
           </view>
         </view>
       </view>
 
       <!-- Success stories -->
       <view class="sec-title">
-        <text class="sec-t">Success stories</text>
-        <text class="sec-more" bindtap="showStoriesModal">Filter ›</text>
+        <text class="sec-t">{{i18n.successStories}}</text>
+        <text class="sec-more" bindtap="showStoriesModal">{{i18n.filterMore}}</text>
       </view>
       <scroll-view class="chips-row" scroll-x>
-        <view class="pill {{storyFilter === 'all' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="all">All</view>
-        <view class="pill {{storyFilter === 'business' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="business">Business</view>
-        <view class="pill {{storyFilter === 'investment' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="investment">Investment</view>
-        <view class="pill {{storyFilter === 'tour' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="tour">Inspection</view>
+        <view class="pill {{storyFilter === 'all' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="all">{{i18n.all}}</view>
+        <view class="pill {{storyFilter === 'business' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="business">{{i18n.business}}</view>
+        <view class="pill {{storyFilter === 'investment' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="investment">{{i18n.investment}}</view>
+        <view class="pill {{storyFilter === 'tour' ? 'pill-active' : ''}}" catchtap="setStoryFilter" data-filter="tour">{{i18n.tour}}</view>
       </scroll-view>
       <view class="story" wx:for="{{filteredStories}}" wx:key="id" bindtap="openStoryDetail" data-id="{{item.id}}">
         <view class="story-top">
@@ -122,22 +112,22 @@
           </view>
           <view class="story-bar-item">
             <image class="story-bar-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
-            <text>18 Q&A</text>
+            <text>18 {{i18n.qa}}</text>
           </view>
-          <text class="story-bar-sp">Read & ask ›</text>
+          <text class="story-bar-sp">{{i18n.readAsk}}</text>
         </view>
       </view>
 
       <!-- Business opportunities -->
       <view class="sec-title">
-        <text class="sec-t">Business opportunities</text>
-        <text class="sec-more" bindtap="showOpportunitiesModal">Post ›</text>
+        <text class="sec-t">{{i18n.opportunities}}</text>
+        <text class="sec-more" bindtap="showOpportunitiesModal">{{i18n.postMore}}</text>
       </view>
       <scroll-view class="chips-row" scroll-x>
-        <view class="pill orange {{oppTypeFilter === 'demand' ? 'pill-active orange-active' : ''}}" catchtap="setOppTypeFilter" data-filter="demand">Needs</view>
-        <view class="pill {{oppTypeFilter === 'opportunity' ? 'pill-active' : ''}}" catchtap="setOppTypeFilter" data-filter="opportunity">Opportunities</view>
-        <view class="pill {{oppCategoryFilter === 'agriculture' ? 'pill-active' : ''}}" catchtap="setOppCategoryFilter" data-filter="agriculture">Agriculture</view>
-        <view class="pill {{oppCategoryFilter === 'mining' ? 'pill-active' : ''}}" catchtap="setOppCategoryFilter" data-filter="mining">Mining</view>
+        <view class="pill orange {{oppTypeFilter === 'demand' ? 'pill-active orange-active' : ''}}" catchtap="setOppTypeFilter" data-filter="demand">{{i18n.needs}}</view>
+        <view class="pill {{oppTypeFilter === 'opportunity' ? 'pill-active' : ''}}" catchtap="setOppTypeFilter" data-filter="opportunity">{{i18n.opportunity}}</view>
+        <view class="pill {{oppCategoryFilter === 'agriculture' ? 'pill-active' : ''}}" catchtap="setOppCategoryFilter" data-filter="agriculture">{{i18n.agriculture}}</view>
+        <view class="pill {{oppCategoryFilter === 'mining' ? 'pill-active' : ''}}" catchtap="setOppCategoryFilter" data-filter="mining">{{i18n.mining}}</view>
       </scroll-view>
       <view class="lc" wx:for="{{filteredOpportunities}}" wx:key="id">
         <view class="lc-row">
@@ -146,53 +136,54 @@
           </view>
           <view class="lc-grow">
             <view class="lc-title">{{item.title}}</view>
-            <view class="lc-sub">{{item.type === 'demand' ? 'Buyer' : 'Seller'}} · {{item.country}} · {{item.budget || ''}}</view>
+            <view class="lc-sub">{{item.type === 'demand' ? i18n.buyer : i18n.seller}} · {{item.country}} · {{item.budget || ''}}</view>
           </view>
-          <view class="status-dot st-lead">Need</view>
+          <view class="status-dot st-lead">{{i18n.need}}</view>
         </view>
       </view>
 
       <!-- Business channels -->
       <view class="sec-title">
-        <text class="sec-t">Business channels</text>
+        <text class="sec-t">{{i18n.businessChannels}}</text>
       </view>
       <view class="channels">
         <view class="ch" bindtap="goBusiness">
           <view class="ch-ic">
             <image class="ch-ico" src="/images/icon-map.svg" mode="aspectFit"/>
           </view>
-          <view class="ch-l">Distribution agency</view>
+          <view class="ch-l">{{i18n.distributionAgency}}</view>
         </view>
         <view class="ch" bindtap="goBusiness">
           <view class="ch-ic">
             <image class="ch-ico" src="/images/icon-store.svg" mode="aspectFit"/>
           </view>
-          <view class="ch-l">Exhibition hall entry</view>
+          <view class="ch-l">{{i18n.exhibitionHall}}</view>
         </view>
         <view class="ch" bindtap="goBusiness">
           <view class="ch-ic">
             <image class="ch-ico" src="/images/icon-ship.svg" mode="aspectFit"/>
           </view>
-          <view class="ch-l">Logistics / freight</view>
+          <view class="ch-l">{{i18n.logisticsFreight}}</view>
         </view>
       </view>
 
       <!-- Contact us -->
       <view class="sec-title">
-        <text class="sec-t">Contact us</text>
+        <text class="sec-t">{{i18n.contactUs}}</text>
       </view>
       <view class="contact">
+        <image class="contact-mascot" src="/images/mascot-zola.png" mode="aspectFit"/>
         <view class="crow" bindtap="copyWeChat">
           <view class="crow-cc">
             <image class="crow-cc-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
           </view>
           <view class="crow-ct">
-            <view class="crow-ct-a">WeChat ID</view>
+            <view class="crow-ct-a">{{i18n.wechatId}}</view>
             <view class="crow-ct-b">TouristaAR_CN</view>
           </view>
           <view class="copy">
             <image class="copy-ico" src="/images/icon-unlock.svg" mode="aspectFit"/>
-            <text>Copy</text>
+            <text>{{i18n.copy}}</text>
           </view>
         </view>
         <view class="crow" bindtap="copyEmail">
@@ -200,12 +191,12 @@
             <image class="crow-cc-ico" src="/images/icon-info.svg" mode="aspectFit"/>
           </view>
           <view class="crow-ct">
-            <view class="crow-ct-a">Email</view>
+            <view class="crow-ct-a">{{i18n.email}}</view>
             <view class="crow-ct-b">hello@touristaar.com</view>
           </view>
           <view class="copy">
             <image class="copy-ico" src="/images/icon-unlock.svg" mode="aspectFit"/>
-            <text>Copy</text>
+            <text>{{i18n.copy}}</text>
           </view>
         </view>
         <view class="crow" bindtap="viewQRCode">
@@ -213,12 +204,12 @@
             <image class="crow-cc-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
           </view>
           <view class="crow-ct">
-            <view class="crow-ct-a">Official account & QR</view>
-            <view class="crow-ct-b">WeCom · Douyin · LinkedIn</view>
+            <view class="crow-ct-a">{{i18n.officialAccount}}</view>
+            <view class="crow-ct-b">{{i18n.platforms}}</view>
           </view>
           <view class="copy copy-blue">
             <image class="copy-ico" src="/images/icon-phone.svg" mode="aspectFit"/>
-            <text>View</text>
+            <text>{{i18n.view}}</text>
           </view>
         </view>
       </view>
@@ -243,11 +234,11 @@
       <view class="story-detail-actions">
         <view class="btn btn-primary story-detail-btn" catchtap="askAboutStory" data-id="{{selectedStory.id}}">
           <image class="btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
-          <text>Ask question</text>
+          <text>{{i18n.askQuestion}}</text>
         </view>
         <view class="btn btn-secondary story-detail-btn" catchtap="contactTeam" data-id="{{selectedStory.id}}">
           <image class="btn-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
-          <text>Contact team</text>
+          <text>{{i18n.contactTeam}}</text>
         </view>
       </view>
     </scroll-view>
@@ -268,29 +259,29 @@
         <text class="tag">{{selectedOpp.categoryText}}</text>
       </view>
       <view class="opp-detail-section">
-        <text class="opp-detail-section-title">Description</text>
+        <text class="opp-detail-section-title">{{i18n.description}}</text>
         <text class="opp-detail-text">{{selectedOpp.description}}</text>
       </view>
       <view class="opp-detail-section">
-        <text class="opp-detail-section-title">Requirements</text>
+        <text class="opp-detail-section-title">{{i18n.requirements}}</text>
         <text class="opp-detail-text">{{selectedOpp.requirements}}</text>
       </view>
       <view wx:if="{{selectedOpp.budget}}" class="opp-detail-section">
-        <text class="opp-detail-section-title">Budget</text>
+        <text class="opp-detail-section-title">{{i18n.budget}}</text>
         <text class="opp-detail-text">{{selectedOpp.budget}}</text>
       </view>
       <view wx:if="{{selectedOpp.deadline}}" class="opp-detail-section">
-        <text class="opp-detail-section-title">Deadline</text>
+        <text class="opp-detail-section-title">{{i18n.deadline}}</text>
         <text class="opp-detail-text">{{selectedOpp.deadline}}</text>
       </view>
       <view class="opp-detail-actions">
         <view class="btn btn-primary opp-detail-btn" catchtap="submitOpportunityIntent" data-id="{{selectedOpp.id}}">
           <image class="btn-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
-          <text>Submit intent</text>
+          <text>{{i18n.submitIntent}}</text>
         </view>
         <view class="btn btn-secondary opp-detail-btn" catchtap="askAboutOpp" data-id="{{selectedOpp.id}}">
           <image class="btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
-          <text>Ask question</text>
+          <text>{{i18n.askQuestion}}</text>
         </view>
       </view>
     </scroll-view>
@@ -301,26 +292,26 @@
 <view class="modal-mask" wx:if="{{showAllOpportunitiesModal}}" bindtap="closeAllOpportunitiesModal">
   <view class="modal-content all-opp-modal" catchtap="noop">
     <view class="modal-header">
-      <text class="modal-title">Business Cooperation</text>
+      <text class="modal-title">{{i18n.businessChannel}}</text>
       <view class="modal-close" bindtap="closeAllOpportunitiesModal">×</view>
     </view>
     <scroll-view class="modal-body" scroll-y>
       <view class="all-opp-contact card">
-        <view class="all-opp-contact-title">Contact team</view>
+        <view class="all-opp-contact-title">{{i18n.contactTeam}}</view>
         <view class="all-opp-contact-info">
           <view class="all-opp-contact-row" catchtap="copyWeChat">
             <image class="all-opp-contact-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
-            <text>WeChat：touristaar</text>
-            <text class="all-opp-contact-copy">Copy</text>
+            <text>{{i18n.weChat}}：touristaar</text>
+            <text class="all-opp-contact-copy">{{i18n.copy}}</text>
           </view>
           <view class="all-opp-contact-row" catchtap="copyEmail">
             <image class="all-opp-contact-ico" src="/images/icon-info.svg" mode="aspectFit"/>
-            <text>Email：hello@touristaar.com</text>
-            <text class="all-opp-contact-copy">Copy</text>
+            <text>{{i18n.email}}：hello@touristaar.com</text>
+            <text class="all-opp-contact-copy">{{i18n.copy}}</text>
           </view>
         </view>
       </view>
-      <view class="all-opp-section-title">Opportunities</view>
+      <view class="all-opp-section-title">{{i18n.opportunities}}</view>
       <view class="all-list">
         <view class="all-item card" wx:for="{{filteredOpportunities}}" wx:key="id">
           <view class="all-item-header">
@@ -329,15 +320,15 @@
           </view>
           <view class="all-item-country">{{item.country}} · {{item.categoryText}}</view>
           <view class="all-item-summary">{{item.description}}</view>
-          <view wx:if="{{item.budget}}" class="all-item-budget">Budget：{{item.budget}}</view>
+          <view wx:if="{{item.budget}}" class="all-item-budget">{{i18n.budget}}：{{item.budget}}</view>
           <view class="all-item-actions">
             <view class="btn btn-primary all-item-btn" catchtap="submitOpportunityIntent" data-id="{{item.id}}">
               <image class="btn-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
-              <text>Submit intent</text>
+              <text>{{i18n.submitIntent}}</text>
             </view>
             <view class="btn btn-secondary all-item-btn" catchtap="askAboutOpp" data-id="{{item.id}}">
               <image class="btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
-              <text>Ask question</text>
+              <text>{{i18n.askQuestion}}</text>
             </view>
           </view>
         </view>
@@ -350,16 +341,16 @@
 <view class="modal-mask" wx:if="{{showAskModal}}" bindtap="closeAskModal">
   <view class="modal-content ask-modal" catchtap="noop">
     <view class="modal-header">
-      <text class="modal-title">Ask question</text>
+      <text class="modal-title">{{i18n.askQuestion}}</text>
       <view class="modal-close" bindtap="closeAskModal">×</view>
     </view>
     <view class="modal-body">
-      <view class="ask-context">About：{{askContext}}</view>
-      <textarea class="ask-textarea" placeholder="Your question" value="{{askContent}}" bindinput="onAskInput" maxlength="500"/>
+      <view class="ask-context">{{i18n.about}}：{{askContext}}</view>
+      <textarea class="ask-textarea" placeholder="{{i18n.yourQuestion}}" value="{{askContent}}" bindinput="onAskInput" maxlength="500"/>
       <view class="ask-counter">{{askContent.length}}/500</view>
       <view class="ask-actions">
-        <view class="btn btn-secondary ask-btn" catchtap="closeAskModal">Cancel</view>
-        <view class="btn btn-primary ask-btn" catchtap="submitAsk">Submit</view>
+        <view class="btn btn-secondary ask-btn" catchtap="closeAskModal">{{i18n.cancel}}</view>
+        <view class="btn btn-primary ask-btn" catchtap="submitAsk">{{i18n.submit}}</view>
       </view>
     </view>
   </view>

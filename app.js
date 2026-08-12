@@ -157,5 +157,22 @@ App({
   // Get localized text based on current language
   getLocalizedText(zhText, enText) {
     return this.globalData.lang === 'en' ? enText : zhText;
+  },
+
+  // Verify mascot images are rendered and not blocking interactions
+  verifyMascots(pageName, mascots) {
+    console.log(`[Mascot] === Verifying ${mascots.length} mascot(s) on "${pageName}" ===`);
+    mascots.forEach(m => {
+      const src = `/images/mascot-${m.name}.png`;
+      wx.getImageInfo({
+        src,
+        success: (res) => {
+          console.log(`[Mascot] ✓ ${m.name} rendered on "${pageName}" | src=${src} | ${res.width}x${res.height} | pointer-events=${m.css || 'none'}`);
+        },
+        fail: (err) => {
+          console.error(`[Mascot] ✗ ${m.name} FAILED on "${pageName}" | src=${src} | error:`, err.errMsg || err);
+        }
+      });
+    });
   }
 });

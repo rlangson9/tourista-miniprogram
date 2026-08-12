@@ -62,14 +62,26 @@
 .ck-status-done { color: var(--green); }
 
 /* Group */
-.group { 
-  margin: 24rpx 32rpx; 
-  padding: 28rpx; 
-  display: flex; 
-  align-items: center; 
-  gap: 24rpx; 
-  border: 2rpx solid rgba(16,185,129,.2); 
+.group {
+  margin: 24rpx 32rpx;
+  padding: 28rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  border: 2rpx solid rgba(16,185,129,.2);
   background: linear-gradient(135deg, rgba(16,185,129,.05) 0%, #fff 50%);
+  position: relative;
+  overflow: hidden;
+}
+.orders-mascot {
+  position: absolute;
+  right: -12rpx;
+  bottom: -12rpx;
+  width: 90rpx;
+  height: 90rpx;
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
 }
 .group-ico { width: 56rpx; height: 56rpx; display: flex; align-items: center; justify-content: center; }
 .group-img { width: 44rpx; height: 44rpx; }

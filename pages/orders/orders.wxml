@@ -46,6 +46,7 @@
 
       <!-- Group entry -->
       <view class="card group">
+        <image class="orders-mascot" src="/images/mascot-bao.png" mode="aspectFit"/>
         <text class="group-ico"><image class="group-img" src="/images/icon-chat.svg" mode="aspectFit"/></text>
         <view class="flex1">
           <view class="group-t">{{i18n.groupChat}}</view>

@@ -12,6 +12,9 @@ Page({
 
   onLoad() {
     this.loadTranslations();
+    app.verifyMascots('business', [
+      { name: 'bao', css: 'none (biz-mascot)' }
+    ]);
   },
 
   onShow() {

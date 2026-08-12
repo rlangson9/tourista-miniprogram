@@ -18,6 +18,9 @@ Page({
   onShow() {
     this.loadTranslations();
     this.refresh();
+    app.verifyMascots('orders', [
+      { name: 'bao', css: 'none (orders-mascot)' }
+    ]);
   },
 
   loadTranslations() {

@@ -1,6 +1,11 @@
 <!-- pages/trips/trips.wxml -->
 <view class="page-wrap">
 
+  <!-- Mira mascot guide hero -->
+  <view class="trips-hero">
+    <image class="trips-mascot" src="/images/mascot-mira.png" mode="aspectFit"/>
+  </view>
+
   <!-- Chips filter row -->
   <scroll-view class="chips-row" scroll-x>
     <view class="pill {{countryFilter === 'all' ? 'pill-active' : ''}}" bindtap="setCountryFilter" data-filter="all">All</view>
@@ -19,6 +24,7 @@
   <block wx:if="{{tab===0}}">
     <view class="card trip" wx:for="{{filteredTrips || trips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
       <view class="trip-banner" style="background: {{item.gradient}};">
+        <image class="trip-banner-flag" src="{{item.flagImage}}" mode="aspectFit"/>
         <view wx:if="{{item.ar}}" class="badge-ar">
           <image class="badge-ar-ico" src="/images/icon-fire.svg" mode="aspectFit"/>
           <text>AR inspect</text>

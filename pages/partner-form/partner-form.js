@@ -20,6 +20,9 @@ Page({
     // prefill company if user is a verified company
     const u = app.globalData.user;
     if (u.company) this.setData({ "form.company": u.company });
+    app.verifyMascots('partner-form', [
+      { name: 'bao', css: 'none (pf-mascot)' }
+    ]);
   },
 
   loadTranslations() {

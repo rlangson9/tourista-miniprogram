@@ -26,6 +26,9 @@ Page({
     this.loadTranslations();
     this.loadTrip(options.id);
     this.loadReviews(options.id);
+    app.verifyMascots('trip-detail', [
+      { name: 'mira', css: 'none (detail-mascot)' }
+    ]);
   },
 
   onShow() {

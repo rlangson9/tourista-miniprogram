@@ -3,6 +3,7 @@
 
   <!-- Hero -->
   <view class="detail-hero" style="background: {{trip.gradient}};">
+    <image class="detail-hero-flag" src="{{trip.flagImage}}" mode="aspectFit"/>
     <view class="corridor">
       <image class="corridor-ico" src="/images/icon-info.svg" mode="aspectFit"/>
       <text>{{trip.country}} · {{trip.days}} days</text>
@@ -12,17 +13,38 @@
       <image class="rating-star" src="/images/icon-star.svg" mode="aspectFit"/>
       {{trip.rating || '4.9'}} · {{trip.participants || 32}} joined · {{trip.seatsLeft}} seats left
     </view>
+    <image class="detail-mascot" src="/images/mascot-mira.png" mode="aspectFit"/>
   </view>
 
   <!-- Fee card -->
   <view class="fee-card">
-    <view class="fee-row">
-      <span>{{i18n.price}}</span>
-      <b>¥{{trip.memberPriceText}} <text class="member-tag">-8% member</text></b>
+    <view class="fee-item">
+      <view class="fee-icon price-icon">
+        <image class="fee-icon-img" src="/images/icon-unlock.svg" mode="aspectFit"/>
+      </view>
+      <view class="fee-info">
+        <view class="fee-label">{{i18n.price}}<text class="price-unit"> {{i18n.per}}</text></view>
+        <view class="fee-value">
+          <text class="price-amount">¥{{trip.memberPriceText}}</text>
+          <text class="member-tag">-8% member</text>
+        </view>
+      </view>
     </view>
-    <view class="fee-row">
-      <span>{{i18n.seatsAvailable}}</span>
-      <b style="color: var(--orange-600)">{{trip.seatsLeft}} / {{trip.seatsTotal}}</b>
+    <view class="fee-divider"></view>
+    <view class="fee-item">
+      <view class="fee-icon seats-icon">
+        <image class="fee-icon-img" src="/images/icon-user.svg" mode="aspectFit"/>
+      </view>
+      <view class="fee-info">
+        <view class="fee-label">{{i18n.seatsAvailable}}</view>
+        <view class="fee-value seats-value">
+          <text class="seats-left">{{trip.seatsLeft}}</text>
+          <text class="seats-total">/ {{trip.seatsTotal}}</text>
+          <view class="seats-bar">
+            <view class="seats-bar-fill" style="width: {{(trip.seatsLeft / trip.seatsTotal) * 100}}%;"></view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 

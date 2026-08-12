@@ -1,7 +1,17 @@
 {
   "description": "Tourista AR — 中非超级应用微信小程序",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": "Mascouts" },
+      { "type": "folder", "value": "tourista-backend" },
+      { "type": "folder", "value": "node_modules" },
+      { "type": "file", "value": "Tourista_AR_Mascot_Bible.pdf" },
+      { "type": "file", "value": "QR code.jpg" },
+      { "type": "file", "value": "tourista-app-icon.png" },
+      { "type": "file", "value": "UI prototype" },
+      { "type": "file", "value": "DEPLOYMENT_GUIDE.md" },
+      { "type": "file", "value": "README.md" }
+    ],
     "include": []
   },
   "setting": {

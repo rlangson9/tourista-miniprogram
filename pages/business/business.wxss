@@ -27,12 +27,22 @@
   position: relative;
   z-index: 1;
 }
-.biz-hero-sub { 
-  font-size: 24rpx; 
-  opacity: .85; 
+.biz-hero-sub {
+  font-size: 24rpx;
+  opacity: .85;
   margin-top: 14rpx;
   position: relative;
   z-index: 1;
+}
+.biz-mascot {
+  position: absolute;
+  right: 24rpx;
+  bottom: 16rpx;
+  width: 160rpx;
+  height: 160rpx;
+  opacity: 0.25;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Grid */

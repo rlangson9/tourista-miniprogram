@@ -17,11 +17,16 @@ Page({
     showPhoneForm: false,
     phone: '',
     code: '',
-    codeSent: false
+    codeSent: false,
+    countdown: 0
   },
 
   onLoad() {
     this.loadTranslations();
+    app.verifyMascots('profile', [
+      { name: 'lens', css: 'none (dl-mascot)' },
+      { name: 'zola', css: 'none (about-mascot)' }
+    ]);
   },
 
   onShow() {
@@ -131,7 +136,8 @@ Page({
   },
 
   closeLoginModal() {
-    this.setData({ showLoginModal: false, showPhoneForm: false, phone: '', code: '', codeSent: false });
+    this.setData({ showLoginModal: false, showPhoneForm: false, phone: '', code: '', codeSent: false, countdown: 0 });
+    if (this._timer) clearInterval(this._timer);
   },
 
   loginWithWeChat() {
@@ -212,15 +218,17 @@ Page({
     const { phone } = this.data;
     const lang = app.getLang();
     
+    if (this.data.countdown > 0) return;
+
     if (!this.isValidPhone(phone)) {
       wx.showToast({
-        title: lang === 'zh' ? '请输入正确的中国手机号（1开头，11位）' : 'Enter valid CN phone (starts with 1, 11 digits)',
+        title: lang === 'zh' ? '请输入正确的手机号' : 'Please enter a valid phone number',
         icon: 'none'
       });
       return;
     }
 
-    wx.showLoading({ title: lang === 'zh' ? '发送验证码...' : 'Sending code...' });
+    wx.showLoading({ title: lang === 'zh' ? '发送中...' : 'Sending...' });
     
     wx.request({
       url: `${app.globalData.baseUrl}/api/send-code`,
@@ -230,13 +238,31 @@ Page({
         wx.hideLoading();
         this.setData({ codeSent: true });
         wx.showToast({ title: lang === 'zh' ? '验证码已发送' : 'Code sent', icon: 'success' });
+        this.startCountdown();
       },
       fail: () => {
         wx.hideLoading();
         this.setData({ codeSent: true });
         wx.showToast({ title: lang === 'zh' ? '验证码已发送' : 'Code sent', icon: 'success' });
+        this.startCountdown();
       }
     });
+  },
+
+  startCountdown() {
+    this.setData({ countdown: 60 });
+    this._timer = setInterval(() => {
+      if (this.data.countdown <= 1) {
+        clearInterval(this._timer);
+        this.setData({ countdown: 0 });
+      } else {
+        this.setData({ countdown: this.data.countdown - 1 });
+      }
+    }, 1000);
+  },
+
+  onUnload() {
+    if (this._timer) clearInterval(this._timer);
   },
 
   loginWithPhone() {
@@ -244,14 +270,11 @@ Page({
     const lang = app.getLang();
     
     if (!this.isValidPhone(phone)) {
-      wx.showToast({
-        title: lang === 'zh' ? '请输入正确的中国手机号（1开头，11位）' : 'Enter valid CN phone (starts with 1, 11 digits)',
-        icon: 'none'
-      });
+      wx.showToast({ title: lang === 'zh' ? '请输入正确的手机号' : 'Please enter a valid phone number', icon: 'none' });
       return;
     }
     if (!code || code.length < 4) {
-      wx.showToast({ title: lang === 'zh' ? '请输入验证码' : 'Enter code', icon: 'none' });
+      wx.showToast({ title: lang === 'zh' ? '请输入验证码' : 'Please enter the code', icon: 'none' });
       return;
     }
 

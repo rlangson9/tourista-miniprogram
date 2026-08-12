@@ -37,27 +37,33 @@ Page({
     this.loadData();
     this.loadStories();
     this.loadOpportunities();
+    app.verifyMascots('home', [
+      { name: 'touri', css: 'none (hero-mascot)' },
+      { name: 'mira', css: 'none (mode-mascot)' },
+      { name: 'bao', css: 'none (mode-mascot)' },
+      { name: 'lens', css: 'none (badge-ar-mascot)' },
+      { name: 'zola', css: 'none (contact-mascot)' }
+    ]);
   },
 
   onShow() {
     this.loadTranslations();
     this.loadData();
+    this.loadStories();
+    this.loadOpportunities();
   },
 
   loadTranslations() {
     const translations = i18n.getPageTranslations('home');
     const lang = app.getLang();
-    const statsLabels = lang === 'en' 
-      ? ['Clients Served', 'Local Companies', 'Regular Tours', 'Harare Showroom']
-      : ['服务客户', '本地公司', '定期考察团', '哈拉雷展厅'];
     
     this.setData({
       i18n: translations,
       stats: [
-        { num: "200+", label: statsLabels[0] },
-        { num: lang === 'en' ? "2 Countries" : "2国", label: statsLabels[1] },
-        { num: lang === 'en' ? "3/year" : "3次/年", label: statsLabels[2] },
-        { num: "2900㎡", label: statsLabels[3] }
+        { num: lang === 'en' ? '320+' : '320+', label: translations.statsClients },
+        { num: lang === 'en' ? '6' : '6', label: translations.statsCountries },
+        { num: lang === 'en' ? '24/yr' : '24次/年', label: translations.statsTrips },
+        { num: '1,200m²', label: translations.statsShowroom }
       ],
       bizMini: [
         { icon: "/images/icon-package.svg", title: translations.productExport, desc: translations.productExportDesc },
@@ -73,15 +79,21 @@ Page({
     const trips = data.getTrips();
     const featuredTrips = trips.slice(0, 2).map(t => ({
       ...t,
+      title: lang === 'en' ? t.titleEn : t.title,
+      country: lang === 'en' ? t.countryEn : t.country,
+      highlights: lang === 'en' ? t.highlightsEn : t.highlights,
       memberPriceText: t.memberPrice.toLocaleString()
     }));
-    
+
     this.setData({
       featured: Object.assign({}, f, {
+        title: lang === 'en' ? f.titleEn : f.title,
+        country: lang === 'en' ? f.countryEn : f.country,
+        highlights: lang === 'en' ? f.highlightsEn : f.highlights,
         memberPriceText: f.memberPrice.toLocaleString()
       }),
-      featuredTitle: lang === 'en' 
-        ? `Zimbabwe Business Tour · ${f.days} Days`
+      featuredTitle: lang === 'en'
+        ? `${f.titleEn} · ${f.days} ${i18n.t('home.dayUnit')}`
         : f.title,
       featuredTrips
     });
