@@ -219,13 +219,6 @@ Page({
     this.setData({ showStoryModal: false });
   },
 
-  showStoriesModal() {
-    wx.showToast({
-      title: app.getLang() === 'en' ? 'More stories coming soon' : '更多案例即将推出',
-      icon: 'none'
-    });
-  },
-
   loadOpportunities() {
     const lang = app.getLang();
     wx.request({
@@ -240,7 +233,7 @@ Page({
             description: lang === 'en' ? o.descriptionEn : o.description,
             requirements: lang === 'en' ? o.requirementsEn : o.requirements,
             typeText: lang === 'en' ? (o.type === 'demand' ? 'Demand' : 'Opportunity') : (o.type === 'demand' ? '需求' : '机会'),
-            categoryText: this.getCategoryText(o.category, lang)
+            categoryText: this.getOppCategoryText(o.category, lang)
           }));
           this.setData({ opportunities, filteredOpportunities: opportunities });
         } else {
@@ -255,7 +248,7 @@ Page({
     });
   },
 
-  getCategoryText(category, lang) {
+  getOppCategoryText(category, lang) {
     const map = {
       investment: lang === 'en' ? 'Investment' : '投资',
       trade: lang === 'en' ? 'Trade' : '贸易',

@@ -86,7 +86,7 @@ Page({
       normalPriceText: t.normalPrice.toLocaleString(),
       depositText: t.deposit.toLocaleString(),
       title: lang === 'en' ? t.titleEn : t.title,
-      shortTitle: lang === 'en' ? t.shortTitleEn : t.short_title,
+      shortTitle: lang === 'en' ? t.shortTitleEn : t.shortTitle,
       country: lang === 'en' ? t.countryEn : t.country,
       lead: lang === 'en' ? t.leadEn : t.lead,
       structure: lang === 'en' ? t.structureEn : t.structure,
@@ -125,6 +125,7 @@ Page({
         }));
         this.setData({ reviews });
         this.updateReviewStats();
+        this.loadReviewStats(tripId);
       },
       fail: () => {
         this.setData({ reviews: [] });

@@ -30,7 +30,6 @@
       </view>
     </view>
     <view wx:if="{{bookingType === 'company'}}" class="count-hint">{{i18n.minTravellersNote}}</view>
-  </view>
 
   <!-- Company Info (company only) -->
   <view wx:if="{{bookingType === 'company'}}" class="sec-title">{{i18n.companyInfo}}</view>

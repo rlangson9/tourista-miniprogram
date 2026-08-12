@@ -23,6 +23,7 @@ Page({
   onLoad(query) {
     const t = data.getTrip(query.id || "zw");
     const user = app.globalData.user;
+    const lang = app.getLang();
     const saved = t.normalPrice - t.memberPrice;
 
     this.loadTranslations();
@@ -31,7 +32,7 @@ Page({
       trip: Object.assign({}, t, {
         memberPriceText: t.memberPrice.toLocaleString(),
         depositText: t.deposit.toLocaleString(),
-        departCity: t.country === "南非" ? "德班" : "哈拉雷"
+        departCity: t.id === "sa" ? (lang === 'en' ? "Durban" : "德班") : (lang === 'en' ? "Harare" : "哈拉雷")
       }),
       isMember: user.isMember,
       savedText: saved.toLocaleString(),
@@ -155,6 +156,7 @@ Page({
   // ── Payment ───────────────────────────────────────────────────────────
   payDeposit() {
     const { bookingType, travellers, companyInfo, trip, i18n } = this.data;
+    const lang = app.getLang();
 
     if (bookingType === "company") {
       // Company validation
@@ -178,12 +180,12 @@ Page({
       // Individual validation
       const t = travellers[0];
       if (!t.name.trim() || !t.passport.trim() || !t.phone.trim()) {
-        wx.showToast({ title: "请完整填写出行人信息", icon: "none" });
+        wx.showToast({ title: lang === 'en' ? 'Please fill in traveller info' : '请完整填写出行人信息', icon: "none" });
         return;
       }
     }
 
-    wx.showLoading({ title: "正在下单..." });
+    wx.showLoading({ title: lang === 'en' ? 'Placing order...' : '正在下单...' });
 
     setTimeout(() => {
       wx.hideLoading();
@@ -191,18 +193,20 @@ Page({
       const totalDepositText = totalDeposit.toLocaleString();
 
       wx.showModal({
-        title: "订金支付成功",
-        content: `已支付订金 ¥${totalDepositText}。顾问将尽快与您确认行程细节，余款请于出发前14天支付。`,
+        title: lang === 'en' ? 'Deposit Payment Successful' : '订金支付成功',
+        content: lang === 'en'
+          ? `Deposit of ¥${totalDepositText} paid. Your advisor will confirm trip details soon. Balance due 14 days before departure.`
+          : `已支付订金 ¥${totalDepositText}。顾问将尽快与您确认行程细节，余款请于出发前14天支付。`,
         showCancel: false,
-        confirmText: "查看订单",
+        confirmText: lang === 'en' ? 'View Orders' : '查看订单',
         success: () => {
           app.globalData.tripOrders.unshift({
             id: "T" + Date.now(),
             tripId: trip.id,
-            title: `${trip.shortTitle} · ${trip.days}天`,
+            title: lang === 'en' ? `${trip.shortTitleEn} · ${trip.days} days` : `${trip.shortTitle} · ${trip.days}天`,
             depart: trip.depart,
             city: trip.departCity,
-            status: "待确认",
+            status: lang === 'en' ? 'Pending' : '待确认',
             bookingType,
             travellerCount: bookingType === "company" ? travellers.length : 1,
             travellers: bookingType === "company" ? travellers.map(t => ({ name: t.name, passport: t.passport })) : undefined,
@@ -210,8 +214,12 @@ Page({
             contactPerson: bookingType === "company" ? companyInfo.contact : undefined,
             deposit: totalDeposit,
             balance: trip.memberPrice * (bookingType === "company" ? travellers.length : 1) - totalDeposit,
-            balanceDue: "出发前14天",
-            checklist: [
+            balanceDue: lang === 'en' ? '14 days before departure' : '出发前14天',
+            checklist: lang === 'en' ? [
+              { label: "Passport valid for 6+ months", done: false },
+              { label: "Yellow fever vaccination certificate", done: false },
+              { label: "Visa materials (photo + itinerary)", done: false }
+            ] : [
               { label: "护照有效期6个月以上", done: false },
               { label: "黄热病疫苗证书", done: false },
               { label: "落地签材料（照片+行程）", done: false }

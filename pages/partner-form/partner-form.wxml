@@ -2,27 +2,27 @@
 <view class="page-wrap pf-wrap">
 
   <!-- Company info -->
-  <view class="sec-title">企业信息</view>
+  <view class="sec-title">{{i18n.companyInfo}}</view>
   <view class="card pf-form">
     <view class="pf-field">
-      <view class="pf-label">企业名称 <text class="pf-req">*</text></view>
-      <input class="pf-input" placeholder="请输入公司全称" value="{{form.company}}" bindinput="onInput" data-k="company"/>
+      <view class="pf-label">{{i18n.companyName}} <text class="pf-req">*</text></view>
+      <input class="pf-input" placeholder="{{i18n.companyNamePlaceholder}}" value="{{form.company}}" bindinput="onInput" data-k="company"/>
     </view>
     <view class="pf-field">
-      <view class="pf-label">联系人 / 职务 <text class="pf-req">*</text></view>
-      <input class="pf-input" placeholder="如：李总 · 外贸部总监" value="{{form.contact}}" bindinput="onInput" data-k="contact"/>
+      <view class="pf-label">{{i18n.contactPerson}} <text class="pf-req">*</text></view>
+      <input class="pf-input" placeholder="{{i18n.contactPersonPlaceholder}}" value="{{form.contact}}" bindinput="onInput" data-k="contact"/>
     </view>
     <view class="pf-field pf-field-last">
-      <view class="pf-label">微信号 <text class="pf-req">*</text></view>
-      <input class="pf-input" placeholder="用于顾问添加对接" value="{{form.wechat}}" bindinput="onInput" data-k="wechat"/>
+      <view class="pf-label">{{i18n.wechatId}} <text class="pf-req">*</text></view>
+      <input class="pf-input" placeholder="{{i18n.wechatIdPlaceholder}}" value="{{form.wechat}}" bindinput="onInput" data-k="wechat"/>
     </view>
   </view>
 
   <!-- Product & intent -->
-  <view class="sec-title">产品与意向</view>
+  <view class="sec-title">{{i18n.productIntent}}</view>
   <view class="card pf-tags-card">
 
-    <view class="pf-tag-label">产品类目 <text class="pf-req">*</text>（多选）</view>
+    <view class="pf-tag-label">{{i18n.productCategory}} <text class="pf-req">*</text>{{i18n.multiSelect}}</view>
     <view class="pf-tags">
       <view class="pf-tag {{categories.indexOf(item)>-1?'on':''}}"
             wx:for="{{categoryOptions}}" wx:key="*this"
@@ -31,7 +31,7 @@
       </view>
     </view>
 
-    <view class="pf-tag-label pf-mt">合作方式 <text class="pf-req">*</text>（多选）</view>
+    <view class="pf-tag-label pf-mt">{{i18n.cooperationMode}} <text class="pf-req">*</text>{{i18n.multiSelect}}</view>
     <view class="pf-tags">
       <view class="pf-tag {{modes.indexOf(item)>-1?'on':''}}"
             wx:for="{{modeOptions}}" wx:key="*this"
@@ -40,7 +40,7 @@
       </view>
     </view>
 
-    <view class="pf-tag-label pf-mt">目标市场</view>
+    <view class="pf-tag-label pf-mt">{{i18n.targetMarket}}</view>
     <view class="pf-tags">
       <view class="pf-tag pf-tag-gold {{markets.indexOf(item)>-1?'on-gold':''}}"
             wx:for="{{marketOptions}}" wx:key="*this"
@@ -52,11 +52,11 @@
 
   <!-- Cross-sell -->
   <view class="card pf-tip">
-    <text class="pf-tip-text"><image class="pf-tip-ico" src="/images/icon-lightbulb.svg" mode="aspectFit"/> 提示：报名参加我们的非洲考察团，可实地走访您产品的目标市场，并与当地渠道商面对面 — 申请合作的企业享考察团 <text class="pf-tip-hi">会员价</text>。</text>
+    <text class="pf-tip-text"><image class="pf-tip-ico" src="/images/icon-lightbulb.svg" mode="aspectFit"/> {{i18n.tip}}</text>
   </view>
 
   <view class="pf-submit">
-    <view class="btn btn-primary btn-block" bindtap="submit">提交申请 · 顾问48小时内联系</view>
+    <view class="btn btn-primary btn-block" bindtap="submit">{{i18n.submit}}</view>
   </view>
 
 </view>

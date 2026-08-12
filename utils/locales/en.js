@@ -241,7 +241,11 @@ module.exports = {
     submitTime: 'Submitted',
     noApplications: 'No applications yet',
     noApplicationsDesc: 'Submit your partnership intent to bring your products to African markets.',
-    learnCooperation: 'Learn More'
+    learnCooperation: 'Learn More',
+    personUnit: 'pax',
+    contactPerson: 'Contact',
+    longPressSave: 'Long press to save to album',
+    saveImage: 'Save Image'
   },
 
   // Partner form page

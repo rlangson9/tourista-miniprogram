@@ -241,7 +241,11 @@ module.exports = {
     submitTime: '提交时间',
     noApplications: '还没有合作申请',
     noApplicationsDesc: '提交合作意向，让您的产品走进非洲市场。',
-    learnCooperation: '了解合作'
+    learnCooperation: '了解合作',
+    personUnit: '人',
+    contactPerson: '联系人',
+    longPressSave: '长按图片可保存到相册',
+    saveImage: '保存图片'
   },
 
   // Partner form page

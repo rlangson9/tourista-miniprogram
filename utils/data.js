@@ -27,6 +27,7 @@ const TRIPS = [
     normalPrice: 38000,
     deposit: 8000,
     seatsLeft: 6,
+    seatsTotal: 16,
     status: "报名中",
     statusEn: "Registering",
     statusTag: "tag-primary",
@@ -79,6 +80,7 @@ const TRIPS = [
     normalPrice: 16800,
     deposit: 4000,
     seatsLeft: 12,
+    seatsTotal: 20,
     status: "报名中",
     statusEn: "Registering",
     statusTag: "tag-green",
@@ -129,6 +131,7 @@ const TRIPS = [
     normalPrice: 50800,
     deposit: 10000,
     seatsLeft: 8,
+    seatsTotal: 16,
     status: "报名中",
     statusEn: "Registering",
     statusTag: "tag-accent",
@@ -195,5 +198,6 @@ module.exports = {
   COOPERATION_MODES_EN,
   TARGET_MARKETS,
   TARGET_MARKETS_EN,
-  getTrip(id) { return TRIPS.find(t => t.id === id); }
+  getTrip(id) { return TRIPS.find(t => t.id === id); },
+  getTrips() { return TRIPS; }
 };

@@ -22,7 +22,7 @@
   <view class="steps">
     <block wx:for="{{steps}}" wx:key="n">
       <view class="stp">
-        <view class="stp .sl"></view>
+        <view class="stp sl"></view>
         <view class="sn" style="background: {{item.color}};">{{item.n}}</view>
         <view class="sc">
           <view class="sc-a">{{item.text}}</view>

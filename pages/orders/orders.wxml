@@ -2,8 +2,8 @@
 <view class="page-wrap">
 
   <view class="ordertab">
-    <view class="ot {{tab===0?'active':''}}" bindtap="switchTab" data-i="0">考察团</view>
-    <view class="ot {{tab===1?'active':''}}" bindtap="switchTab" data-i="1">合作申请</view>
+    <view class="ot {{tab===0?'active':''}}" bindtap="switchTab" data-i="0">{{i18n.trips}}</view>
+    <view class="ot {{tab===1?'active':''}}" bindtap="switchTab" data-i="1">{{i18n.applications}}</view>
   </view>
 
   <!-- Trip orders -->
@@ -15,31 +15,31 @@
             <text class="order-title">{{item.title}}</text>
             <view wx:if="{{item.bookingType === 'company'}}" class="order-company">
               <text class="company-badge">{{item.companyName}}</text>
-              <text class="traveller-count">{{item.travellerCount}}人</text>
+              <text class="traveller-count">{{item.travellerCount}}{{i18n.personUnit || '人'}}</text>
             </view>
           </view>
-          <text class="tag {{item.status==='已确认'?'tag-success':'tag-accent'}}">{{item.status}}</text>
+          <text class="tag {{item.status==='已确认' || item.status==='Confirmed' ? 'tag-success' : 'tag-accent'}}">{{item.status}}</text>
         </view>
         <view class="order-info">
-          <text wx:if="{{item.bookingType === 'company' && item.contactPerson}}" class="order-contact">联系人：{{item.contactPerson}} · </text>
-          出发：{{item.depart}} · {{item.city}}{{'\n'}}订金已付 ¥{{item.depositText}} · 余款 ¥{{item.balanceText}}（{{item.balanceDue}}前）
+          <text wx:if="{{item.bookingType === 'company' && item.contactPerson}}" class="order-contact">{{i18n.contactPerson || '联系人'}}：{{item.contactPerson}} · </text>
+          {{i18n.departure}}：{{item.depart}} · {{item.city}}{{'\n'}}{{i18n.depositPaid}} ¥{{item.depositText}} · {{i18n.balance}} ¥{{item.balanceText}}（{{item.balanceDue}}{{i18n.before}}）
         </view>
         <view class="order-actions">
-          <view class="btn btn-ghost oa-btn" bindtap="viewItinerary">行程单</view>
-          <view class="btn btn-ghost oa-btn" bindtap="viewVisaMaterials">签证材料</view>
-          <view class="btn btn-primary oa-btn" bindtap="payBalance" data-id="{{item.id}}">支付余款</view>
+          <view class="btn btn-ghost oa-btn" bindtap="viewItinerary">{{i18n.itinerary}}</view>
+          <view class="btn btn-ghost oa-btn" bindtap="viewVisaMaterials">{{i18n.visaMaterials}}</view>
+          <view class="btn btn-primary oa-btn" bindtap="payBalance" data-id="{{item.id}}">{{i18n.payBalance}}</view>
         </view>
       </view>
 
       <!-- Prep checklist (first order) -->
-      <view class="sec-title">出行准备</view>
+      <view class="sec-title">{{i18n.prepChecklist}}</view>
       <view class="card checklist">
         <view class="ck-row {{index < firstChecklist.length-1 ? 'ck-border' : ''}}"
               wx:for="{{firstChecklist}}" wx:key="label">
           <text class="ck-mark {{item.done?'ck-done':''}}"><image class="ck-img" src="{{item.done?'/images/icon-check.svg':'/images/icon-circle.svg'}}" mode="aspectFit"/></text>
           <text class="ck-label">{{item.label}}</text>
           <text class="ck-status {{item.done?'ck-status-done':''}}">
-            {{item.done ? '已完成' : (item.info ? '查看 ›' : '待上传 ›')}}
+            {{item.done ? i18n.completed : (item.info ? i18n.view + ' ›' : i18n.upload + ' ›')}}
           </text>
         </view>
       </view>
@@ -48,18 +48,18 @@
       <view class="card group">
         <text class="group-ico"><image class="group-img" src="/images/icon-chat.svg" mode="aspectFit"/></text>
         <view class="flex1">
-          <view class="group-t">本期考察团微信群</view>
-          <view class="group-d">领队、翻译、全体团员已入群</view>
+          <view class="group-t">{{i18n.groupChat}}</view>
+          <view class="group-d">{{i18n.groupChatDesc}}</view>
         </view>
-        <view class="btn btn-green group-btn" bindtap="joinGroup">进群</view>
+        <view class="btn btn-green group-btn" bindtap="joinGroup">{{i18n.joinGroup}}</view>
       </view>
     </block>
 
     <view wx:else class="empty card">
       <view class="empty-ico"><image class="empty-img" src="/images/icon-airplane.svg" mode="aspectFit"/></view>
-      <view class="empty-t">还没有考察团订单</view>
-      <view class="empty-d">浏览近期考察团，开启您的非洲商业之旅。</view>
-      <view class="btn btn-primary empty-btn" bindtap="goTrips">查看考察团</view>
+      <view class="empty-t">{{i18n.noTrips}}</view>
+      <view class="empty-d">{{i18n.noTripsDesc}}</view>
+      <view class="btn btn-primary empty-btn" bindtap="goTrips">{{i18n.viewTrips}}</view>
     </view>
   </block>
 
@@ -69,19 +69,19 @@
       <view class="card appl" wx:for="{{applications}}" wx:key="id">
         <view class="order-head">
           <text class="order-title">{{item.company}}</text>
-          <text class="tag {{item.status==='顾问已对接'?'tag-success':'tag-accent'}}">{{item.status}}</text>
+          <text class="tag {{item.status==='顾问已对接' || item.status==='Advisor Connected' ? 'tag-success' : 'tag-accent'}}">{{item.status}}</text>
         </view>
-        <view class="appl-row"><text class="appl-k">产品类目</text><text class="appl-v">{{item.categoriesText}}</text></view>
-        <view class="appl-row"><text class="appl-k">合作方式</text><text class="appl-v">{{item.modesText}}</text></view>
-        <view class="appl-row"><text class="appl-k">目标市场</text><text class="appl-v">{{item.marketsText}}</text></view>
-        <view class="appl-row"><text class="appl-k">提交时间</text><text class="appl-v">{{item.createdAt}}</text></view>
+        <view class="appl-row"><text class="appl-k">{{i18n.productCategory}}</text><text class="appl-v">{{item.categoriesText}}</text></view>
+        <view class="appl-row"><text class="appl-k">{{i18n.cooperationMode}}</text><text class="appl-v">{{item.modesText}}</text></view>
+        <view class="appl-row"><text class="appl-k">{{i18n.targetMarket}}</text><text class="appl-v">{{item.marketsText}}</text></view>
+        <view class="appl-row"><text class="appl-k">{{i18n.submitTime}}</text><text class="appl-v">{{item.createdAt}}</text></view>
       </view>
     </block>
     <view wx:else class="empty card">
       <view class="empty-ico"><image class="empty-img" src="/images/icon-handshake.svg" mode="aspectFit"/></view>
-      <view class="empty-t">还没有合作申请</view>
-      <view class="empty-d">提交合作意向，让您的产品走进非洲市场。</view>
-      <view class="btn btn-primary empty-btn" bindtap="goBusiness">了解合作</view>
+      <view class="empty-t">{{i18n.noApplications}}</view>
+      <view class="empty-d">{{i18n.noApplicationsDesc}}</view>
+      <view class="btn btn-primary empty-btn" bindtap="goBusiness">{{i18n.learnCooperation}}</view>
     </view>
   </block>
 
@@ -89,7 +89,7 @@
   <view wx:if="{{showQRModal}}" class="qr-modal" bindtap="closeQRModal">
     <view class="qr-modal-content" catchtap="">
       <view class="qr-modal-header">
-        <text class="qr-modal-title">加入考察团微信群</text>
+        <text class="qr-modal-title">{{i18n.groupChat}}</text>
         <view class="qr-modal-close" bindtap="closeQRModal">×</view>
       </view>
       <view class="qr-modal-body">
@@ -97,10 +97,10 @@
         <view class="qr-code-wrap">
           <image class="qr-code-img" src="{{qrCodeUrl}}" mode="aspectFit" bindlongpress="saveQRCode"/>
         </view>
-        <text class="qr-modal-tip">长按图片可保存到相册</text>
+        <text class="qr-modal-tip">{{i18n.longPressSave || 'Long press to save to album'}}</text>
       </view>
       <view class="qr-modal-footer">
-        <view class="btn btn-primary qr-modal-btn" bindtap="saveQRCode">保存图片</view>
+        <view class="btn btn-primary qr-modal-btn" bindtap="saveQRCode">{{i18n.saveImage || 'Save Image'}}</view>
       </view>
     </view>
   </view>
