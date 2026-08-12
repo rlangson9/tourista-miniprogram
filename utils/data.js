@@ -118,7 +118,7 @@ const TRIPS = [
     id: "both",
     flag: "ZW+ZA",
     flagImage: "/images/flag-both.png",
-    bannerImage: "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=African%20safari%20savanna%20panorama%20with%20Victoria%20Falls%20waterfall%20mist%20in%20distance%20and%20Table%20Mountain%20silhouette%2C%20golden%20hour%20sunset%20light%2C%20acacia%20trees%2C%20travel%20tourism%20promotional%2C%20professional%20landscape%20photography%2C%20no%20people%2C%20no%20watermark&image_size=landscape_16_9",
+    bannerImage: "/images/banner-zimbabwe.jpg",
     country: "双国联报",
     countryEn: "Both Countries",
     title: "双国联报 · 津巴布韦 + 南非 12天",
