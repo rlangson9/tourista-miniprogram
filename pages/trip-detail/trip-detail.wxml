@@ -3,6 +3,8 @@
 
   <!-- Hero -->
   <view class="detail-hero" style="background: {{trip.gradient}};">
+    <image wx:if="{{trip.bannerImage}}" class="detail-hero-bg" src="{{trip.bannerImage}}" mode="aspectFill"/>
+    <view class="detail-hero-overlay" style="background: {{trip.bannerOverlay}};"></view>
     <image class="detail-hero-flag" src="{{trip.flagImage}}" mode="aspectFit"/>
     <view class="corridor">
       <image class="corridor-ico" src="/images/icon-info.svg" mode="aspectFit"/>

@@ -40,7 +40,7 @@
   bottom: 16rpx;
   width: 160rpx;
   height: 160rpx;
-  opacity: 0.25;
+  opacity: 0.9;
   z-index: 0;
   pointer-events: none;
 }

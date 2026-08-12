@@ -29,9 +29,6 @@
             <view class="mode-title">{{i18n.goToAfrica}}</view>
             <view class="mode-sub">{{i18n.goToAfricaDesc}}</view>
           </view>
-          <view class="mode-go">
-            <image class="mode-go-sticker" src="/images/mascot-mira.png" mode="aspectFit"/>
-          </view>
         </view>
         <view class="mode mode-b" bindtap="goBusiness">
           <view class="mode-ic">
@@ -40,9 +37,6 @@
           <view class="mode-text">
             <view class="mode-title">{{i18n.doBusiness}}</view>
             <view class="mode-sub">{{i18n.doBusinessDesc}}</view>
-          </view>
-          <view class="mode-go">
-            <image class="mode-go-sticker" src="/images/mascot-bao.png" mode="aspectFit"/>
           </view>
         </view>
       </view>
@@ -62,6 +56,8 @@
       </view>
       <view class="dcard" wx:for="{{featuredTrips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
         <view class="dcard-img" style="background: {{item.gradient}};">
+          <image wx:if="{{item.bannerImage}}" class="dcard-bg" src="{{item.bannerImage}}" mode="aspectFill"/>
+          <view class="dcard-overlay" style="background: {{item.bannerOverlay}};"></view>
           <image class="dcard-flag" src="{{item.flagImage}}" mode="aspectFit"/>
           <view class="badge-ar">
             <image class="badge-ar-mascot" src="/images/mascot-lens.png" mode="aspectFit"/>
@@ -233,11 +229,11 @@
       <view class="story-detail-content">{{selectedStory.content}}</view>
       <view class="story-detail-actions">
         <view class="btn btn-primary story-detail-btn" catchtap="askAboutStory" data-id="{{selectedStory.id}}">
-          <image class="btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
+          <image class="btn-ico" src="/images/mascot-zola.png" mode="aspectFit"/>
           <text>{{i18n.askQuestion}}</text>
         </view>
         <view class="btn btn-secondary story-detail-btn" catchtap="contactTeam" data-id="{{selectedStory.id}}">
-          <image class="btn-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
+          <image class="btn-ico" src="/images/mascot-bao.png" mode="aspectFit"/>
           <text>{{i18n.contactTeam}}</text>
         </view>
       </view>
@@ -276,11 +272,11 @@
       </view>
       <view class="opp-detail-actions">
         <view class="btn btn-primary opp-detail-btn" catchtap="submitOpportunityIntent" data-id="{{selectedOpp.id}}">
-          <image class="btn-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
+          <image class="btn-ico" src="/images/mascot-bao.png" mode="aspectFit"/>
           <text>{{i18n.submitIntent}}</text>
         </view>
         <view class="btn btn-secondary opp-detail-btn" catchtap="askAboutOpp" data-id="{{selectedOpp.id}}">
-          <image class="btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
+          <image class="btn-ico" src="/images/mascot-zola.png" mode="aspectFit"/>
           <text>{{i18n.askQuestion}}</text>
         </view>
       </view>
@@ -323,11 +319,11 @@
           <view wx:if="{{item.budget}}" class="all-item-budget">{{i18n.budget}}：{{item.budget}}</view>
           <view class="all-item-actions">
             <view class="btn btn-primary all-item-btn" catchtap="submitOpportunityIntent" data-id="{{item.id}}">
-              <image class="btn-ico" src="/images/icon-handshake.svg" mode="aspectFit"/>
+              <image class="btn-ico" src="/images/mascot-bao.png" mode="aspectFit"/>
               <text>{{i18n.submitIntent}}</text>
             </view>
             <view class="btn btn-secondary all-item-btn" catchtap="askAboutOpp" data-id="{{item.id}}">
-              <image class="btn-ico" src="/images/icon-chat.svg" mode="aspectFit"/>
+              <image class="btn-ico" src="/images/mascot-zola.png" mode="aspectFit"/>
               <text>{{i18n.askQuestion}}</text>
             </view>
           </view>

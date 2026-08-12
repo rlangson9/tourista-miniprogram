@@ -118,6 +118,7 @@ view, text, scroll-view, navigator { box-sizing: border-box; margin: 0; padding:
 .btn-block { width: 100%; }
 .btn-small { height: 76rpx; font-size: 25rpx; }
 .btn-icon { gap: 12rpx; }
+.btn-ico { width: 44rpx; height: 44rpx; pointer-events: none; flex-shrink: 0; }
 
 .tag {
   display: inline-flex;

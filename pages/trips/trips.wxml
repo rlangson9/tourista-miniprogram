@@ -24,6 +24,8 @@
   <block wx:if="{{tab===0}}">
     <view class="card trip" wx:for="{{filteredTrips || trips}}" wx:key="id" bindtap="openTrip" data-id="{{item.id}}">
       <view class="trip-banner" style="background: {{item.gradient}};">
+        <image wx:if="{{item.bannerImage}}" class="trip-banner-bg" src="{{item.bannerImage}}" mode="aspectFill"/>
+        <view class="trip-banner-overlay" style="background: {{item.bannerOverlay}};"></view>
         <image class="trip-banner-flag" src="{{item.flagImage}}" mode="aspectFit"/>
         <view wx:if="{{item.ar}}" class="badge-ar">
           <image class="badge-ar-ico" src="/images/icon-fire.svg" mode="aspectFit"/>

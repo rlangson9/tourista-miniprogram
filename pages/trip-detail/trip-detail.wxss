@@ -12,6 +12,36 @@
   padding-top: calc(40rpx + env(safe-area-inset-top));
   position: relative;
   overflow: hidden;
+  min-height: 420rpx;
+}
+.detail-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.detail-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.detail-hero-sticker {
+  position: absolute;
+  left: 32rpx;
+  bottom: 16rpx;
+  width: 96rpx;
+  height: 96rpx;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.92;
+  filter: drop-shadow(0 6rpx 14rpx rgba(0,0,0,.3));
 }
 .detail-hero-flag {
   position: absolute;
@@ -20,9 +50,9 @@
   width: 180rpx;
   height: 90rpx;
   border-radius: 10rpx;
-  z-index: 1;
+  z-index: 4;
   opacity: 0.95;
-  box-shadow: 0 6rpx 18rpx rgba(0,0,0,.15);
+  box-shadow: 0 6rpx 18rpx rgba(0,0,0,.25);
   pointer-events: none;
 }
 .detail-hero::before {
@@ -34,6 +64,7 @@
   height: 300rpx;
   background: radial-gradient(circle, rgba(255,255,255,.15) 0%, transparent 70%);
   border-radius: 50%;
+  z-index: 2;
 }
 .detail-hero::after {
   content: '';
@@ -44,12 +75,13 @@
   height: 200rpx;
   background: radial-gradient(circle, rgba(255,140,66,.2) 0%, transparent 70%);
   border-radius: 50%;
+  z-index: 2;
 }
 .corridor {
   display: inline-flex;
   align-items: center;
   gap: 10rpx;
-  background: rgba(255,255,255,.2);
+  background: rgba(255,255,255,.22);
   color: #fff;
   font-size: 22rpx;
   font-weight: 700;
@@ -57,7 +89,8 @@
   border-radius: 999rpx;
   margin-bottom: 20rpx;
   position: relative;
-  z-index: 1;
+  z-index: 4;
+  backdrop-filter: blur(4rpx);
 }
 .corridor-ico { width: 24rpx; height: 24rpx; }
 .detail-title { 
@@ -65,20 +98,21 @@
   font-weight: 800; 
   line-height: 1.3;
   margin-top: 4rpx;
-  text-shadow: 0 4rpx 16rpx rgba(0,0,0,.25);
+  text-shadow: 0 4rpx 20rpx rgba(0,0,0,.45);
   position: relative;
-  z-index: 1;
+  z-index: 4;
   padding-right: 120rpx;
 }
 .detail-lead { 
   font-size: 26rpx; 
-  opacity: .92; 
+  opacity: .94; 
   margin-top: 14rpx;
   display: flex;
   align-items: center;
   gap: 10rpx;
   position: relative;
-  z-index: 1;
+  z-index: 4;
+  text-shadow: 0 2rpx 10rpx rgba(0,0,0,.4);
 }
 .rating-star { width: 28rpx; height: 28rpx; }
 .detail-mascot {
@@ -87,9 +121,9 @@
   bottom: -10rpx;
   width: 100rpx;
   height: 100rpx;
-  opacity: 0.5;
+  opacity: 0.6;
   pointer-events: none;
-  z-index: 0;
+  z-index: 3;
 }
 
 /* Fee card */
