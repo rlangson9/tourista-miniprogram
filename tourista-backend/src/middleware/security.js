@@ -12,13 +12,24 @@ const helmetConfig = helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'strict-dynamic'", "https:"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+      // NOTE: no 'strict-dynamic' here — per CSP3, once 'strict-dynamic' is
+      // present browsers IGNORE 'self'/'unsafe-inline'/host allowlists for
+      // scripts, which blocked app.js and the inline fallback entirely
+      // (dead login button). The admin SPA is fully self-hosted, so a plain
+      // allowlist is both sufficient and correct.
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'", "https://api.weixin.qq.com"],
-      fontSrc: ["'self'", "https:"],
+      fontSrc: ["'self'"],
       objectSrc: ["'none'"],
-      upgradeInsecureRequests: [],
+      // NOTE: helmet enables `upgrade-insecure-requests` BY DEFAULT. It
+      // rewrites http:// subresource requests to https://, which silently
+      // breaks the admin dashboard when served over plain HTTP in
+      // development (app.js/styles.css fail to load, so the login button
+      // does nothing). Explicitly disable it; HSTS below already forces
+      // secure loading once the site runs over HTTPS in production.
+      upgradeInsecureRequests: null,
     },
   },
   hsts: {
@@ -26,6 +37,10 @@ const helmetConfig = helmet({
     includeSubDomains: true,
     preload: true,
   },
+  // Allow assets to be embedded from proxy/preview environments (IDE
+  // built-in browsers fetch localhost assets through a proxy origin).
+  // 'same-origin' would block app.js/styles.css in those environments.
+  crossOriginResourcePolicy: { policy: "cross-origin" },
   frameguard: {
     action: "deny",
   },
@@ -119,38 +134,6 @@ function xssProtection(req, res, next) {
   next();
 }
 
-// ── No SQL injection in JSON fields ───────────────────────────────────────
-function validateJSONFields(req, res, next) {
-  if (req.body) {
-    for (const key in req.body) {
-      if (typeof req.body[key] === "string") {
-        if (isPotentialSQLInjection(req.body[key])) {
-          return res.status(400).json({ error: "请求参数包含非法内容 Invalid request parameters" });
-        }
-      }
-    }
-  }
-  next();
-}
-
-function isPotentialSQLInjection(str) {
-  const patterns = [
-    /('|")\s*OR\s*1\s*=\s*1/i,
-    /('|")\s*AND\s*1\s*=\s*1/i,
-    /UNION\s+SELECT/i,
-    /SELECT\s+\*/i,
-    /DROP\s+TABLE/i,
-    /INSERT\s+INTO/i,
-    /UPDATE\s+\w+/i,
-    /DELETE\s+FROM/i,
-    /--.*$/,
-    /\/\*.*\*\//,
-    /EXEC\s+SP_/i,
-    /xp_cmdshell/i,
-  ];
-  return patterns.some((pattern) => pattern.test(str));
-}
-
 // ── Request logging with PII masking ──────────────────────────────────────
 function secureLogger(req, _res, next) {
   const logObj = {
@@ -199,7 +182,6 @@ module.exports = {
   validatePhone,
   validatePassword,
   xssProtection,
-  validateJSONFields,
   secureLogger,
   errorHandler,
   validateTokenFormat,

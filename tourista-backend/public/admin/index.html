@@ -10,16 +10,23 @@
 
 <!-- LOGIN -->
 <div id="login" class="login-screen">
+  <button id="loginLangBtn" class="lang-toggle" type="button">English</button>
   <div class="login-card">
     <div class="login-brand">Tourista AR</div>
-    <div class="login-sub">管理后台 · Management Console</div>
+    <div class="login-sub" data-i18n="login.sub">管理后台 · Management Console</div>
     <div class="login-form">
-      <label>用户名 Username</label>
+      <label data-i18n="login.userLabel">用户名 Username</label>
       <input id="loginUser" type="text" placeholder="admin" autocomplete="username"/>
-      <label>密码 Password</label>
+      <label data-i18n="login.passLabel">密码 Password</label>
       <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password"/>
-      <button id="loginBtn" class="btn btn-primary btn-block">登录 Sign In</button>
+      <button id="loginBtn" type="button" class="btn btn-primary btn-block" data-i18n="login.signIn">登录 Sign In</button>
       <div id="loginError" class="login-error"></div>
+      <div id="scriptFail" class="login-error" style="display:none;margin-top:16px;padding:12px;background:#FFF3CD;border:1px solid #FFE69C;border-radius:8px;font-size:12px;line-height:1.6;color:#856404">
+        <b data-i18n="login.scriptFailTitle">⚠️ 脚本加载失败 / Script load failed</b><br/>
+        <span data-i18n="login.scriptFailBody">If you're using the Trae IDE built-in browser, please open</span><br/>
+        <code style="background:#fff;padding:2px 6px;border-radius:4px">http://localhost:3000/admin</code><br/>
+        <span data-i18n="login.scriptFailTail">in Chrome or Safari instead.</span>
+      </div>
     </div>
   </div>
 </div>
@@ -30,18 +37,19 @@
   <aside class="sidebar">
     <div class="side-brand">Tourista AR</div>
     <nav class="side-nav">
-      <a class="nav-item active" data-view="overview"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>概览 Overview</a>
-      <a class="nav-item" data-view="trips"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></span>行程管理 Trips</a>
-      <a class="nav-item" data-view="orders"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V7a3 3 0 0 1 6 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg></span>订单管理 Orders</a>
-      <a class="nav-item" data-view="partners"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></span>合作申请 Partners</a>
-      <a class="nav-item" data-view="stories"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>成功案例 Stories</a>
-      <a class="nav-item" data-view="opportunities"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>非洲商机 Opportunities</a>
-      <a class="nav-item" data-view="inquiries"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>用户咨询 Inquiries</a>
-      <a class="nav-item" data-view="notifications"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>客户通知 Notify</a>
+      <a class="nav-item active" data-view="overview"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span><span class="nav-label" data-i18n="nav.overview">概览</span></a>
+      <a class="nav-item" data-view="trips"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></span><span class="nav-label" data-i18n="nav.trips">行程管理</span></a>
+      <a class="nav-item" data-view="orders"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V7a3 3 0 0 1 6 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg></span><span class="nav-label" data-i18n="nav.orders">订单管理</span></a>
+      <a class="nav-item" data-view="partners"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg></span><span class="nav-label" data-i18n="nav.partners">合作申请</span></a>
+      <a class="nav-item" data-view="stories"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span><span class="nav-label" data-i18n="nav.stories">成功案例</span></a>
+      <a class="nav-item" data-view="opportunities"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span class="nav-label" data-i18n="nav.opportunities">非洲商机</span></a>
+      <a class="nav-item" data-view="inquiries"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><span class="nav-label" data-i18n="nav.inquiries">用户咨询</span></a>
+      <a class="nav-item" data-view="notifications"><span class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span><span class="nav-label" data-i18n="nav.notifications">客户通知</span></a>
     </nav>
     <div class="side-foot">
+      <button id="sideLangBtn" class="lang-toggle lang-toggle-side" type="button">English</button>
       <div id="sideUser" class="side-user"></div>
-      <a id="logoutBtn" class="side-logout">退出登录 Logout</a>
+      <a id="logoutBtn" class="side-logout" data-i18n="login.logout">退出登录</a>
     </div>
   </aside>
 
@@ -66,5 +74,48 @@
 <div id="toast" class="toast hidden"></div>
 
 <script src="app.js"></script>
+<script>
+// Fallback login handler — works even if app.js fails to load
+(function() {
+  var L = (localStorage.getItem("tourista_admin_lang") === "en")
+    ? { needUser: "Please enter username and password", logging: "Signing in…", fail: "Sign-in failed", net: "Network error" }
+    : { needUser: "请输入用户名和密码", logging: "登录中…", fail: "登录失败", net: "网络错误 Network error" };
+  function fallbackLogin() {
+    var username = document.getElementById("loginUser").value.trim();
+    var password = document.getElementById("loginPass").value;
+    var errEl = document.getElementById("loginError");
+    errEl.textContent = "";
+    if (!username || !password) { errEl.textContent = L.needUser; return; }
+    errEl.textContent = L.logging;
+    fetch("/admin/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: username, password: password })
+    }).then(function(res) {
+      return res.json().then(function(data) {
+        if (!res.ok) throw new Error(data.error || L.fail);
+        localStorage.setItem("tourista_admin_token", data.accessToken);
+        localStorage.setItem("tourista_admin_user", JSON.stringify(data.admin));
+        location.reload();
+      });
+    }).catch(function(e) {
+      errEl.textContent = e.message || L.net;
+    });
+  }
+  function attach() {
+    var btn = document.getElementById("loginBtn");
+    if (btn && typeof window.login === "undefined") {
+      btn.onclick = fallbackLogin;
+      var pass = document.getElementById("loginPass");
+      if (pass) pass.addEventListener("keydown", function(e) { if (e.key === "Enter") fallbackLogin(); });
+    }
+    var sf = document.getElementById("scriptFail");
+    if (sf) sf.style.display = "none";
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", attach);
+  } else { attach(); }
+})();
+</script>
 </body>
 </html>

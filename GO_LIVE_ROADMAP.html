@@ -1,0 +1,107 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;">
+<div style="font-family:'Roboto','PingFang SC','Segoe UI',Arial,sans-serif;color:#1A2233;box-sizing:border-box;line-height:1.5;">
+
+  <!-- Title -->
+  <div style="font-size:15px;font-weight:600;color:#1A2233;margin-bottom:4px;">Tourista AR Mini Program — Go-Live Roadmap</div>
+  <div style="font-size:12px;color:#6B7280;margin-bottom:14px;">7 phases · start the 3 long-lead items on Day 1 · best case ~2–4 weeks total</div>
+
+  <!-- Long-lead strip -->
+  <div style="border:1px solid #E9D9B8;background:#FFF8E6;border-radius:12px;padding:12px;margin-bottom:14px;">
+    <div style="font-size:12px;font-weight:700;color:#B26A00;margin-bottom:8px;">⚠ Start on Day 1 — these run in parallel and take longest (government review)</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;box-sizing:border-box;">
+      <div style="flex:1 1 200px;min-width:0;background:#FFFFFF;border:1px solid #E9E2D6;border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+        <div style="font-size:12px;font-weight:600;color:#1A2233;">① Domain ICP filing</div>
+        <div style="font-size:11px;color:#6B7280;margin-top:2px;">api.touristaar.com · subject must match · <b>7–20 wd</b></div>
+      </div>
+      <div style="flex:1 1 200px;min-width:0;background:#FFFFFF;border:1px solid #E9E2D6;border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+        <div style="font-size:12px;font-weight:600;color:#1A2233;">② Mini program 备案</div>
+        <div style="font-size:11px;color:#6B7280;margin-top:2px;">MP console [去备案] · SMS in 24h · <b>~1–2 wd + bureau</b></div>
+      </div>
+      <div style="flex:1 1 200px;min-width:0;background:#FFFFFF;border:1px solid #E9E2D6;border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+        <div style="font-size:12px;font-weight:600;color:#1A2233;">③ Service category</div>
+        <div style="font-size:11px;color:#6B7280;margin-top:2px;">旅游类目 needs Travel Agency Licence — confirm early</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phases -->
+  <div style="border:1px solid #E9E2D6;background:#FFFFFF;border-radius:12px;padding:12px;box-sizing:border-box;">
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">0</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">Preflight &amp; accounts</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Verify mini program is 企业认证 (needed for Pay) · confirm merchant mchid · server ready</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">0.5 day</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">1</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">Server · domain · HTTPS</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Buy mainland server → DNS api.touristaar.com → deploy backend (.env) → Nginx → Let's Encrypt → <code style="font-size:11px;background:#F0EBE0;padding:0 4px;border-radius:4px;">curl https://api.touristaar.com/health</code></div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">1–2 days</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">2</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">ICP filings <span style="font-size:11px;color:#B26A00;font-weight:700;">(longest — parallel)</span></div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Domain filing (cloud console) + mini program 备案 (MP console). Both must match the company subject exactly.</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#B26A00;font-weight:600;white-space:nowrap;">2–4 wks</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">3</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">MP console setup</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Whitelist server domains (request/upload/download = https://api.touristaar.com) · AppSecret → .env · 服务类目 + licence · 用户隐私保护指引 · bind merchant AppID + JSAPI支付</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">0.5–1 day</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">4</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">Finish the code <span style="font-size:11px;color:#C0392B;font-weight:700;">(only 2 tasks left)</span></div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">app.js <code style="font-size:11px;background:#F0EBE0;padding:0 4px;border-radius:4px;">baseUrl → https://api.touristaar.com</code> · implement WeChat Pay v3 JSAPI in <code style="font-size:11px;background:#F0EBE0;padding:0 4px;border-radius:4px;">wechat.js</code> + verify/decrypt in <code style="font-size:11px;background:#F0EBE0;padding:0 4px;border-radius:4px;">/api/payment/notify</code> · add Pay creds to .env</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">1–2 days</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">5</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">Test on 体验版 (trial)</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Upload in DevTools → set as trial version → real-device test: login · booking · real ¥0.01 payment · partner form · iOS + Android</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">1–2 days</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#D85A30;color:#FFFFFF;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">6</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;">Submit for review</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Version desc + screenshots + test account → 提交审核 → fix rejections (category / privacy / flow) → approve</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">1–3 wd</div>
+    </div>
+    <div style="text-align:center;color:#D85A30;font-size:14px;margin:2px 0;">↓</div>
+    <div style="display:flex;gap:12px;box-sizing:border-box;">
+      <div style="flex:0 0 26px;height:26px;border-radius:50%;background:#EFA427;color:#1A2233;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;">7</div>
+      <div style="flex:1;min-width:0;box-sizing:border-box;">
+        <div style="font-size:13px;font-weight:600;color:#B26A00;">Release &amp; go live 🎉</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:2px;">Click 发布 → verify real order + logs + MP analytics → promote via QR code / official account → future updates re-submit</div>
+      </div>
+      <div style="flex:0 0 auto;font-size:11px;color:#0F9D58;font-weight:600;white-space:nowrap;">LIVE</div>
+    </div>
+  </div>
+
+  <!-- legend -->
+  <div style="font-size:11px;color:#6B7280;margin-top:10px;">Timeline = typical estimates (review-based, vary by province/account). "wd" = working days. Grey/red tags flag items that commonly block or delay.</div>
+</div>
+</div>
+</html>

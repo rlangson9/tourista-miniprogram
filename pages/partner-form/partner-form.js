@@ -66,34 +66,107 @@ Page({
       return;
     }
 
+    // ── Cross-locale translation ─────────────────────────────────────────
+    // The toggle store uses whichever display strings match the current UI
+    // language. Before sending to the backend we normalise so the
+    // Chinese-named column always holds Chinese text and the *_en column
+    // always holds English text (parallel arrays via data.js).
+    const findIndex = (arr, val) => {
+      const i = arr.indexOf(val);
+      return i >= 0 ? i : arr.findIndex(x => String(x).toLowerCase() === String(val).toLowerCase());
+    };
+    const pair = (zhArr, enArr, selected) => {
+      const zh = [], en = [];
+      for (const v of selected) {
+        let i = findIndex(zhArr, v);
+        if (i < 0) i = findIndex(enArr, v);
+        if (i >= 0) {
+          zh.push(zhArr[i]);
+          en.push(enArr[i]);
+        } else {
+          // Unknown value — keep as-is in both columns as best-effort fallback.
+          zh.push(v);
+          en.push(v);
+        }
+      }
+      return { zh, en };
+    };
+    const catPair = pair(data.PRODUCT_CATEGORIES, data.PRODUCT_CATEGORIES_EN, this.data.categories);
+    const modePair = pair(data.COOPERATION_MODES, data.COOPERATION_MODES_EN, this.data.modes);
+    const marketPair = pair(data.TARGET_MARKETS, data.TARGET_MARKETS_EN, this.data.markets);
+
     wx.showLoading({ title: lang === 'en' ? 'Submitting...' : '提交中...' });
 
-    // PRODUCTION: wx.request POST to your server with the form payload.
-    setTimeout(() => {
-      wx.hideLoading();
-
-      // push into the global store (demo)
-      app.globalData.partnerApplications.unshift({
-        id: "P" + Date.now(),
+    wx.request({
+      url: `${app.globalData.baseUrl}/api/partner-apps`,
+      method: 'POST',
+      header: app.getAuthHeader(),
+      data: {
         company,
-        categories: this.data.categories,
-        modes: this.data.modes,
-        markets: this.data.markets,
-        status: lang === 'en' ? 'Pending' : '待对接',
-        createdAt: new Date().toISOString().slice(0, 10).replace(/-/g, ".")
-      });
-
-      wx.showModal({
-        title: lang === 'en' ? 'Application Submitted' : '申请已提交',
-        content: lang === 'en'
-          ? 'Thank you for your interest! Our advisor will contact you via WeChat within 48 hours. Please accept the friend request.'
-          : '感谢您的合作意向！我们的顾问将在48小时内通过微信与您联系，请留意好友申请。',
-        showCancel: false,
-        confirmText: lang === 'en' ? 'OK' : '好的',
-        success: () => {
-          wx.navigateBack();
+        companyEn: this.data.form.companyEn || "",
+        contact,
+        wechat,
+        phone: this.data.form.phone || "",
+        categories: catPair.zh,
+        categoriesEn: catPair.en,
+        modes: modePair.zh,
+        modesEn: modePair.en,
+        markets: marketPair.zh,
+        marketsEn: marketPair.en
+      },
+      success: (resp) => {
+        wx.hideLoading();
+        if (resp.statusCode === 201 && resp.data) {
+          // Real application created in DB
+          app.globalData.partnerApplications.unshift({
+            id: resp.data.id,
+            company,
+            categories: this.data.categories,
+            modes: this.data.modes,
+            markets: this.data.markets,
+            status: lang === 'en' ? 'Pending' : '待对接',
+            createdAt: new Date().toISOString().slice(0, 10).replace(/-/g, ".")
+          });
+          this._showSuccessModal(lang);
+        } else {
+          this._showErrorModal(lang, resp.data && resp.data.error);
         }
-      });
-    }, 900);
+      },
+      fail: () => {
+        wx.hideLoading();
+        // Backend offline — fall back to local-only application
+        app.globalData.partnerApplications.unshift({
+          id: "P" + Date.now(),
+          company,
+          categories: this.data.categories,
+          modes: this.data.modes,
+          markets: this.data.markets,
+          status: lang === 'en' ? 'Pending' : '待对接',
+          createdAt: new Date().toISOString().slice(0, 10).replace(/-/g, ".")
+        });
+        this._showSuccessModal(lang);
+      }
+    });
+  },
+
+  _showSuccessModal(lang) {
+    wx.showModal({
+      title: lang === 'en' ? 'Application Submitted' : '申请已提交',
+      content: lang === 'en'
+        ? 'Thank you for your interest! Our advisor will contact you via WeChat within 48 hours. Please accept the friend request.'
+        : '感谢您的合作意向！我们的顾问将在48小时内通过微信与您联系，请留意好友申请。',
+      showCancel: false,
+      confirmText: lang === 'en' ? 'OK' : '好的',
+      success: () => { wx.navigateBack(); }
+    });
+  },
+
+  _showErrorModal(lang, errorMsg) {
+    wx.showModal({
+      title: lang === 'en' ? 'Submission Failed' : '提交失败',
+      content: errorMsg || (lang === 'en' ? 'Please try again later' : '请稍后重试'),
+      showCancel: false,
+      confirmText: lang === 'en' ? 'OK' : '好的'
+    });
   }
 });

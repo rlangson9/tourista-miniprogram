@@ -6,6 +6,8 @@ App({
     lang: 'zh',
     // Logged-in user
     user: { loggedIn: false, name: '', nameEn: '', avatar: '', isMember: false, isVerifiedCompany: false, company: '', companyEn: '', memberSaved: 0 },
+    // JWT token from backend (stored separately, not persisted in user object)
+    token: '',
     // Trip orders placed by this user
     tripOrders: [],
     // Business / partnership applications
@@ -17,8 +19,70 @@ App({
     this.globalData.lang = i18n.initLanguage();
     // Load user from storage
     this.loadUserFromStorage();
-    // Load user data (orders, applications)
-    this.loadUserData();
+    // Load token from storage
+    this.loadTokenFromStorage();
+    // Silent login: call wx.login() → send code to backend → store JWT token + openid
+    this.silentLogin();
+  },
+
+  // Silent login — gets openid + JWT token on app launch without any user interaction.
+  silentLogin() {
+    wx.login({
+      success: (res) => {
+        if (!res.code) { this.loadUserData(); return; }
+        wx.request({
+          url: `${this.globalData.baseUrl}/api/login`,
+          method: 'POST',
+          data: { code: res.code, type: 'wechat' },
+          success: (loginRes) => {
+            if (loginRes.data && loginRes.data.user && loginRes.data.user.openid) {
+              // Store the real openid in globalData
+              this.globalData.user.openid = loginRes.data.user.openid;
+              // Store the JWT token
+              if (loginRes.data.token) {
+                this.globalData.token = loginRes.data.token;
+                this.saveTokenToStorage(loginRes.data.token);
+              }
+              // If user was already logged in (from storage), persist the openid
+              if (this.globalData.user.loggedIn) {
+                this.saveUserToStorage(this.globalData.user);
+              }
+              console.log('[Tourista] Silent login OK, openid:', loginRes.data.user.openid);
+            }
+            // Now load user data (orders, applications) with the token
+            this.loadUserData();
+          },
+          fail: () => {
+            // Backend offline — fall back to mock/local data
+            this.loadUserData();
+          }
+        });
+      },
+      fail: () => {
+        // wx.login failed — fall back to mock/local data
+        this.loadUserData();
+      }
+    });
+  },
+
+  // ── Token storage ────────────────────────────────────────────────────────
+  loadTokenFromStorage() {
+    try {
+      const token = wx.getStorageSync('tourista_token');
+      if (token) this.globalData.token = token;
+    } catch (e) {}
+  },
+
+  saveTokenToStorage(token) {
+    try {
+      wx.setStorageSync('tourista_token', token);
+    } catch (e) {}
+  },
+
+  // Returns Authorization header object for wx.request calls.
+  // Returns empty object if no token (allows public endpoints to work).
+  getAuthHeader() {
+    return this.globalData.token ? { 'Authorization': `Bearer ${this.globalData.token}` } : {};
   },
 
   loadUserFromStorage() {
@@ -36,7 +100,7 @@ App({
     } catch (e) {}
   },
 
-  login(userInfo) {
+  login(userInfo, token) {
     const user = {
       loggedIn: true,
       name: userInfo.name || '微信用户',
@@ -47,20 +111,30 @@ App({
       company: userInfo.company || '',
       companyEn: userInfo.companyEn || '',
       memberSaved: userInfo.memberSaved || 0,
-      openid: userInfo.openid || ''
+      // Preserve openid from silent login if login response doesn't include one
+      openid: userInfo.openid || this.globalData.user.openid || ''
     };
     this.globalData.user = user;
     this.saveUserToStorage(user);
+    // Store the JWT token if provided (e.g. from phone login)
+    if (token) {
+      this.globalData.token = token;
+      this.saveTokenToStorage(token);
+    }
     this.loadUserData();
   },
 
   logout() {
-    const defaultUser = { loggedIn: false, name: '', nameEn: '', avatar: '', isMember: false, isVerifiedCompany: false, company: '', companyEn: '', memberSaved: 0 };
+    // Keep the openid after logout — it's the device's WeChat identity
+    const openid = this.globalData.user.openid || '';
+    const defaultUser = { loggedIn: false, name: '', nameEn: '', avatar: '', isMember: false, isVerifiedCompany: false, company: '', companyEn: '', memberSaved: 0, openid };
     this.globalData.user = defaultUser;
+    this.globalData.token = '';
     this.globalData.tripOrders = [];
     this.globalData.partnerApplications = [];
     try {
       wx.removeStorageSync('tourista_user');
+      wx.removeStorageSync('tourista_token');
       wx.removeStorageSync('tourista_orders');
       wx.removeStorageSync('tourista_applications');
     } catch (e) {}
@@ -68,17 +142,24 @@ App({
 
   loadUserData() {
     const user = this.globalData.user;
-    if (!user.loggedIn) {
-      // Load mock data for demo
+    if (!user.loggedIn || !this.globalData.token) {
+      // Not logged in or no token — load mock data for demo
       this.loadMockData();
       return;
     }
-    
+
     wx.request({
       url: `${this.globalData.baseUrl}/api/user/profile`,
       method: 'GET',
-      header: { 'X-Openid': user.openid || 'mock' },
+      header: this.getAuthHeader(),
       success: (res) => {
+        if (res.statusCode === 401) {
+          // Token expired — clear and fall back to mock
+          this.globalData.token = '';
+          try { wx.removeStorageSync('tourista_token'); } catch (e) {}
+          this.loadMockData();
+          return;
+        }
         if (res.data && res.data.user) {
           const updatedUser = { ...user, ...res.data.user };
           this.globalData.user = updatedUser;

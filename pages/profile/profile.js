@@ -2,6 +2,16 @@
 const app = getApp();
 const i18n = require('../../utils/i18n.js');
 
+// Real team photos — drop the actual photo files into images/team/
+// (raymond.jpg, blessed.jpg, sandra.jpg, elliot.jpg). If a file is
+// missing, the card falls back to an initials avatar (see onTeamPhotoError).
+const TEAM_PHOTOS = [
+  '/images/team/raymond.jpg',
+  '/images/team/blessed.jpg',
+  '/images/team/sandra.jpg',
+  '/images/team/elliot.jpg'
+];
+
 Page({
   data: {
     user: {},
@@ -18,7 +28,9 @@ Page({
     phone: '',
     code: '',
     codeSent: false,
-    countdown: 0
+    countdown: 0,
+    showAbout: false,
+    teamMembers: []
   },
 
   onLoad() {
@@ -37,13 +49,27 @@ Page({
   loadTranslations() {
     const lang = app.getLang();
     const translations = i18n.getPageTranslations('profile');
+    const teamMembers = [
+      { id: 1, photo: TEAM_PHOTOS[0], photoFailed: false, initial: 'R', name: translations.teamMember1Name, role: translations.teamMember1Role, bio: translations.teamMember1Bio || '' },
+      { id: 2, photo: TEAM_PHOTOS[1], photoFailed: false, initial: 'B', name: translations.teamMember2Name, role: translations.teamMember2Role, bio: translations.teamMember2Bio || '' },
+      { id: 3, photo: TEAM_PHOTOS[2], photoFailed: false, initial: 'S', name: translations.teamMember3Name, role: translations.teamMember3Role, bio: translations.teamMember3Bio || '' },
+      { id: 4, photo: TEAM_PHOTOS[3], photoFailed: false, initial: 'E', name: translations.teamMember4Name, role: translations.teamMember4Role, bio: translations.teamMember4Bio || '' }
+    ];
     this.setData({
       i18n: translations,
+      teamMembers,
       langDisplay: lang === 'zh' ? 'English' : '中文',
-      footerText: lang === 'zh' 
-        ? '上海旅境智能科技有限公司'
-        : 'Shanghai Lujing Intelligent Technology Co., Ltd.'
+      footerText: 'Tourista AR'
     });
+  },
+
+  // If a team photo file is missing, show an initials avatar instead
+  onTeamPhotoError(e) {
+    const id = e.currentTarget.dataset.id;
+    const teamMembers = this.data.teamMembers.map(m =>
+      m.id === id ? Object.assign({}, m, { photoFailed: true }) : m
+    );
+    this.setData({ teamMembers });
   },
 
   loadUserData() {
@@ -109,27 +135,39 @@ Page({
   },
 
   about() {
+    this.setData({ showAbout: true });
+  },
+
+  closeAbout() {
+    this.setData({ showAbout: false });
+  },
+
+  // Copy a piece of contact info (label + value are passed via data-* on the target)
+  copyContact(e) {
     const lang = app.getLang();
-    wx.showModal({
-      title: lang === 'zh' ? '关于我们' : 'About Us',
-      content: lang === 'zh' 
-        ? 'Tourista AR 是上海旅境智能科技有限公司自主研发的一站式中非商旅服务平台。我们专注于为中国企业和旅行者提供专业的非洲商务考察、投资对接与跨境贸易服务。'
-        : 'Tourista AR is a one-stop China-Africa business travel service platform independently developed by Shanghai Lujing Intelligent Technology Co., Ltd. We specialize in providing professional African business tours, investment matching, and cross-border trade services for Chinese enterprises and travelers.',
-      showCancel: false,
-      confirmText: lang === 'zh' ? '了解更多' : 'Learn More',
+    const { text, label } = e.currentTarget.dataset;
+    if (!text) return;
+    wx.setClipboardData({
+      data: text,
       success: () => {
-        wx.setClipboardData({
-          data: 'https://www.touristaar.com',
-          success: () => {
-            wx.showToast({
-              title: lang === 'zh' ? '网址已复制，请粘贴到浏览器打开' : 'URL copied, paste in browser',
-              icon: 'none'
-            });
-          }
+        wx.showToast({
+          title: lang === 'zh' ? `已复制${label || ''}` : `${label || ''} copied`,
+          icon: 'none'
         });
       }
     });
   },
+
+  // Call the service hotline — take the first phone number if two are listed
+  callHotline() {
+    const raw = (this.data.i18n.hotlineValue || '').split(/\s*[\/／]\s*/)[0];
+    const phone = raw.replace(/[^0-9+]/g, '');
+    if (!phone) return;
+    wx.makePhoneCall({ phoneNumber: phone });
+  },
+
+  // Prevent event propagation (used by modals via catchtap)
+  noop() {},
 
   showLoginModal() {
     this.setData({ showLoginModal: true, showPhoneForm: false });
@@ -154,7 +192,7 @@ Page({
             success: (loginRes) => {
               wx.hideLoading();
               if (loginRes.data && loginRes.data.user) {
-                app.login(loginRes.data.user);
+                app.login(loginRes.data.user, loginRes.data.token);
                 this.closeLoginModal();
                 this.loadUserData();
                 wx.showToast({ title: lang === 'zh' ? '登录成功' : 'Login successful', icon: 'success' });
@@ -287,7 +325,7 @@ Page({
       success: (res) => {
         wx.hideLoading();
         if (res.data && res.data.user) {
-          app.login(res.data.user);
+          app.login(res.data.user, res.data.token);
           this.closeLoginModal();
           this.loadUserData();
           wx.showToast({ title: lang === 'zh' ? '登录成功' : 'Login successful', icon: 'success' });

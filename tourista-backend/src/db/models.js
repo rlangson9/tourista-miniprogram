@@ -674,6 +674,41 @@ const Admins = {
   get(id) { return db.prepare("SELECT id, username, role, created_at FROM admins WHERE id = ?").get(id); }
 };
 
+// ── VERIFICATION CODES (SMS phone verification) ─────────────────────────
+const VerificationCodes = {
+  set(phone, code, ttlMs = 5 * 60 * 1000) {
+    const expiresAt = new Date(Date.now() + ttlMs).toISOString();
+    db.prepare(`INSERT INTO verification_codes (phone, code, expires_at)
+      VALUES (?, ?, ?)
+      ON CONFLICT(phone) DO UPDATE SET code=excluded.code, attempts=0, expires_at=excluded.expires_at, created_at=datetime('now')`)
+      .run(phone, code, expiresAt);
+  },
+  get(phone) {
+    return db.prepare("SELECT * FROM verification_codes WHERE phone = ?").get(phone);
+  },
+  incrementAttempts(phone) {
+    db.prepare("UPDATE verification_codes SET attempts = attempts + 1 WHERE phone = ?").run(phone);
+  },
+  isValid(phone, code) {
+    const row = this.get(phone);
+    if (!row) return false;
+    if (Date.now() > new Date(row.expires_at).getTime()) return false;
+    if (row.attempts >= 5) return false; // brute-force protection
+    if (row.code !== code) {
+      this.incrementAttempts(phone);
+      return false;
+    }
+    return true;
+  },
+  consume(phone) {
+    db.prepare("DELETE FROM verification_codes WHERE phone = ?").run(phone);
+  },
+  purgeExpired() {
+    const now = new Date().toISOString();
+    db.prepare("DELETE FROM verification_codes WHERE expires_at < ?").run(now);
+  }
+};
+
 // ── STATS (dashboard overview) ──────────────────────────────────────────────
 const Stats = {
   overview() {
@@ -693,4 +728,4 @@ const Stats = {
   }
 };
 
-module.exports = { Trips, Orders, Partners, Reviews, SuccessStories, Opportunities, Inquiries, Notifications, Admins, Stats };
+module.exports = { Trips, Orders, Partners, Reviews, SuccessStories, Opportunities, Inquiries, Notifications, Admins, Stats, VerificationCodes };

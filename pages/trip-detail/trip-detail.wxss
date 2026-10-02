@@ -117,10 +117,10 @@
 .rating-star { width: 28rpx; height: 28rpx; }
 .detail-mascot {
   position: absolute;
-  right: 16rpx;
-  bottom: -10rpx;
-  width: 100rpx;
-  height: 100rpx;
+  right: 20rpx;
+  bottom: 16rpx;
+  width: 80rpx;
+  height: 80rpx;
   opacity: 0.6;
   pointer-events: none;
   z-index: 3;

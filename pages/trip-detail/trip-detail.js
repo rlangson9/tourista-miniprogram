@@ -43,9 +43,9 @@ Page({
     this.setData({ i18n: translations });
   },
 
-  loadTrip(id) {
+  async loadTrip(id) {
     const lang = app.getLang();
-    const t = data.getTrip(id || "zw");
+    const t = await data.fetchTrip(id || "zw");
     if (!t) return;
 
     const localizedItinerary = t.itinerary.map(item => ({
@@ -112,7 +112,7 @@ Page({
   },
 
   stopPropagation() {
-    // Prevent event from propagating to parent elements
+    // Prevent event from propagating to parent elements (e.g. modal overlay taps)
   },
 
   loadReviews(tripId) {
@@ -189,10 +189,6 @@ Page({
     this.setData({ showWriteReview: false });
   },
 
-  stopPropagation() {
-    // Prevent event from propagating to modal-overlay
-  },
-
   setRating(e) {
     this.setData({ 'newReview.rating': Number(e.currentTarget.dataset.rating) });
   },
@@ -245,6 +241,7 @@ Page({
     wx.request({
       url: `${app.globalData.baseUrl || 'http://localhost:3000'}/api/reviews`,
       method: 'POST',
+      header: app.getAuthHeader(),
       data: {
         tripId: trip.id,
         openid: user.openid || null,
@@ -281,6 +278,7 @@ Page({
     wx.request({
       url: `${app.globalData.baseUrl || 'http://localhost:3000'}/api/reviews/${reviewId}/like`,
       method: 'POST',
+      header: app.getAuthHeader(),
       data: { openid },
       success: (res) => {
         const reviews = this.data.reviews.map(r => 
@@ -312,6 +310,7 @@ Page({
     wx.request({
       url: `${app.globalData.baseUrl || 'http://localhost:3000'}/api/reviews/${reviewId}/comments`,
       method: 'POST',
+      header: app.getAuthHeader(),
       data: {
         openid: user.openid || null,
         userName: user.name || user.nameEn || 'Anonymous',

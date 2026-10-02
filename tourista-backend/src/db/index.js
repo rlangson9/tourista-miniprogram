@@ -206,6 +206,16 @@ CREATE INDEX IF NOT EXISTS idx_orders_status   ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_trip      ON orders(trip_id);
 CREATE INDEX IF NOT EXISTS idx_partner_status   ON partner_apps(status);
 CREATE INDEX IF NOT EXISTS idx_notif_target     ON notifications(target_id);
+
+CREATE TABLE IF NOT EXISTS verification_codes (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  phone         TEXT NOT NULL UNIQUE,
+  code          TEXT NOT NULL,
+  attempts      INTEGER NOT NULL DEFAULT 0,
+  expires_at    TEXT NOT NULL,                     -- ISO timestamp
+  created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_vcode_phone ON verification_codes(phone);
 `);
 
 try {

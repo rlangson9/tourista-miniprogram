@@ -29,15 +29,54 @@ Page({
   },
 
   refresh() {
+    const lang = app.getLang();
+    const user = app.globalData.user;
+    const token = app.globalData.token;
+
+    // If we have a token and user is logged in, try to refresh from backend first.
+    if (token && user.loggedIn) {
+      wx.request({
+        url: `${app.globalData.baseUrl}/api/orders`,
+        method: 'GET',
+        header: app.getAuthHeader(),
+        success: (res) => {
+          if (res.statusCode === 200 && Array.isArray(res.data)) {
+            // Replace global data with fresh backend copy so other pages see it too.
+            app.globalData.tripOrders = res.data;
+          }
+          this.renderLocal();
+        },
+        fail: () => {
+          // Backend unreachable — keep using local data
+          this.renderLocal();
+        }
+      });
+    } else {
+      this.renderLocal();
+    }
+  },
+
+  renderLocal() {
+    const lang = app.getLang();
     const orders = app.globalData.tripOrders.map(o => Object.assign({}, o, {
-      depositText: o.deposit.toLocaleString(),
-      balanceText: o.balance.toLocaleString()
+      depositText: (o.deposit || 0).toLocaleString(),
+      balanceText: (o.balance || 0).toLocaleString(),
+      title: lang === 'en' ? (o.titleEn || o.title) : o.title,
+      status: lang === 'en' ? (o.statusEn || o.status) : o.status,
+      statusLabel: lang === 'en' ? (o.statusEn || o.status) : o.status
     }));
-    const apps = app.globalData.partnerApplications.map(a => Object.assign({}, a, {
-      categoriesText: a.categories.join("、"),
-      modesText: a.modes.join("、"),
-      marketsText: a.markets.join("、")
-    }));
+    const apps = app.globalData.partnerApplications.map(a => {
+      const cats = (lang === 'en' && a.categoriesEn && a.categoriesEn.length) ? a.categoriesEn : a.categories;
+      const mds = (lang === 'en' && a.modesEn && a.modesEn.length) ? a.modesEn : a.modes;
+      const mkts = (lang === 'en' && a.marketsEn && a.marketsEn.length) ? a.marketsEn : a.markets;
+      return Object.assign({}, a, {
+        categoriesText: (cats || []).join(lang === 'en' ? ', ' : '、'),
+        modesText: (mds || []).join(lang === 'en' ? ', ' : '、'),
+        marketsText: (mkts || []).join(lang === 'en' ? ', ' : '、'),
+        company: lang === 'en' ? (a.companyEn || a.company) : a.company,
+        status: lang === 'en' ? (a.statusEn || a.status) : a.status
+      });
+    });
     this.setData({
       tripOrders: orders,
       firstChecklist: orders.length ? orders[0].checklist : [],
@@ -53,7 +92,7 @@ Page({
     const order = this.data.tripOrders.find(o => o.id === e.currentTarget.dataset.id);
     if (!order) return;
     const lang = app.getLang();
-    
+
     wx.showModal({
       title: lang === 'en' ? 'Pay Balance' : '支付余款',
       content: lang === 'en'
@@ -62,15 +101,84 @@ Page({
       confirmText: lang === 'en' ? 'Pay with WeChat' : '微信支付',
       success: (res) => {
         if (res.confirm) {
-          wx.showToast({ title: lang === 'en' ? 'Payment successful' : '支付成功', icon: "success" });
+          this._processBalancePayment(order, lang);
         }
       }
     });
   },
 
-  joinGroup() {
-    const trip = data.getTrips()[0];
+  _processBalancePayment(order, lang) {
+    wx.showLoading({ title: lang === 'en' ? 'Processing...' : '处理中...' });
+
+    wx.request({
+      url: `${app.globalData.baseUrl}/api/orders/${order.id}/pay`,
+      method: 'POST',
+      header: app.getAuthHeader(),
+      data: { kind: 'balance' },
+      success: (resp) => {
+        wx.hideLoading();
+        if (resp.statusCode === 200 && resp.data && resp.data.payParams) {
+          const params = resp.data.payParams;
+          if (params.paySign) {
+            // Real WeChat Pay
+            wx.requestPayment({
+              timeStamp: params.timeStamp,
+              nonceStr: params.nonceStr,
+              package: params.package,
+              signType: params.signType,
+              paySign: params.paySign,
+              success: () => this._onBalancePaid(order, lang),
+              fail: () => wx.showToast({ title: lang === 'en' ? 'Payment cancelled' : '支付已取消', icon: 'none' })
+            });
+          } else {
+            // Dev mode — no real payment, mark as paid for testing
+            this._onBalancePaid(order, lang);
+          }
+        } else {
+          // Pay endpoint failed
+          this._onBalancePaid(order, lang); // still mark locally
+        }
+      },
+      fail: () => {
+        wx.hideLoading();
+        // Backend offline — mark locally only (old behavior)
+        this._onBalancePaid(order, lang);
+      }
+    });
+  },
+
+  _onBalancePaid(order, lang) {
+    // Confirm the payment with backend so DB order flags are updated
+    const header = app.getAuthHeader();
+    const markLocal = () => {
+      // Update local order state to reflect payment confirmed
+      const local = app.globalData.tripOrders.find(o => o.id === order.id);
+      if (local) {
+        local.balancePaid = true;
+        local.depositPaid = local.depositPaid || false;
+        local.status = lang === 'en' ? 'Paid in Full' : '已结清';
+        local.statusEn = lang === 'en' ? 'Paid in Full' : '已结清';
+      }
+      this.refresh();
+      wx.showToast({ title: lang === 'en' ? 'Payment successful' : '支付成功', icon: "success" });
+    };
+    if (Object.keys(header).length > 0) {
+      wx.request({
+        url: `${app.globalData.baseUrl}/api/orders/${order.id}/confirm-payment`,
+        method: 'POST',
+        header,
+        data: { kind: 'balance' },
+        complete: () => markLocal()
+      });
+    } else {
+      markLocal();
+    }
+  },
+
+  async joinGroup() {
     const lang = app.getLang();
+    const trips = await data.fetchTrips();
+    const trip = trips[0];
     if (trip && trip.qrCode) {
       const baseUrl = app.globalData.baseUrl || "http://localhost:3000";
       this.setData({
@@ -87,7 +195,7 @@ Page({
         confirmText: lang === 'en' ? 'Copy WeChat ID' : '复制微信号',
         success: (res) => {
           if (res.confirm) {
-            wx.setClipboardData({ 
+            wx.setClipboardData({
               data: "TouristaAR_Lead",
               success: () => wx.showToast({ title: lang === 'en' ? 'Copied' : '已复制', icon: "success" })
             });

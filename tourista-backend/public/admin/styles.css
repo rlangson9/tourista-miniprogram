@@ -27,7 +27,7 @@ a{cursor:pointer}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
 /* ── Login ── */
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#1A2233,#3A2418)}
+.login-screen{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#1A2233,#3A2418)}
 .login-card{background:#fff;border-radius:16px;padding:40px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .login-brand{font-size:28px;font-weight:700;color:var(--terra)}
 .login-sub{font-size:13px;color:var(--grey);margin-top:4px;margin-bottom:28px}
@@ -36,6 +36,19 @@ a{cursor:pointer}
 .login-form input:focus{outline:none;border-color:var(--terra)}
 .login-form .btn{margin-top:24px;padding:12px}
 .login-error{color:var(--red);font-size:13px;margin-top:12px;min-height:18px;text-align:center}
+
+/* ── Language toggle ── */
+.lang-toggle{
+  position:absolute;top:20px;right:24px;
+  padding:7px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.1);color:#fff;font-size:13px;font-weight:600;letter-spacing:.3px;
+  cursor:pointer;backdrop-filter:blur(6px);transition:background .15s,border-color .15s;
+}
+.lang-toggle:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6)}
+.lang-toggle:active{transform:scale(.96)}
+.lang-toggle-side{position:static;width:100%;margin-bottom:12px;padding:7px 12px;
+  background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);font-size:12px}
+.lang-toggle-side:hover{background:rgba(255,255,255,.16)}
 
 /* ── Layout ── */
 .app{display:flex;min-height:100vh}
@@ -144,4 +157,5 @@ tr:hover td{background:#FAFBFC}
   .form-grid{grid-template-columns:1fr}
   .sidebar{width:64px}
   .side-brand,.nav-item span:not(.nav-ico),.side-user,.side-logout{display:none}
+  .lang-toggle-side{padding:7px 4px;font-size:11px;white-space:nowrap}
 }

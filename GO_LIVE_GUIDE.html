@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tourista AR — Mini Program Go-Live Guide</title>
+<style>
+  :root{
+    --ink:#1A2233; --terra:#D85A30; --gold:#EFA427; --green:#07C160;
+    --bg:#FBF6EE; --card:#FFFFFF; --line:#E9E2D6; --muted:#6B7280; --ok:#0F9D58;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Roboto','PingFang SC','Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 20px 80px;}
+  h1{font-size:30px;margin:0 0 6px;}
+  .sub{color:var(--muted);margin:0 0 24px;font-size:15px;}
+  h2{font-size:22px;margin:40px 0 12px;padding-bottom:8px;border-bottom:3px solid var(--gold);}
+  h3{font-size:17px;margin:24px 0 8px;color:var(--terra);}
+  p{margin:8px 0;}
+  ul,ol{margin:8px 0 8px 0;padding-left:22px;}
+  li{margin:5px 0;}
+  code{background:#F0EBE0;padding:2px 6px;border-radius:5px;font-size:13px;font-family:'SF Mono',Menlo,Consolas,monospace;}
+  pre{background:#1A2233;color:#E8EAF0;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:13px;line-height:1.5;}
+  pre code{background:none;color:inherit;padding:0;}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px;background:var(--card);}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;}
+  th{background:#F5EFE2;font-weight:600;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0;}
+  .card h4{margin:0 0 8px;}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;margin-right:6px;}
+  .t-done{background:#E5F6EC;color:var(--ok);}
+  .t-todo{background:#FDECEC;color:#C0392B;}
+  .t-warn{background:#FFF3D9;color:#B26A00;}
+  .t-mid{background:#EAF2FB;color:#1E5AA8;}
+  .step{display:flex;gap:14px;margin:14px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .stepnum{flex:0 0 34px;height:34px;border-radius:50%;background:var(--terra);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .step .body{flex:1;min-width:0;}
+  .step .body h4{margin:0 0 4px;font-size:16px;}
+  .note{background:#FFF8E6;border-left:4px solid var(--gold);padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;}
+  .warn{background:#FDECEC;border-left:4px solid #C0392B;padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;}
+  .ok{background:#E5F6EC;border-left:4px solid var(--ok);padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;}
+  .checkbox-list{list-style:none;padding-left:0;}
+  .checkbox-list li{padding-left:28px;position:relative;margin:6px 0;}
+  .checkbox-list li:before{content:"☐";position:absolute;left:0;top:0;font-size:16px;color:var(--terra);}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px;}
+  .toc a{color:var(--terra);text-decoration:none;}
+  .toc a:hover{text-decoration:underline;}
+  .toc ol{margin:6px 0 0;}
+  .kicker{display:inline-block;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:3px 10px;border-radius:6px;letter-spacing:.5px;}
+  .muted{color:var(--muted);font-size:13px;}
+  .foot{font-size:12px;color:var(--muted);margin-top:40px;border-top:1px solid var(--line);padding-top:16px;}
+  .pill{display:inline-block;background:#F0EBE0;border-radius:20px;padding:2px 12px;font-size:13px;margin:2px 4px 2px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🚀 Tourista AR — WeChat Mini Program Go-Live Guide</h1>
+  <p class="sub">A step-by-step, English walkthrough to take <b>tourista-ar</b> (AppID <code>wx69547682e29d99ca</code>) from development to <b>live on WeChat</b>.</p>
+
+  <div class="toc">
+    <b>Contents</b>
+    <ol>
+      <li><a href="#snapshot">Where you are right now (project audit)</a></li>
+      <li><a href="#longlead">Start these 3 long-lead items on Day 1</a></li>
+      <li><a href="#phase0">Phase 0 — Preflight accounts &amp; prerequisites</a></li>
+      <li><a href="#phase1">Phase 1 — Server, domain &amp; HTTPS</a></li>
+      <li><a href="#phase2">Phase 2 — ICP filings (domain + mini program)</a></li>
+      <li><a href="#phase3">Phase 3 — WeChat Mini Program console setup</a></li>
+      <li><a href="#phase4">Phase 4 — Finish the remaining code (WeChat Pay)</a></li>
+      <li><a href="#phase5">Phase 5 — Test on the Trial version (体验版)</a></li>
+      <li><a href="#phase6">Phase 6 — Submit for review (提交审核)</a></li>
+      <li><a href="#phase7">Phase 7 — Release &amp; go live (发布)</a></li>
+      <li><a href="#checklist">Master checklist</a></li>
+      <li><a href="#timeline">Suggested timeline</a></li>
+      <li><a href="#trouble">Troubleshooting</a></li>
+    </ol>
+  </div>
+
+  <!-- ═══════════ SNAPSHOT ═══════════ -->
+  <h2 id="snapshot">1 · Where you are right now</h2>
+  <p>I audited your project at <code>/Users/apple/Downloads/tourista-miniprogram</code>. Here is the honest status:</p>
+
+  <table>
+    <tr><th>Item</th><th>Status</th><th>What it means</th></tr>
+    <tr><td>Mini program code (8 pages, tabBar, i18n)</td><td><span class="tag t-done">DONE</span></td><td>Home, Trips, Booking, Business, Orders, Profile etc. all build and run</td></tr>
+    <tr><td>Backend (Node.js + Express + SQLite)</td><td><span class="tag t-done">DONE</span></td><td>Login, orders, partner apps, reviews, stories, inquiries, admin dashboard</td></tr>
+    <tr><td>WeChat login (<code>/api/login</code> ↔ <code>wx.login</code>)</td><td><span class="tag t-mid">NEEDS CREDENTIALS</span></td><td>Code exists; activates once <code>WX_APPID</code> / <code>WX_SECRET</code> are set</td></tr>
+    <tr><td>WeChat Pay</td><td><span class="tag t-todo">NOT BUILT</span></td><td>Booking &amp; payment UI exist, but the real Pay v3 call + notify handler are <b>not implemented</b>; payment currently "auto-succeeds" in dev</td></tr>
+    <tr><td>API base URL</td><td><span class="tag t-todo">TO FIX</span></td><td><code>app.js</code> points to <code>http://localhost:3000</code> — must become <code>https://api.touristaar.com</code></td></tr>
+    <tr><td>Domain <code>touristaar.com</code></td><td><span class="tag t-done">OWNED</span></td><td>Need to add an <code>api.touristaar.com</code> record + ICP filing + SSL</td></tr>
+    <tr><td>Cloud server</td><td><span class="tag t-mid">UNKNOWN</span></td><td>Need a China mainland server (see Phase 1)</td></tr>
+    <tr><td>Mini program 备案 (ICP filing)</td><td><span class="tag t-todo">TODO</span></td><td><b>Mandatory</b> before release for mainland China mini programs</td></tr>
+    <tr><td>WeChat Merchant account</td><td><span class="tag t-done">HAVE</span></td><td>Must be bound to the mini program + JSAPI payment permission enabled</td></tr>
+  </table>
+
+  <div class="ok"><b>Good news:</b> the hard part (your product &amp; full UI) is done. What remains is <b>operations + ~2 small code tasks</b>: finish WeChat Pay, and wire the production URL.</div>
+
+  <!-- ═══════════ LONG LEAD ═══════════ -->
+  <h2 id="longlead">2 · Start these 3 long-lead items on Day 1 (in parallel)</h2>
+  <p>These take days or weeks because <b>other people / government review them</b>. Kick them off immediately; everything else can proceed while you wait.</p>
+
+  <div class="card">
+    <h4><span class="tag t-warn">LONGEST — START NOW</span> ① Domain ICP filing (工信部备案) for <code>api.touristaar.com</code></h4>
+    <ul>
+      <li><b>Why:</b> WeChat only allows mini programs to talk to <b>HTTPS domains that have completed ICP filing</b> with a subject matching the mini program's subject.</li>
+      <li><b>Lead time:</b> ~7–20 working days (the most variable step).</li>
+      <li><b>Where:</b> via your cloud provider (Alibaba Cloud / Tencent Cloud) — filing requires a mainland-hosted server.</li>
+      <li><b>Gotcha:</b> the domain registrant, the business licence, and the mini program subject must all match. If <code>touristaar.com</code> is registered under a different name, fix the WHOIS first.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag t-warn">START NOW</span> ② Mini program 备案 (ICP filing for the mini program)</h4>
+    <ul>
+      <li><b>Why:</b> Since Sept 2023, <b>every</b> mainland mini program must complete its own 备案 before it can be released.</li>
+      <li><b>Lead time:</b> platform review ~1–2 working days + provincial communications bureau review ~1–20 working days (typically under 2 weeks).</li>
+      <li><b>Where:</b> MP console → home page <b>[去备案]</b> (or 设置 → 基本设置). Five steps: fill info → platform review → MIIT SMS verification (within 24h!) → bureau review → done.</li>
+      <li><b>Gotcha:</b> the SMS verification link expires in 24 hours — do it the same day or you restart.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4><span class="tag t-warn">START EARLY</span> ③ Confirm your <b>service category (服务类目)</b> &amp; qualifications</h4>
+    <ul>
+      <li>Your mini program <b>sells paid Africa business-study tour packages</b> with deposits via WeChat Pay.</li>
+      <li>WeChat's open-category list puts <b>travel / tours</b> under the 旅游 category, which requires a <b>《旅行社业务经营许可证》 (Travel Agency Business Licence)</b> matching your subject.</li>
+      <li>Options: (a) obtain/hold the travel licence, (b) re-frame the service under a business-services category <b>if</b> the reviewers accept it — but paid tour bookings are usually treated as travel. <b>Confirm this with WeChat early</b>; it can block review.</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════ PHASE 0 ═══════════ -->
+  <h2 id="phase0">3 · Phase 0 — Preflight: accounts &amp; prerequisites</h2>
+  <ul class="checkbox-list">
+    <li><b>Mini program account</b> — you have it. AppID <code>wx69547682e29d99ca</code> is already in <code>project.config.json</code>. ✔</li>
+    <li><b>WeChat Pay merchant account (微信商户号)</b> — you have it. ✔</li>
+    <li><b>Domain</b> <code>touristaar.com</code> — you own it. ✔</li>
+    <li><b>Mini program verified (微信认证)?</b> — payment requires a verified <b>enterprise-subject</b> mini program. Check MP console → 设置 → 基本设置 → 认证情况. If it's an individual or unverified account, <b>complete verification first</b> (¥300, ~1–5 days).</li>
+    <li><b>Cloud server</b> — buy one now (see Phase 1).</li>
+    <li><b>WeChat DevTools</b> (微信开发者工具) installed locally for uploading the code. <a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html">Download</a></li>
+    <li><b>Node.js ≥ 22.5</b> on your server (your backend requires it).</li>
+  </ul>
+
+  <!-- ═══════════ PHASE 1 ═══════════ -->
+  <h2 id="phase1">4 · Phase 1 — Server, domain &amp; HTTPS</h2>
+  <p class="muted">You can do this while the filings in §2 are in progress.</p>
+
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="body"><h4>Buy a China mainland cloud server</h4>
+      <p>Recommended: Alibaba Cloud ECS or Tencent Cloud CVM. Minimum 1 vCPU / 2 GB RAM / 40 GB SSD (matches your <code>DEPLOYMENT_GUIDE.md</code>). Choose a region near your users (e.g. Shanghai/华东). <b>Mainland server is required for ICP filing.</b></p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="body"><h4>Point DNS: add <code>api.touristaar.com</code></h4>
+      <p>At your DNS provider, add an <b>A record</b>: <code>api</code> → your server's public IP. Wait for propagation (check with <code>dig api.touristaar.com</code>).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="body"><h4>Install the stack on the server</h4>
+      <pre><code># Ubuntu 22.04
+sudo apt update && sudo apt install -y nginx git
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm install -g pm2
+node --version   # must be >= 22.5</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">4</div>
+    <div class="body"><h4>Deploy the backend</h4>
+      <pre><code>cd /opt
+git clone &lt;your-repo-url&gt; tourista-miniprogram   # or scp -r ./tourista-backend user@server:/opt/
+cd /opt/tourista-miniprogram/tourista-backend
+npm install --production</code></pre>
+      <p>Then copy and edit the env file — <b>fill in the real credentials</b> (you'll get the WeChat ones in Phase 3/4):</p>
+      <pre><code>cp .env.example .env
+nano .env</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">5</div>
+    <div class="body"><h4>Start the service with PM2</h4>
+      <pre><code>cd /opt/tourista-miniprogram/tourista-backend
+pm2 start src/server.js --name tourista-api
+pm2 save && pm2 startup
+pm2 status</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">6</div>
+    <div class="body"><h4>Configure Nginx reverse proxy</h4>
+      <pre><code>sudo nano /etc/nginx/sites-available/tourista-api</code></pre>
+      <pre><code>server {
+    listen 80;
+    server_name api.touristaar.com;
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_cache_bypass $http_upgrade;
+    }
+}</code></pre>
+      <pre><code>sudo ln -s /etc/nginx/sites-available/tourista-api /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">7</div>
+    <div class="body"><h4>Add HTTPS (mandatory for WeChat)</h4>
+      <p>WeChat only accepts <b>HTTPS</b> legal domains. Free option with Let's Encrypt:</p>
+      <pre><code>sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d api.touristaar.com
+sudo certbot renew --dry-run   # test auto-renewal</code></pre>
+      <p>certbot auto-writes the port-80→443 redirect and SSL config.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">8</div>
+    <div class="body"><h4>Verify the backend is live over HTTPS</h4>
+      <pre><code>curl https://api.touristaar.com/health
+# expected: {"ok":true,...}
+curl https://api.touristaar.com/api/trips   # public endpoint</code></pre>
+    </div>
+  </div>
+
+  <!-- ═══════════ PHASE 2 ═══════════ -->
+  <h2 id="phase2">5 · Phase 2 — ICP filings</h2>
+  <div class="note">These two filings were already introduced in §2 — start them immediately. Summary of where to go:</div>
+  <ul>
+    <li><b>Domain filing:</b> your cloud provider's 备案 console (Aliyun: 备案 / Tencent: 网站备案). Submit the <code>api.touristaar.com</code> record. ~7–20 working days.</li>
+    <li><b>Mini program filing:</b> WeChat MP console → <b>[去备案]</b>. Follow the 5 steps. After bureau approval you get a 备案号 shown on the mini program page.</li>
+  </ul>
+  <div class="warn"><b>Hard requirement:</b> the filing subject (company name) on the domain, the mini program, and the merchant account must be <b>identical</b>. One mismatched character → rejection → re-queue.</div>
+
+  <!-- ═══════════ PHASE 3 ═══════════ -->
+  <h2 id="phase3">6 · Phase 3 — WeChat Mini Program console setup</h2>
+  <p class="muted">Console: <code>mp.weixin.qq.com</code>. Do these after the API is HTTPS-reachable (Phase 1).</p>
+
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="body"><h4>Whitelist server domains</h4>
+      <p>MP console → 开发 → 开发管理 → 开发设置 → <b>服务器域名</b>. Add:</p>
+      <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>request 合法域名</td><td><code>https://api.touristaar.com</code></td></tr>
+        <tr><td>uploadFile 合法域名</td><td><code>https://api.touristaar.com</code></td></tr>
+        <tr><td>downloadFile 合法域名</td><td><code>https://api.touristaar.com</code></td></tr>
+      </table>
+      <p>Requirements: HTTPS, <b>no port</b>, domain must be ICP-filed, and you verify ownership with a check file or a validation record. Newly-filed domains can only be added <b>~24h after filing</b>.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="body"><h4>Get AppID secret &amp; configure login</h4>
+      <p>MP console → 开发 → 开发管理 → 开发设置 → <b>AppSecret</b> (generate + save it). Put it and the AppID into the backend <code>.env</code>:</p>
+      <pre><code>WX_APPID=wx69547682e29d99ca
+WX_SECRET=your_generated_appsecret</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="body"><h4>Set your service category (服务类目)</h4>
+      <p>MP console → 设置 → 服务类目. Choose categories that match and provide qualifications. <b>For paid tour bookings, the 旅游/旅行社 category requires the 《旅行社业务经营许可证》.</b> Confirm your category strategy from §2③ now — it directly affects whether review passes.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">4</div>
+    <div class="body"><h4>Complete the privacy protection guidelines (用户隐私保护指引)</h4>
+      <p>MP console → 设置 → 服务内容声明 → <b>用户隐私保护指引</b>. Declare exactly what you collect. Your booking form collects <b>name, phone, passport number, company</b> — passport numbers are sensitive personal info, so list them explicitly. If you later ask for 手机号 via <code>getPhoneNumber</code>, declare that too.</p>
+      <div class="warn">Undeclared data collection is a common rejection reason — declare first, collect only what you need.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">5</div>
+    <div class="body"><h4>Bind the merchant account &amp; enable JSAPI payment</h4>
+      <ol>
+        <li>Merchant console (<code>pay.weixin.qq.com</code>) → <b>产品中心 → JSAPI支付</b> → 申请开通 (review ≤ ~7 working days).</li>
+        <li>产品中心 → <b>AppID账号管理 / APPID授权</b> → 关联/添加 the mini program AppID <code>wx69547682e29d99ca</code> → submit.</li>
+        <li>Mini program console → <b>功能 → 微信支付</b> → accept/confirm the binding.</li>
+        <li>Ensure merchant subject = mini program subject (or a valid authorization).</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">6</div>
+    <div class="body"><h4>Collect the WeChat Pay API credentials (for code in Phase 4)</h4>
+      <p>Merchant console → 账户中心 → <b>API安全</b>:
+      <ul>
+        <li>申请 <b>API证书</b> (download cert + note the <b>serial number</b> and <b>private key</b>)</li>
+        <li>设置 <b>APIv3密钥</b> (32 chars)</li>
+        <li>Your <b>商户号 mchid</b> (from 账户中心)</li>
+      </ul>
+      Keep these private — they go into the server's <code>.env</code>, never into the mini program code.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ PHASE 4 ═══════════ -->
+  <h2 id="phase4">7 · Phase 4 — Finish the remaining code</h2>
+  <p>Only <b>two</b> code tasks remain, plus config. Everything else already works.</p>
+
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="body"><h4>Point the mini program at the production API</h4>
+      <p>File: <code>app.js</code>, line 5. Change:</p>
+      <pre><code>baseUrl: 'http://localhost:3000'   →   baseUrl: 'https://api.touristaar.com'</code></pre>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="body"><h4>Implement WeChat Pay v3 JSAPI in the backend</h4>
+      <p>File: <code>tourista-backend/src/services/wechat.js</code>, function <code>createPaymentOrder()</code> (currently a stub marked <code>TODO</code>). It must:</p>
+      <ol>
+        <li>Call the unified order API: <code>POST https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi</code> with <code>{ appid, mchid, description, out_trade_no, notify_url: 'https://api.touristaar.com/api/payment/notify', amount:{ total: totalFen }, payer:{ openid } }</code>.</li>
+        <li>Sign the request with your merchant private key (RSA-SHA256) using the APIv3 auth scheme (<code>Authorization: WECHATPAY2-SHA256-RSA2048 ...</code>).</li>
+        <li>Get <code>prepay_id</code>, then build the exact params your <code>pages/booking/booking.js</code> already expects:
+          <pre><code>payParams = {
+  timeStamp: String(seconds),
+  nonceStr,
+  package: 'prepay_id=' + prepayId,
+  signType: 'RSA',
+  paySign:  // sign of the above with your merchant private key
+}</code></pre>
+        </li>
+      </ol>
+      <p>Then finish the notify handler at <code>src/routes/public.js</code> → <code>POST /api/payment/notify</code> (currently just returns the success envelope). It must verify the <code>Wechatpay-Signature</code> header, decrypt <code>resource.ciphertext</code> (AEAD_AES_256_GCM) with your APIv3 key, and call <code>applyPaidToOrder()</code> when <code>trade_state === 'SUCCESS'</code> — the helper already exists in the same file.</p>
+      <p class="muted">Install a helper lib if you like (e.g. <code>wechatpay-node-v3</code> or <code>tenpay</code>), or hand-roll with Node's <code>crypto</code>. Don't hard-code credentials.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="body"><h4>Add the Pay credentials to the server <code>.env</code></h4>
+      <pre><code>WXPAY_MCHID=your_mchid
+WXPAY_KEY=your_api_v3_key_32_chars
+WXPAY_SERIAL=your_cert_serial_number
+WXPAY_PRIVATE_KEY_PATH=/etc/ssl/tourista/apiclient_key.pem</code></pre>
+      <p>Then <code>pm2 restart tourista-api</code>.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="stepnum">4</div>
+    <div class="body"><h4>(Recommended) Swap placeholder advisor contacts &amp; move catalog data</h4>
+      <ul>
+        <li>Replace the mock advisor WeChat IDs (<code>TouristaAR_Advisor</code> / <code>TouristaAR_Lead</code>) with your real IDs, or add a 客服消息 (customer-service message) button.</li>
+        <li>Later, move trip data out of <code>utils/data.js</code> into the backend so you can update trips <b>without resubmitting for review</b>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════ PHASE 5 ═══════════ -->
+  <h2 id="phase5">8 · Phase 5 — Test on the Trial version (体验版)</h2>
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="body"><h4>Upload from DevTools</h4>
+      <p>Open the project in WeChat DevTools → click <b>上传 (Upload)</b> → set version number (e.g. <code>1.0.0</code>) + release notes.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="body"><h4>Set the Trial version &amp; invite testers</h4>
+      <p>MP console → 管理 → 版本管理 → 开发版本 → <b>选为体验版</b>. Add tester WeChat IDs (最多 15 人 for trial).</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="body"><h4>Test on real devices</h4>
+      <ul>
+        <li>Real-device preview (真机预览) via the trial QR code.</li>
+        <li>Test the full user journey: login → browse trip → booking form → <b>real WeChat Pay deposit (charge a tiny amount, e.g. ¥0.01, then refund)</b> → order status → partner application.</li>
+        <li>Confirm <code>wx.request</code> to <code>https://api.touristaar.com</code> succeeds with the whitelist (domain check no longer blocks).</li>
+        <li>Test on both iOS and Android, plus a low-end device.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">Remember <code>project.config.json</code> has <code>"urlCheck": false</code> — that's fine for local dev, but the <b>whitelist in the console is what governs real devices</b>. Don't ship with localhost.</div>
+
+  <!-- ═══════════ PHASE 6 ═══════════ -->
+  <h2 id="phase6">9 · Phase 6 — Submit for review (提交审核)</h2>
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="body"><h4>Prepare the submission</h4>
+      <ul>
+        <li>Version description (what's new / what the app does).</li>
+        <li>Upload screenshots of the main pages.</li>
+        <li>Provide a <b>test account</b> or note how the reviewer can access content (often you give the 体验版 QR or demo login).</li>
+        <li>Make sure your 备案 and 服务类目 are already approved.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="body"><h4>Submit</h4>
+      <p>MP console → 管理 → 版本管理 → 开发版本 → <b>提交审核</b> → fill the form → submit.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="body"><h4>Wait &amp; respond to feedback</h4>
+      <p>Review usually takes <b>~1–3 working days</b> (longer for new accounts). If rejected, fix the listed issue and resubmit. Common rejections:</p>
+      <table>
+        <tr><th>Reason</th><th>Fix</th></tr>
+        <tr><td>Category / qualification missing</td><td>Complete 服务类目 + upload the licence (e.g. travel licence)</td></tr>
+        <tr><td>Privacy guideline missing / mismatch</td><td>Fill 用户隐私保护指引 to match what you collect</td></tr>
+        <tr><td>Reviewer can't complete the flow (payment, login)</td><td>Provide a test account / trial QR + test notes</td></tr>
+        <tr><td>Content issues (placeholder text, dead links)</td><td>Replace mock/placeholder content before submitting</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════ PHASE 7 ═══════════ -->
+  <h2 id="phase7">10 · Phase 7 — Release &amp; go live (发布)</h2>
+  <div class="step">
+    <div class="stepnum">1</div>
+    <div class="body"><h4>Release the approved version</h4>
+      <p>MP console → 管理 → 版本管理 → 审核通过 → <b>发布</b>. You're live! 🎉</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">2</div>
+    <div class="body"><h4>Post-launch checks (first 24h)</h4>
+      <ul>
+        <li>Search your mini program by name in WeChat to confirm it's public.</li>
+        <li>Place a real test order end-to-end (payment, order status, admin dashboard).</li>
+        <li>Watch backend logs: <code>pm2 logs tourista-api</code> and WeChat Pay callback logs.</li>
+        <li>Check MP console → 统计 (WeChat Analytics) for crashes / errors.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">3</div>
+    <div class="body"><h4>Version management going forward</h4>
+      <p>Every future update also goes through 上传 → 体验版 → 提交审核 → 发布. Plan updates in batches to avoid review friction. Keep at least one previous version rollbackable in 版本管理.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="stepnum">4</div>
+    <div class="body"><h4>Promote</h4>
+      <p>Generate the mini program QR code (MP console → 设置 → 基本设置 → 小程序码) for posters/social. Link it from your official WeChat account and <code>touristaar.com</code>. There's already a <code>QR code.jpg</code> in your repo to reuse.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ CHECKLIST ═══════════ -->
+  <h2 id="checklist">11 · Master checklist</h2>
+  <ul class="checkbox-list">
+    <li>Mini program verified (企业认证) — required for payment</li>
+    <li>Cloud server purchased (mainland) &amp; stack installed</li>
+    <li><code>api.touristaar.com</code> DNS A-record → server IP</li>
+    <li>Backend deployed + <code>.env</code> filled (JWT secret, admin, WeChat creds)</li>
+    <li>Nginx reverse proxy + Let's Encrypt HTTPS working (<code>curl https://api.touristaar.com/health</code>)</li>
+    <li><b>Domain ICP filing approved</b></li>
+    <li><b>Mini program 备案 approved</b></li>
+    <li>MP console: request/uploadFile/downloadFile legal domains = <code>https://api.touristaar.com</code></li>
+    <li>AppSecret generated &amp; put in backend <code>.env</code></li>
+    <li>服务类目 selected &amp; qualifications uploaded (travel licence if needed)</li>
+    <li>用户隐私保护指引 completed &amp; matches data collected</li>
+    <li>Merchant account bound to AppID + JSAPI支付 approved</li>
+    <li>API certificate / APIv3 key / mchid collected</li>
+    <li>Code: <code>baseUrl</code> → <code>https://api.touristaar.com</code></li>
+    <li>Code: <code>createPaymentOrder()</code> implemented (v3 JSAPI + signing)</li>
+    <li>Code: <code>/api/payment/notify</code> verifies + decrypts + applies payment</li>
+    <li>Uploaded from DevTools &amp; set as 体验版</li>
+    <li>Real-device test: login, booking, real ¥ payment, partner form</li>
+    <li>Submitted for review &amp; approved</li>
+    <li>Released (发布) &amp; post-launch checks passed</li>
+  </ul>
+
+  <!-- ═══════════ TIMELINE ═══════════ -->
+  <h2 id="timeline">12 · Suggested timeline</h2>
+  <table>
+    <tr><th>Track</th><th>Day 1–3</th><th>Week 2</th><th>Week 3–4</th></tr>
+    <tr><td><b>Filings (longest)</b></td><td>Start domain ICP filing + mini program 备案</td><td>Track filings; fix any rejections</td><td>Approval lands (typical)</td></tr>
+    <tr><td><b>Server &amp; infra</b></td><td>Buy server, DNS, deploy backend, HTTPS</td><td>—</td><td>—</td></tr>
+    <tr><td><b>Console setup</b></td><td>Domains whitelist, categories, privacy, payment binding</td><td>JSAPI approval lands</td><td>—</td></tr>
+    <tr><td><b>Code</b></td><td>baseUrl + WeChat Pay v3 + notify handler</td><td>Full real-payment test</td><td>—</td></tr>
+    <tr><td><b>Review &amp; release</b></td><td>—</td><td>Upload 体验版, submit review</td><td>Approve → 发布 → LIVE</td></tr>
+  </table>
+  <p class="muted">Realistic best case: <b>~2–4 weeks</b> end-to-end, dominated by the two filings (which run in parallel with everything else). Start §2 on day one.</p>
+
+  <!-- ═══════════ TROUBLESHOOTING ═══════════ -->
+  <h2 id="trouble">13 · Troubleshooting</h2>
+  <table>
+    <tr><th>Problem</th><th>Solution</th></tr>
+    <tr><td><code>url not in domain list</code> on real device</td><td>Add the domain to request 合法域名 (and wait 24h after filing); check HTTPS is valid</td></tr>
+    <tr><td>Login returns <code>errcode</code></td><td>AppSecret wrong or <code>code</code> already used; re-login via <code>wx.login()</code></td></tr>
+    <tr><td>Payment fails / "支付参数错误"</td><td>JSAPI permission not approved; AppID not bound to mchid; <code>signType</code>/sign mismatch; openid not from the same AppID</td></tr>
+    <tr><td>Merchant console can't bind the AppID</td><td>Subject mismatch between merchant and mini program; verify both</td></tr>
+    <tr><td>Review rejected for category</td><td>Upload the correct licence (travel licence for tour packages) or adjust service framing</td></tr>
+    <tr><td>502 Bad Gateway</td><td>Node not running: <code>pm2 status</code> / <code>pm2 logs tourista-api</code></td></tr>
+    <tr><td>SSL certificate expired</td><td><code>sudo certbot renew</code></td></tr>
+    <tr><td>备案 SMS not verified in 24h</td><td>Re-initiate the 备案 SMS verification step</td></tr>
+  </table>
+
+  <p class="foot">Sources: WeChat official docs — server domain / network rules (<a href="https://developers.weixin.qq.com/minigame/dev/guide/base-ability/network.html">developers.weixin.qq.com</a>), domain management &amp; ICP requirement (<a href="https://developers.weixin.qq.com/doc/oplatform/developers/basic_func/domain.html">domain.html</a>), mini program 备案 guidelines (<a href="https://developers.weixin.qq.com/miniprogram/product/record_guidelines.html">record_guidelines</a>), WeChat Pay JSAPI application (<a href="https://pay.weixin.qq.com/doc/v3/merchant/4012791895">pay.weixin.qq.com</a>), and the open service-category/qualification list (<a href="https://developers.weixin.qq.com/miniprogram/product/material/index.html">material/index</a>). Filing timelines are typical estimates from WeChat/community guidance and can vary. All paths, filenames and endpoints in this guide reflect your actual repository.</p>
+
+</div>
+</body>
+</html>

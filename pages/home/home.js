@@ -24,6 +24,14 @@ Page({
     oppCategoryFilter: 'all',
     filteredStories: [],
     filteredOpportunities: [],
+    // Search state
+    searchText: '',
+    allTrips: [],
+    allStories: [],
+    searchTrips: [],
+    searchStories: [],
+    searchOpportunities: [],
+    searchResultCount: 0,
     showAskModal: false,
     askContext: '',
     askType: '',
@@ -73,10 +81,22 @@ Page({
     });
   },
 
-  loadData() {
-    const f = data.getTrip("zw");
+  async loadData() {
     const lang = app.getLang();
-    const trips = data.getTrips();
+    const [f, trips] = await Promise.all([data.fetchTrip("zw"), data.fetchTrips()]);
+    // Keep the full localized catalog for the search bar
+    const allTrips = trips.map(t => ({
+      ...t,
+      title: lang === 'en' ? t.titleEn : t.title,
+      country: lang === 'en' ? t.countryEn : t.country,
+      highlights: lang === 'en' ? t.highlightsEn : t.highlights,
+      memberPriceText: t.memberPrice.toLocaleString()
+    }));
+    if (!f) {
+      this.setData({ allTrips });
+      this.applySearch(this.data.searchText);
+      return;
+    }
     const featuredTrips = trips.slice(0, 2).map(t => ({
       ...t,
       title: lang === 'en' ? t.titleEn : t.title,
@@ -86,6 +106,7 @@ Page({
     }));
 
     this.setData({
+      allTrips,
       featured: Object.assign({}, f, {
         title: lang === 'en' ? f.titleEn : f.title,
         country: lang === 'en' ? f.countryEn : f.country,
@@ -96,6 +117,47 @@ Page({
         ? `${f.titleEn} · ${f.days} ${i18n.t('home.dayUnit')}`
         : f.title,
       featuredTrips
+    });
+    this.applySearch(this.data.searchText);
+  },
+
+  // ── Search ────────────────────────────────────────────────────────────────
+  onSearchInput(e) {
+    const q = e.detail.value;
+    this.setData({ searchText: q });
+    this.applySearch(q);
+  },
+
+  clearSearch() {
+    this.applySearch('');
+  },
+
+  // Live group-filter across trips / stories / opportunities.
+  // Matches the displayed language AND the other language, case-insensitive.
+  applySearch(raw) {
+    const q = String(raw || '').trim().toLowerCase();
+    if (!q) {
+      this.setData({ searchText: '', searchTrips: [], searchStories: [], searchOpportunities: [], searchResultCount: 0 });
+      return;
+    }
+    const hit = (...vals) => vals.some(v =>
+      Array.isArray(v) ? v.some(x => String(x || '').toLowerCase().includes(q))
+                       : String(v || '').toLowerCase().includes(q)
+    );
+    const searchTrips = (this.data.allTrips || [])
+      .filter(t => hit(t.title, t.titleEn, t.country, t.countryEn, t.highlights, t.highlightsEn))
+      .slice(0, 3);
+    const searchStories = (this.data.allStories || [])
+      .filter(s => hit(s.title, s.titleEn, s.company, s.companyEn, s.summary, s.summaryEn))
+      .slice(0, 3);
+    const searchOpportunities = (this.data.opportunities || [])
+      .filter(o => hit(o.title, o.titleEn, o.country, o.countryEn, o.description, o.descriptionEn))
+      .slice(0, 3);
+    this.setData({
+      searchTrips,
+      searchStories,
+      searchOpportunities,
+      searchResultCount: searchTrips.length + searchStories.length + searchOpportunities.length
     });
   },
 
@@ -119,7 +181,7 @@ Page({
       method: 'GET',
       success: (res) => {
         if (res.data && Array.isArray(res.data)) {
-          const stories = res.data.slice(0, 3).map(story => ({
+          const all = res.data.map(story => ({
             ...story,
             title: lang === 'en' ? story.titleEn || story.title : story.title,
             company: lang === 'en' ? story.companyEn || story.company : story.company,
@@ -127,12 +189,14 @@ Page({
             content: lang === 'en' ? story.contentEn || story.content : story.content,
             categoryText: this.getCategoryText(story.category, lang)
           }));
-          this.setData({ stories, filteredStories: stories });
+          const stories = all.slice(0, 3);
+          this.setData({ stories, filteredStories: stories, allStories: all });
+          this.applySearch(this.data.searchText);
         }
       },
       fail: () => {
-        const stories = this.getMockStories(lang);
-        this.setData({ stories, filteredStories: stories });
+        this.setData({ stories: [], filteredStories: [], allStories: [] });
+        this.applySearch(this.data.searchText);
       }
     });
   },
@@ -146,79 +210,11 @@ Page({
     return categories[category] || (lang === 'en' ? 'Success' : '成功');
   },
 
-  getMockStories(lang) {
-    if (lang === 'en') {
-      return [
-        {
-          id: 1,
-          title: 'Electronics Export Success',
-          company: 'Shenzhen Tech Co.',
-          summary: 'Successfully exported consumer electronics to Zimbabwe, establishing distribution network covering 3 major cities.',
-          content: 'Shenzhen Tech Co. partnered with Tourista AR to enter the Zimbabwean market. Within 6 months, they established a distribution network covering Harare, Bulawayo, and Mutare, achieving monthly sales of over $50,000.',
-          category: 'business',
-          categoryText: 'Business',
-          media: []
-        },
-        {
-          id: 2,
-          title: 'Mining Investment Journey',
-          company: 'Zhejiang Mining Group',
-          summary: 'Completed successful investment in Zimbabwe mining sector after joining our business tour.',
-          content: 'Zhejiang Mining Group joined Tourista AR\'s Zimbabwe Business Tour, met with local mining authorities, and successfully invested $2 million in a gold mining project.',
-          category: 'investment',
-          categoryText: 'Investment',
-          media: []
-        },
-        {
-          id: 3,
-          title: 'Agricultural Equipment Partnership',
-          company: 'Shandong Agri-Machinery',
-          summary: 'Signed distribution agreement for agricultural machinery in Southern Africa.',
-          content: 'Shandong Agri-Machinery showcased their products in Tourista AR\'s Harare showroom and signed a distribution agreement with 3 local partners, covering Zimbabwe and South Africa markets.',
-          category: 'business',
-          categoryText: 'Business',
-          media: []
-        }
-      ];
-    } else {
-      return [
-        {
-          id: 1,
-          title: '电子产品出口成功案例',
-          company: '深圳科技有限公司',
-          summary: '成功将消费电子产品出口到津巴布韦，建立覆盖3个主要城市的分销网络。',
-          content: '深圳科技有限公司与Tourista AR合作进入津巴布韦市场。6个月内，他们建立了覆盖哈拉雷、布拉瓦约和穆塔雷的分销网络，月销售额超过5万美元。',
-          category: 'business',
-          categoryText: '商务',
-          media: []
-        },
-        {
-          id: 2,
-          title: '矿业投资之旅',
-          company: '浙江矿业集团',
-          summary: '参加商务考察团后，成功完成在津巴布韦矿业领域的投资。',
-          content: '浙江矿业集团参加了Tourista AR的津巴布韦商务考察团，与当地矿业主管部门会面，并成功投资200万美元于一个金矿项目。',
-          category: 'investment',
-          categoryText: '投资',
-          media: []
-        },
-        {
-          id: 3,
-          title: '农业设备合作',
-          company: '山东农业机械',
-          summary: '签署了南部非洲农业机械分销协议。',
-          content: '山东农业机械在Tourista AR哈拉雷展厅展示了他们的产品，并与3个当地合作伙伴签署了分销协议，覆盖津巴布韦和南非市场。',
-          category: 'business',
-          categoryText: '商务',
-          media: []
-        }
-      ];
-    }
-  },
-
   openStoryDetail(e) {
     const id = e.currentTarget.dataset.id;
-    const story = this.data.stories.find(s => s.id === id);
+    // Search results may reference stories beyond the 3 shown on the feed
+    const story = (this.data.allStories || []).find(s => s.id === id) ||
+                  this.data.stories.find(s => s.id === id);
     if (story) {
       this.setData({
         selectedStory: story,
@@ -248,14 +244,15 @@ Page({
             categoryText: this.getOppCategoryText(o.category, lang)
           }));
           this.setData({ opportunities, filteredOpportunities: opportunities });
+          this.applySearch(this.data.searchText);
         } else {
-          const opportunities = this.getMockOpportunities(lang);
-          this.setData({ opportunities, filteredOpportunities: opportunities });
+          this.setData({ opportunities: [], filteredOpportunities: [] });
+          this.applySearch(this.data.searchText);
         }
       },
       fail: () => {
-        const opportunities = this.getMockOpportunities(lang);
-        this.setData({ opportunities, filteredOpportunities: opportunities });
+        this.setData({ opportunities: [], filteredOpportunities: [] });
+        this.applySearch(this.data.searchText);
       }
     });
   },
@@ -269,94 +266,6 @@ Page({
       project: lang === 'en' ? 'Project' : '项目'
     };
     return map[category] || (lang === 'en' ? 'Other' : '其他');
-  },
-
-  getMockOpportunities(lang) {
-    if (lang === 'en') {
-      return [
-        {
-          id: 1,
-          title: 'Solar Panel Supply Contract',
-          country: 'Zimbabwe',
-          type: 'demand',
-          typeText: 'Demand',
-          category: 'supply',
-          categoryText: 'Supply',
-          description: 'Government tender for 50MW solar panel supply. Looking for Chinese manufacturers with competitive pricing and quality certifications.',
-          requirements: 'ISO 9001 certified, previous experience with government projects in Africa, delivery within 90 days.',
-          budget: 'USD 8M',
-          deadline: '2026-08-30'
-        },
-        {
-          id: 2,
-          title: 'Mining Equipment Investment',
-          country: 'South Africa',
-          type: 'opportunity',
-          typeText: 'Opportunity',
-          category: 'investment',
-          categoryText: 'Investment',
-          description: 'Established gold mine seeking equipment investment partner. Ready to start production with Chinese mining equipment.',
-          requirements: 'Minimum investment USD 500K, equipment supply capability, technical support team.',
-          budget: 'USD 500K-1M',
-          deadline: '2026-09-15'
-        },
-        {
-          id: 3,
-          title: 'Pharmaceutical Distribution Partnership',
-          country: 'Nigeria',
-          type: 'opportunity',
-          typeText: 'Opportunity',
-          category: 'joint_venture',
-          categoryText: 'Joint Venture',
-          description: 'Local distributor seeking partnership with Chinese pharmaceutical companies to expand product portfolio.',
-          requirements: 'FDA/NAFDAC approved products, competitive pricing, marketing support.',
-          budget: 'Negotiable',
-          deadline: ''
-        }
-      ];
-    } else {
-      return [
-        {
-          id: 1,
-          title: '太阳能板供应合同',
-          country: '津巴布韦',
-          type: 'demand',
-          typeText: '需求',
-          category: 'supply',
-          categoryText: '供应',
-          description: '政府招标50MW太阳能板供应项目，寻求具有竞争力价格和质量认证的中国制造商。',
-          requirements: 'ISO 9001认证，有非洲政府项目经验，90天内交付。',
-          budget: '800万美元',
-          deadline: '2026-08-30'
-        },
-        {
-          id: 2,
-          title: '矿业设备投资机会',
-          country: '南非',
-          type: 'opportunity',
-          typeText: '机会',
-          category: 'investment',
-          categoryText: '投资',
-          description: '成熟金矿寻求设备投资合作伙伴，准备使用中国采矿设备开始生产。',
-          requirements: '最低投资50万美元，设备供应能力，技术支持团队。',
-          budget: '50-100万美元',
-          deadline: '2026-09-15'
-        },
-        {
-          id: 3,
-          title: '医药分销合作',
-          country: '尼日利亚',
-          type: 'opportunity',
-          typeText: '机会',
-          category: 'joint_venture',
-          categoryText: '合资',
-          description: '当地分销商寻求与中国制药公司合作，扩大产品组合。',
-          requirements: 'FDA/NAFDAC认证产品，有竞争力的价格，营销支持。',
-          budget: '商议',
-          deadline: ''
-        }
-      ];
-    }
   },
 
   openOpportunityDetail(e) {

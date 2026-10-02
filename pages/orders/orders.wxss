@@ -75,10 +75,10 @@
 }
 .orders-mascot {
   position: absolute;
-  right: -12rpx;
-  bottom: -12rpx;
-  width: 90rpx;
-  height: 90rpx;
+  right: 8rpx;
+  bottom: 8rpx;
+  width: 64rpx;
+  height: 64rpx;
   opacity: 0.18;
   pointer-events: none;
   z-index: 0;

@@ -28,10 +28,10 @@
 .pf-submit { margin: 24rpx 28rpx; position: relative; }
 .pf-mascot {
   position: absolute;
-  right: 12rpx;
-  top: -54rpx;
-  width: 90rpx;
-  height: 90rpx;
+  right: 16rpx;
+  top: 8rpx;
+  width: 72rpx;
+  height: 72rpx;
   opacity: 0.2;
   pointer-events: none;
   z-index: 0;

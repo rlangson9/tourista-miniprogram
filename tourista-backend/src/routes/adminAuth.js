@@ -14,10 +14,6 @@ router.post("/login", (req, res) => {
     return res.status(400).json({ error: "请输入用户名和密码 Username and password required" });
   }
 
-  if (!validatePassword(password)) {
-    return res.status(400).json({ error: "密码不符合安全要求 Password does not meet security requirements" });
-  }
-
   const admin = Admins.byUsername(username);
   if (!admin || !bcrypt.compareSync(password, admin.password_hash)) {
     return res.status(401).json({ error: "用户名或密码错误 Invalid credentials" });

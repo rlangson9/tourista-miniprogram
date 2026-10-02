@@ -39,9 +39,10 @@ Page({
     });
   },
 
-  loadData() {
+  async loadData() {
     const lang = app.getLang();
-    const trips = data.TRIPS.map(t => {
+    const apiTrips = await data.fetchTrips();
+    const trips = apiTrips.map(t => {
       const localized = Object.assign({}, t, {
         memberPriceText: t.memberPrice.toLocaleString(),
         title: lang === 'en' ? t.titleEn : t.title,

@@ -142,3 +142,142 @@
     <view class="login-privacy">{{i18n.privacyNote}}</view>
   </view>
 </view>
+
+<!-- About Modal -->
+<view class="modal-mask about-modal" wx:if="{{showAbout}}" bindtap="closeAbout">
+  <view class="about-sheet" catchtap="noop">
+
+    <!-- Close button -->
+    <view class="about-close" bindtap="closeAbout">
+      <image class="about-close-ico" src="/images/icon-close.svg" mode="aspectFit"/>
+    </view>
+
+    <!-- Hero / brand header -->
+    <view class="about-hero">
+      <view class="about-hero-grid"></view>
+      <image class="about-hero-mascot" src="/images/mascot-zola.png" mode="aspectFit"/>
+      <view class="about-hero-brand">TOURISTA AR</view>
+      <view class="about-hero-title">{{i18n.aboutTitle}}</view>
+      <view class="about-hero-sub">{{i18n.aboutSubtitle}}</view>
+    </view>
+
+    <!-- Scrollable body -->
+    <scroll-view scroll-y class="about-body" enhanced show-scrollbar="{{false}}">
+
+      <!-- Company description -->
+      <view class="about-section">
+        <view class="about-p">{{i18n.aboutDesc1}}</view>
+        <view class="about-p about-p-mute">{{i18n.aboutDesc2}}</view>
+      </view>
+
+      <!-- Mission card -->
+      <view class="about-mission">
+        <view class="about-mission-ico">
+          <image class="about-mission-img" src="/images/icon-diamond.svg" mode="aspectFit"/>
+        </view>
+        <view class="about-mission-title">{{i18n.ourMission}}</view>
+        <view class="about-mission-text">{{i18n.ourMissionText}}</view>
+      </view>
+
+      <!-- Team section -->
+      <view class="about-section">
+        <view class="about-sec-head">
+          <view class="about-sec-ico"><image class="about-sec-img" src="/images/icon-team.svg" mode="aspectFit"/></view>
+          <view class="about-sec-title">{{i18n.ourTeam}}</view>
+        </view>
+        <view class="team-grid">
+          <view class="team-card" wx:for="{{teamMembers}}" wx:key="id">
+            <view class="team-photo-wrap">
+              <image wx:if="{{!item.photoFailed}}" class="team-photo" src="{{item.photo}}" mode="aspectFill" data-id="{{item.id}}" binderror="onTeamPhotoError"/>
+              <view wx:else class="team-initial">{{item.initial}}</view>
+            </view>
+            <view class="team-name">{{item.name}}</view>
+            <view class="team-role">{{item.role}}</view>
+            <view wx:if="{{item.bio}}" class="team-bio">{{item.bio}}</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- Contact section -->
+      <view class="about-section">
+        <view class="about-sec-head">
+          <view class="about-sec-ico"><image class="about-sec-img" src="/images/icon-phone.svg" mode="aspectFit"/></view>
+          <view class="about-sec-title">{{i18n.contactUs}}</view>
+        </view>
+
+        <view class="contact-card">
+
+          <view class="contact-row" bindtap="copyContact" data-text="{{i18n.addressValue}}" data-label="{{i18n.addressLabel}}">
+            <view class="contact-ico"><image class="contact-img" src="/images/icon-pin.svg" mode="aspectFit"/></view>
+            <view class="contact-info">
+              <view class="contact-lbl">{{i18n.addressLabel}}</view>
+              <view class="contact-val">{{i18n.addressValue}}</view>
+            </view>
+            <view class="contact-act">
+              <image class="contact-act-img" src="/images/icon-copy.svg" mode="aspectFit"/>
+            </view>
+          </view>
+
+          <view class="contact-row" bindtap="callHotline" data-text="{{i18n.hotlineValue}}" data-label="{{i18n.hotlineLabel}}">
+            <view class="contact-ico"><image class="contact-img" src="/images/icon-phone.svg" mode="aspectFit"/></view>
+            <view class="contact-info">
+              <view class="contact-lbl">{{i18n.hotlineLabel}}</view>
+              <view class="contact-val">{{i18n.hotlineValue}}</view>
+            </view>
+            <view class="contact-act">
+              <image class="contact-act-img" src="/images/icon-call.svg" mode="aspectFit"/>
+            </view>
+          </view>
+
+          <view class="contact-row" bindtap="copyContact" data-text="{{i18n.emailValue}}" data-label="{{i18n.emailLabel}}">
+            <view class="contact-ico"><image class="contact-img" src="/images/icon-mail.svg" mode="aspectFit"/></view>
+            <view class="contact-info">
+              <view class="contact-lbl">{{i18n.emailLabel}}</view>
+              <view class="contact-val">{{i18n.emailValue}}</view>
+            </view>
+            <view class="contact-act">
+              <image class="contact-act-img" src="/images/icon-copy.svg" mode="aspectFit"/>
+            </view>
+          </view>
+
+          <view class="contact-row" bindtap="copyContact" data-text="{{'https://' + i18n.websiteValue}}" data-label="{{i18n.websiteLabel}}">
+            <view class="contact-ico"><image class="contact-img" src="/images/icon-web.svg" mode="aspectFit"/></view>
+            <view class="contact-info">
+              <view class="contact-lbl">{{i18n.websiteLabel}}</view>
+              <view class="contact-val">{{i18n.websiteValue}}</view>
+            </view>
+            <view class="contact-act">
+              <image class="contact-act-img" src="/images/icon-copy.svg" mode="aspectFit"/>
+            </view>
+          </view>
+
+          <view class="contact-row" bindtap="copyContact" data-text="{{i18n.wechatValue}}" data-label="{{i18n.wechatLabel}}">
+            <view class="contact-ico"><image class="contact-img" src="/images/icon-chat.svg" mode="aspectFit"/></view>
+            <view class="contact-info">
+              <view class="contact-lbl">{{i18n.wechatLabel}}</view>
+              <view class="contact-val">{{i18n.wechatValue}}</view>
+            </view>
+            <view class="contact-act">
+              <image class="contact-act-img" src="/images/icon-copy.svg" mode="aspectFit"/>
+            </view>
+          </view>
+
+          <view class="contact-row contact-row-last">
+            <view class="contact-ico"><image class="contact-img" src="/images/icon-clock.svg" mode="aspectFit"/></view>
+            <view class="contact-info">
+              <view class="contact-lbl">{{i18n.workHoursLabel}}</view>
+              <view class="contact-val">{{i18n.workHoursValue}}</view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+
+      <!-- Legal footer -->
+      <view class="about-legal">
+        <view class="about-legal-line">Tourista AR</view>
+        <view class="about-copy">© 2026 Tourista AR · All Rights Reserved</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

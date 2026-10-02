@@ -11,8 +11,56 @@
       <view class="hero-title">{{i18n.heroTitle}}</view>
       <view class="hero-subtitle">{{i18n.heroSub}}</view>
       <view class="searchbar">
-        <image class="search-ico" src="/images/icon-info.svg" mode="aspectFit"/>
-        <text class="search-text">{{i18n.searchPlaceholder}}</text>
+        <image class="search-ico" src="/images/icon-search.svg" mode="aspectFit"/>
+        <input
+          class="search-input"
+          value="{{searchText}}"
+          placeholder="{{i18n.searchPlaceholder}}"
+          placeholder-class="search-ph"
+          confirm-type="search"
+          bindinput="onSearchInput"
+        />
+        <view wx:if="{{searchText}}" class="search-clear" catchtap="clearSearch">
+          <image class="search-clear-ico" src="/images/icon-close.svg" mode="aspectFit"/>
+        </view>
+      </view>
+
+      <!-- Live search results -->
+      <view wx:if="{{searchText}}" class="search-results">
+        <view wx:if="{{!searchResultCount}}" class="search-empty">{{i18n.searchNoResults}}</view>
+
+        <block wx:if="{{searchTrips.length}}">
+          <view class="sr-group">{{i18n.searchGroupTrips}}</view>
+          <view class="sr-item" wx:for="{{searchTrips}}" wx:key="id" catchtap="openTrip" data-id="{{item.id}}">
+            <image class="sr-flag" src="{{item.flagImage}}" mode="aspectFit"/>
+            <view class="sr-main">
+              <view class="sr-title">{{item.title}}</view>
+              <view class="sr-sub">{{item.country}} · ¥{{item.memberPrice}} · {{item.days}}{{i18n.dayUnit}}</view>
+            </view>
+          </view>
+        </block>
+
+        <block wx:if="{{searchStories.length}}">
+          <view class="sr-group">{{i18n.searchGroupStories}}</view>
+          <view class="sr-item" wx:for="{{searchStories}}" wx:key="id" catchtap="openStoryDetail" data-id="{{item.id}}">
+            <view class="sr-badge"><image class="sr-badge-ico" src="/images/icon-star.svg" mode="aspectFit"/></view>
+            <view class="sr-main">
+              <view class="sr-title">{{item.title}}</view>
+              <view class="sr-sub">{{item.company}}</view>
+            </view>
+          </view>
+        </block>
+
+        <block wx:if="{{searchOpportunities.length}}">
+          <view class="sr-group">{{i18n.searchGroupOpportunities}}</view>
+          <view class="sr-item" wx:for="{{searchOpportunities}}" wx:key="id" catchtap="openOpportunityDetail" data-id="{{item.id}}">
+            <view class="sr-badge sr-badge-o"><image class="sr-badge-ico" src="/images/icon-map.svg" mode="aspectFit"/></view>
+            <view class="sr-main">
+              <view class="sr-title">{{item.title}}</view>
+              <view class="sr-sub">{{item.typeText}} · {{item.country}}</view>
+            </view>
+          </view>
+        </block>
       </view>
     </view>
     <image class="hero-mascot" src="/images/mascot-touri.png" mode="aspectFit"/>
@@ -188,7 +236,7 @@
           </view>
           <view class="crow-ct">
             <view class="crow-ct-a">{{i18n.email}}</view>
-            <view class="crow-ct-b">hello@touristaar.com</view>
+            <view class="crow-ct-b">info@touristaar.com</view>
           </view>
           <view class="copy">
             <image class="copy-ico" src="/images/icon-unlock.svg" mode="aspectFit"/>
@@ -302,7 +350,7 @@
           </view>
           <view class="all-opp-contact-row" catchtap="copyEmail">
             <image class="all-opp-contact-ico" src="/images/icon-info.svg" mode="aspectFit"/>
-            <text>{{i18n.email}}：hello@touristaar.com</text>
+            <text>{{i18n.email}}：info@touristaar.com</text>
             <text class="all-opp-contact-copy">{{i18n.copy}}</text>
           </view>
         </view>

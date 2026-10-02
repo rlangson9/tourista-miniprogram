@@ -1,6 +1,8 @@
 // src/db/seed.js
-// Seeds the database with the default admin + the 3 trips that currently
-// live in the mini program's utils/data.js, plus the demo order & lead.
+// Seeds the database with the default admin account and the real trip
+// catalog (zw / sa / both). No demo orders or fake leads are inserted —
+// real orders and partner applications come from the mini program, and
+// stories/opportunities are added via the admin dashboard.
 // Safe to run repeatedly (INSERT OR IGNORE / upsert on trips).
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
@@ -20,7 +22,7 @@ if (!existing) {
   console.log(`• Admin '${username}' already exists — skipped`);
 }
 
-// ── Trips (mirror of mini program utils/data.js) ──────────────────────────
+// ── Trips (canonical seed data, matches the live product offering) ────────
 const TRIPS = [
   {
     id: "zw", flag: "ZW", country: "津巴布韦", country_en: "Zimbabwe",
@@ -444,43 +446,5 @@ for (const t of TRIPS) {
   });
 }
 console.log(`✓ Seeded ${TRIPS.length} trips`);
-
-// ── Demo order + lead (only if tables empty) ──────────────────────────────
-const orderCount = db.prepare("SELECT COUNT(*) c FROM orders").get().c;
-if (orderCount === 0) {
-  db.prepare(`
-    INSERT INTO orders (id, trip_id, title, title_en, customer_name, passport, phone, company,
-      depart, city, city_en, status, status_en, total_price, deposit, deposit_paid, balance, balance_due, checklist)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-  `).run(
-    "T20260719", "zw", "津巴布韦商务考察团 · 7天", "Zimbabwe Business Tour · 7 Days",
-    "王建国", "E12345678", "13800002233", "上海科技创新有限公司",
-    "2026.07.19", "哈拉雷", "Harare", "已确认", "Confirmed",
-    28000, 8000, 1, 20000, "2026.07.05",
-    JSON.stringify([
-      { label: "护照有效期6个月以上", labelEn: "Passport valid for 6+ months", done: true },
-      { label: "黄热病疫苗证书", labelEn: "Yellow fever vaccine certificate", done: true },
-      { label: "落地签材料（照片+行程）", labelEn: "Visa on arrival materials (photo + itinerary)", done: false },
-      { label: "美元现金准备建议", labelEn: "USD cash recommended", done: false, info: true }
-    ])
-  );
-  console.log("✓ Seeded 1 demo order");
-}
-
-const apptCount = db.prepare("SELECT COUNT(*) c FROM partner_apps").get().c;
-if (apptCount === 0) {
-  db.prepare(`
-    INSERT INTO partner_apps (id, company, company_en, contact, wechat, phone,
-      categories, categories_en, modes, modes_en, markets, markets_en, status, status_en)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-  `).run(
-    "P20260610", "上海科技创新有限公司", "Shanghai Tech Innovation Co., Ltd.", "李总 · 外贸部总监", "li_wechat_id", "13900001122",
-    JSON.stringify(["家用电器"]), JSON.stringify(["Home Appliances"]),
-    JSON.stringify(["分销代理", "展厅入驻"]), JSON.stringify(["Distribution", "Showroom Entry"]),
-    JSON.stringify(["津巴布韦", "南非"]), JSON.stringify(["Zimbabwe", "South Africa"]),
-    "顾问已对接", "Advisor Connected"
-  );
-  console.log("✓ Seeded 1 demo partner lead");
-}
 
 console.log("\nSeed complete.");
