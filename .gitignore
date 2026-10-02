@@ -4,3 +4,6 @@ node_modules/
 .DS_Store
 *.db
 public/uploads/*
+
+# Large brand assets (kept locally, not in git)
+Mascouts/OUR MASCOUTS/Tourista_AR_Mascot_Brand_Bible.pdf
