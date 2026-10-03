@@ -507,6 +507,7 @@ function opportunityToApi(o) {
     contactInfo: o.contact_info,
     budget: o.budget,
     deadline: o.deadline,
+    media: J(o.media) || [],
     featured: !!o.featured,
     sortOrder: o.sort_order,
     isPublished: !!o.is_published,
@@ -541,8 +542,8 @@ const Opportunities = {
     const r = db.prepare(`INSERT INTO opportunities (
       title, title_en, country, country_en, region, category, type,
       description, description_en, requirements, requirements_en,
-      contact_info, budget, deadline, featured, sort_order, is_published
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
+      contact_info, budget, deadline, media, featured, sort_order, is_published
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(
       o.title || "",
       o.titleEn || "",
       o.country || "",
@@ -557,6 +558,7 @@ const Opportunities = {
       o.contactInfo || "",
       o.budget || "",
       o.deadline || "",
+      S(o.media || []),
       o.featured ? 1 : 0,
       o.sortOrder || 0,
       o.isPublished !== false ? 1 : 0
@@ -582,6 +584,7 @@ const Opportunities = {
     if (o.contactInfo !== undefined) { updates.push("contact_info = @contact_info"); params.contact_info = o.contactInfo; }
     if (o.budget !== undefined) { updates.push("budget = @budget"); params.budget = o.budget; }
     if (o.deadline !== undefined) { updates.push("deadline = @deadline"); params.deadline = o.deadline; }
+    if (o.media !== undefined) { updates.push("media = @media"); params.media = S(o.media); }
     if (o.featured !== undefined) { updates.push("featured = @featured"); params.featured = o.featured ? 1 : 0; }
     if (o.sortOrder !== undefined) { updates.push("sort_order = @sort_order"); params.sort_order = o.sortOrder; }
     if (o.isPublished !== undefined) { updates.push("is_published = @is_published"); params.is_published = o.isPublished ? 1 : 0; }

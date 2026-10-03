@@ -89,6 +89,43 @@ router.post("/trips/:id/upload-qr", upload.single("file"), (req, res) => {
   res.json({ qrCode: trip.qrCode });
 });
 
+// Generic media upload for content galleries (stories, opportunities).
+// Accepts images and short videos. Returns the URL immediately so it works
+// even before the entity is saved; the admin keeps the media list client-side
+// and persists it with the form.
+const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+const VIDEO_EXTS = [".mp4", ".mov", ".m4v", ".webm"];
+const mediaUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, uploadsDir),
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      const prefix = VIDEO_EXTS.includes(ext) ? "vid" : "img";
+      cb(null, `${prefix}_${Date.now()}_${Math.round(Math.random() * 1e4)}${ext}`);
+    },
+  }),
+  limits: { fileSize: 50 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (IMAGE_EXTS.includes(ext) || VIDEO_EXTS.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error("只允许上传图片 (JPG/PNG/GIF/WEBP) 或视频 (MP4/MOV/WEBM)"));
+    }
+  },
+});
+
+router.post("/upload", (req, res) => {
+  mediaUpload.single("file")(req, res, (err) => {
+    // Multer rejections (bad extension, >50MB) land here, not in try/catch
+    if (err) return res.status(400).json({ error: err.message });
+    if (!req.file) return res.status(400).json({ error: "请选择要上传的文件" });
+    const ext = path.extname(req.file.filename).toLowerCase();
+    const type = VIDEO_EXTS.includes(ext) ? "video" : "image";
+    res.status(201).json({ url: `/uploads/${req.file.filename}`, type });
+  });
+});
+
 // ════════════════════════════════════════════════════════════════════════
 // TASK 2 — ORDERS: track orders & payments
 // ════════════════════════════════════════════════════════════════════════

@@ -272,7 +272,7 @@
       <view class="story-detail-company">{{selectedStory.company}}</view>
       <view class="story-detail-category tag">{{selectedStory.categoryText}}</view>
       <view wx:if="{{selectedStory.media.length > 0}}" class="story-detail-media">
-        <image wx:for="{{selectedStory.media}}" wx:key="index" class="story-detail-img" src="{{item.url}}" mode="widthFix"/>
+        <image wx:for="{{selectedStory.media}}" wx:key="index" class="story-detail-img" src="{{item.url}}" mode="widthFix" catchtap="previewStoryImage" data-url="{{item.url}}"/>
       </view>
       <view class="story-detail-content">{{selectedStory.content}}</view>
       <view class="story-detail-actions">
@@ -301,6 +301,12 @@
       <view class="opp-detail-tags">
         <text class="tag {{selectedOpp.type === 'demand' ? 'tag-secondary' : 'tag-primary'}}">{{selectedOpp.typeText}}</text>
         <text class="tag">{{selectedOpp.categoryText}}</text>
+      </view>
+      <view wx:if="{{selectedOpp.media.length > 0}}" class="opp-detail-media">
+        <block wx:for="{{selectedOpp.media}}" wx:key="index">
+          <image wx:if="{{item.type !== 'video'}}" class="opp-detail-img" src="{{item.url}}" mode="widthFix" catchtap="previewOppImage" data-url="{{item.url}}"/>
+          <video wx:else class="opp-detail-vid" src="{{item.url}}" controls show-center-play-btn enable-progress-gesture object-fit="contain"/>
+        </block>
       </view>
       <view class="opp-detail-section">
         <text class="opp-detail-section-title">{{i18n.description}}</text>

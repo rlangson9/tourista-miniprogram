@@ -62,6 +62,9 @@ const I18N = {
       updated: "已更新", saved: "已保存", created: "已创建", deleted: "已删除", recorded: "已记录付款",
       send: "发送", sent: "已发送", logged: "已记录", failed: "失败", copyWechat: "复制微信号", wechatCopied: "已复制微信号",
       needId: "ID 必填", needTitle: "请输入标题", selectTarget: "请选择接收对象",
+      addImage: "上传图片", addVideo: "上传视频", uploading: "上传中…", uploadFail: "上传失败",
+      mediaHint: "图片 JPG / PNG / GIF / WEBP；视频 MP4 / MOV / WEBM；单个文件不超过 50MB",
+      video: "视频",
       confirmTripDel: "确认删除该行程？此操作不可撤销。",
       confirmStoryDel: "确认删除该案例？",
       confirmOppDel: "确认删除该机会？",
@@ -126,7 +129,8 @@ const I18N = {
       summaryZh: "摘要（中文）", summaryEn: "摘要（英文）", contentZh: "详细内容（中文）", contentEn: "详细内容（英文）",
       titlePhZh: "案例标题", titlePhEn: "Story title", companyPhZh: "公司名称", companyPhEn: "Company name",
       summaryPhZh: "简短摘要", summaryPhEn: "Brief summary", contentPhZh: "详细内容", contentPhEn: "Full content",
-      catBusiness: "商务", catInvestment: "投资", catTour: "考察团"
+      catBusiness: "商务", catInvestment: "投资", catTour: "考察团",
+      images: "故事图片/视频（用户查看案例详情时可见）"
     },
     opps: {
       title: "非洲商机", sub: "管理投资与贸易机会", newOpp: "+ 新建机会",
@@ -137,7 +141,7 @@ const I18N = {
       typeOpp: "机会", typeDemand: "需求",
       catInvestment: "投资", catTrade: "贸易", catJV: "合资", catSupply: "供应", catProject: "项目",
       descZh: "描述（中文）", descEn: "描述（英文）", reqZh: "要求（中文）", reqEn: "要求（英文）",
-      budget: "预算", deadline: "截止日期",
+      budget: "预算", deadline: "截止日期", media: "图片/视频（用户查看详情时可见）",
       titlePhZh: "机会标题", titlePhEn: "Opportunity title", countryPhZh: "国家", countryPhEn: "Country",
       descPhZh: "详细描述", descPhEn: "Detailed description", reqPhZh: "资质/要求", budgetPh: "如：$50,000 - $100,000"
     },
@@ -164,6 +168,9 @@ const I18N = {
       updated: "Updated", saved: "Saved", created: "Created", deleted: "Deleted", recorded: "Payment recorded",
       send: "Send", sent: "Sent", logged: "Logged", failed: "Failed", copyWechat: "Copy WeChat ID", wechatCopied: "WeChat ID copied",
       needId: "ID is required", needTitle: "Title is required", selectTarget: "Please select a recipient",
+      addImage: "Upload image", addVideo: "Upload video", uploading: "Uploading…", uploadFail: "Upload failed",
+      mediaHint: "Images JPG / PNG / GIF / WEBP; videos MP4 / MOV / WEBM; up to 50MB per file",
+      video: "Video",
       confirmTripDel: "Delete this trip permanently?",
       confirmStoryDel: "Delete this story?",
       confirmOppDel: "Delete this opportunity?",
@@ -228,7 +235,8 @@ const I18N = {
       summaryZh: "Summary (Chinese)", summaryEn: "Summary (English)", contentZh: "Content (Chinese)", contentEn: "Content (English)",
       titlePhZh: "Story title", titlePhEn: "Story title", companyPhZh: "Company name", companyPhEn: "Company name",
       summaryPhZh: "Brief summary", summaryPhEn: "Brief summary", contentPhZh: "Full content", contentPhEn: "Full content",
-      catBusiness: "Business", catInvestment: "Investment", catTour: "Tour"
+      catBusiness: "Business", catInvestment: "Investment", catTour: "Tour",
+      images: "Story images/videos (visible to users viewing this story)"
     },
     opps: {
       title: "African Opportunities", sub: "Manage investment & trade opportunities", newOpp: "+ New Opportunity",
@@ -239,7 +247,7 @@ const I18N = {
       typeOpp: "Opportunity", typeDemand: "Demand",
       catInvestment: "Investment", catTrade: "Trade", catJV: "Joint Venture", catSupply: "Supply", catProject: "Project",
       descZh: "Description (Chinese)", descEn: "Description (English)", reqZh: "Requirements (Chinese)", reqEn: "Requirements (English)",
-      budget: "Budget", deadline: "Deadline",
+      budget: "Budget", deadline: "Deadline", media: "Images/videos (visible to users viewing this opportunity)",
       titlePhZh: "Opportunity title", titlePhEn: "Opportunity title", countryPhZh: "Country", countryPhEn: "Country",
       descPhZh: "Detailed description", descPhEn: "Detailed description", reqPhZh: "Qualifications/requirements", budgetPh: "e.g. $50,000 - $100,000"
     },
@@ -432,6 +440,11 @@ const ACTIONS = {
   editStory: (a) => editStory(a || undefined),
   deleteStory: (a) => deleteStory(a),
   saveStory: (a) => saveStory(a),
+  pickEditorFile: (a) => {
+    const f = document.getElementById(a === "video" ? "editor_file_video" : "editor_file_image");
+    if (f) f.click();
+  },
+  removeEditorMedia: (a) => removeEditorMedia(Number(a)),
   editOpportunity: (a) => editOpportunity(a || undefined),
   deleteOpportunity: (a) => deleteOpportunity(a),
   saveOpportunity: (a) => saveOpportunity(a),
@@ -448,6 +461,7 @@ document.addEventListener("click", (e) => {
 const CHANGE_ACTIONS = {
   updateCountryColors: () => updateCountryColors(),
   onAudienceChange: () => onAudienceChange(),
+  editorFilePicked: (el) => uploadEditorMedia(el),
 };
 document.addEventListener("change", (e) => {
   const el = e.target.closest("[data-onchange]");
@@ -1000,6 +1014,71 @@ window.sendNotification = async function () {
 // ════════════════════════════════════════════════════════════════════════
 // VIEW: STORIES — manage success stories
 // ════════════════════════════════════════════════════════════════════════
+// Media list (images + videos) for whichever entity is being edited — only
+// one editor modal is open at a time. Held client-side until Save persists it.
+let editorMedia = [];
+
+function editorMediaRowHtml(m, i) {
+  const inner = m.type === "video"
+    ? `<video class="img-thumb-vid" src="${esc(m.url)}" muted preload="metadata"></video>
+       <span class="img-thumb-play">▶</span><span class="img-thumb-badge">${t("common.video")}</span>`
+    : `<img src="${esc(m.url)}" alt=""/>`;
+  return `<div class="img-thumb${m.type === "video" ? " img-thumb-video" : ""}">
+    ${inner}
+    <button type="button" class="img-thumb-x" title="${t("common.del")}" data-action="removeEditorMedia" data-arg="${i}">×</button>
+  </div>`;
+}
+
+// Shared media picker block embedded in the story/opportunity editors.
+function editorMediaSectionHtml(label) {
+  return `
+      <div class="form-field full">
+        <label>${label}</label>
+        <div id="editor_media" class="img-grid">${editorMedia.map(editorMediaRowHtml).join("")}</div>
+        <input type="file" id="editor_file_image" accept="image/*" style="display:none" data-onchange="editorFilePicked"/>
+        <input type="file" id="editor_file_video" accept="video/*" style="display:none" data-onchange="editorFilePicked"/>
+        <button type="button" class="btn btn-sm btn-ghost" data-action="pickEditorFile" data-arg="image">+ ${t("common.addImage")}</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-action="pickEditorFile" data-arg="video">+ ${t("common.addVideo")}</button>
+        <div class="form-hint">${t("common.mediaHint")}</div>
+      </div>`;
+}
+
+function renderEditorMedia() {
+  const grid = document.getElementById("editor_media");
+  if (grid) grid.innerHTML = editorMedia.map(editorMediaRowHtml).join("");
+}
+
+// Upload the picked file immediately (multipart), then append the returned
+// {url, type} to the editor's pending media list.
+window.uploadEditorMedia = async function (input) {
+  const file = input && input.files && input.files[0];
+  if (!file) return;
+  const fd = new FormData();
+  fd.append("file", file);
+  toast(t("common.uploading"));
+  try {
+    const res = await fetch("/admin/api/upload", {
+      method: "POST",
+      headers: TOKEN ? { Authorization: "Bearer " + TOKEN } : {},
+      body: fd
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || t("common.uploadFail") + ` (${res.status})`);
+    editorMedia.push({ url: data.url, type: data.type || "image" });
+    renderEditorMedia();
+    toast(t("common.saved"), "success");
+  } catch (e) {
+    toast(e.message, "error");
+  } finally {
+    input.value = "";  // allow picking the same file again
+  }
+};
+
+window.removeEditorMedia = function (i) {
+  editorMedia.splice(i, 1);
+  renderEditorMedia();
+};
+
 views.stories = async function (el) {
   const stories = await api("GET", "/admin/api/stories");
   const storyCat = (c) => t("stories.cat" + c.charAt(0).toUpperCase() + c.slice(1));
@@ -1042,11 +1121,12 @@ window.editStory = async function (id) {
   try {
     s = id
       ? await api("GET", `/admin/api/stories/${id}`)
-      : { title: "", titleEn: "", company: "", companyEn: "", category: "business", summary: "", summaryEn: "", content: "", contentEn: "", featured: false };
+      : { title: "", titleEn: "", company: "", companyEn: "", category: "business", summary: "", summaryEn: "", content: "", contentEn: "", featured: false, media: [] };
   } catch (e) {
     toast(e.message, "error");
     return;
   }
+  editorMedia = Array.isArray(s.media) ? s.media.map(m => ({ ...m })) : [];
   const catSel = (val) => s.category === val ? "selected" : "";
   const featSel = (val) => (s.featured ? val === "1" : val === "0") ? "selected" : "";
   const V = (val) => esc(val == null ? "" : val);
@@ -1068,6 +1148,7 @@ window.editStory = async function (id) {
       <div class="form-field full"><label>${t("stories.summaryEn")}</label><textarea id="s_summaryEn" placeholder="${t("stories.summaryPhEn")}">${V(s.summaryEn)}</textarea></div>
       <div class="form-field full"><label>${t("stories.contentZh")}</label><textarea id="s_content" style="min-height:100px" placeholder="${t("stories.contentPhZh")}">${V(s.content)}</textarea></div>
       <div class="form-field full"><label>${t("stories.contentEn")}</label><textarea id="s_contentEn" style="min-height:100px" placeholder="${t("stories.contentPhEn")}">${V(s.contentEn)}</textarea></div>
+      ${editorMediaSectionHtml(t("stories.images"))}
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" data-action="closeModal">${t("common.cancel")}</button>
@@ -1086,7 +1167,8 @@ window.saveStory = async function (id) {
     summary: document.getElementById("s_summary").value,
     summaryEn: document.getElementById("s_summaryEn").value,
     content: document.getElementById("s_content").value,
-    contentEn: document.getElementById("s_contentEn").value
+    contentEn: document.getElementById("s_contentEn").value,
+    media: editorMedia
   };
   if (!payload.title) { toast(t("common.needTitle"), "error"); return; }
   try {
@@ -1153,8 +1235,9 @@ window.editOpportunity = async function (id) {
       ? await api("GET", `/admin/api/opportunities/${id}`)
       : { title: "", titleEn: "", country: "", countryEn: "", region: "", type: "opportunity", category: "investment",
           description: "", descriptionEn: "", requirements: "", requirementsEn: "", contactInfo: "",
-          budget: "", deadline: "", featured: false, isPublished: true };
+          budget: "", deadline: "", featured: false, isPublished: true, media: [] };
   } catch (e) { toast(e.message, "error"); return; }
+  editorMedia = Array.isArray(o.media) ? o.media.map(m => ({ ...m })) : [];
   const typeSel = (v) => o.type === v ? "selected" : "";
   const catSel = (v) => o.category === v ? "selected" : "";
   const V = (val) => esc(val == null ? "" : val);
@@ -1183,6 +1266,7 @@ window.editOpportunity = async function (id) {
       <div class="form-field"><label>${t("opps.reqEn")}</label><input id="o_requirements_en" value="${V(o.requirementsEn)}"/></div>
       <div class="form-field"><label>${t("opps.budget")}</label><input id="o_budget" value="${V(o.budget)}" placeholder="${t("opps.budgetPh")}"/></div>
       <div class="form-field"><label>${t("opps.deadline")}</label><input id="o_deadline" value="${V(o.deadline)}" placeholder="2026-12-31"/></div>
+      ${editorMediaSectionHtml(t("opps.media"))}
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" data-action="closeModal">${t("common.cancel")}</button>
@@ -1203,7 +1287,8 @@ window.saveOpportunity = async function (id) {
     requirements: document.getElementById("o_requirements").value,
     requirementsEn: document.getElementById("o_requirements_en").value,
     budget: document.getElementById("o_budget").value,
-    deadline: document.getElementById("o_deadline").value
+    deadline: document.getElementById("o_deadline").value,
+    media: editorMedia
   };
   if (!payload.title) { toast(t("common.needTitle"), "error"); return; }
   try {

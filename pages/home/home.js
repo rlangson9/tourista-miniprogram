@@ -181,12 +181,19 @@ Page({
       method: 'GET',
       success: (res) => {
         if (res.data && Array.isArray(res.data)) {
+          const base = app.globalData.baseUrl || 'http://localhost:3000';
           const all = res.data.map(story => ({
             ...story,
             title: lang === 'en' ? story.titleEn || story.title : story.title,
             company: lang === 'en' ? story.companyEn || story.company : story.company,
             summary: lang === 'en' ? story.summaryEn || story.summary : story.summary,
             content: lang === 'en' ? story.contentEn || story.content : story.content,
+            // Uploaded files are served by the backend as /uploads/... — turn
+            // them into absolute URLs so <image> can load them remotely.
+            media: (Array.isArray(story.media) ? story.media : []).map(m => ({
+              ...m,
+              url: /^https?:\/\//.test(m.url) ? m.url : base + m.url
+            })),
             categoryText: this.getCategoryText(story.category, lang)
           }));
           const stories = all.slice(0, 3);
@@ -227,6 +234,15 @@ Page({
     this.setData({ showStoryModal: false });
   },
 
+  // Full-screen gallery view for story images
+  previewStoryImage(e) {
+    const url = e.currentTarget.dataset.url;
+    const urls = ((this.data.selectedStory && this.data.selectedStory.media) || [])
+      .map(m => m.url).filter(Boolean);
+    if (!url) return;
+    wx.previewImage({ current: url, urls: urls.length ? urls : [url] });
+  },
+
   loadOpportunities() {
     const lang = app.getLang();
     wx.request({
@@ -234,12 +250,17 @@ Page({
       method: 'GET',
       success: (res) => {
         if (res.data && res.data.length > 0) {
+          const base = app.globalData.baseUrl || 'http://localhost:3000';
           const opportunities = res.data.map(o => ({
             ...o,
             title: lang === 'en' ? o.titleEn : o.title,
             country: lang === 'en' ? o.countryEn : o.country,
             description: lang === 'en' ? o.descriptionEn : o.description,
             requirements: lang === 'en' ? o.requirementsEn : o.requirements,
+            media: (Array.isArray(o.media) ? o.media : []).map(m => ({
+              ...m,
+              url: /^https?:\/\//.test(m.url) ? m.url : base + m.url
+            })),
             typeText: lang === 'en' ? (o.type === 'demand' ? 'Demand' : 'Opportunity') : (o.type === 'demand' ? '需求' : '机会'),
             categoryText: this.getOppCategoryText(o.category, lang)
           }));
@@ -281,6 +302,15 @@ Page({
 
   closeOppModal() {
     this.setData({ showOppModal: false });
+  },
+
+  // Full-screen gallery view for opportunity images (videos play inline)
+  previewOppImage(e) {
+    const url = e.currentTarget.dataset.url;
+    const urls = ((this.data.selectedOpp && this.data.selectedOpp.media) || [])
+      .filter(m => m.type !== 'video').map(m => m.url).filter(Boolean);
+    if (!url) return;
+    wx.previewImage({ current: url, urls: urls.length ? urls : [url] });
   },
 
   showStoriesModal() {

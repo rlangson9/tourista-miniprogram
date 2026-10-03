@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS opportunities (
   contact_info  TEXT,
   budget        TEXT,
   deadline      TEXT,
+  media         TEXT,                               -- JSON array of {url, type: 'image'|'video'}
   featured      INTEGER NOT NULL DEFAULT 0,
   sort_order    INTEGER NOT NULL DEFAULT 0,
   is_published  INTEGER NOT NULL DEFAULT 1,
@@ -220,6 +221,14 @@ CREATE INDEX IF NOT EXISTS idx_vcode_phone ON verification_codes(phone);
 
 try {
   db.exec("ALTER TABLE trips ADD COLUMN qr_code TEXT;");
+} catch (e) {
+  if (!e.message.includes("duplicate column")) throw e;
+}
+
+// Success stories already have a `media` JSON column; opportunities gained
+// image/video media support later. Each entry: { url, type: 'image'|'video' }
+try {
+  db.exec("ALTER TABLE opportunities ADD COLUMN media TEXT;");
 } catch (e) {
   if (!e.message.includes("duplicate column")) throw e;
 }
